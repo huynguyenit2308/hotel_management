@@ -19,3 +19,6 @@ Route::get('/', function () {
 })->name('home');
 // Danh sách dịch vụ
 Route::get('listService', [CRUD_ServiceController::class, 'listService'])->name('service.list');
+// Thêm dịch vụ
+Route::get('addService', [CRUD_ServiceController::class, 'addService'])->name('service.add');
+Route::post('addService', [CRUD_ServiceController::class, 'postAddService'])->name('service.store');

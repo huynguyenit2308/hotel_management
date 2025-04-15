@@ -11,7 +11,7 @@
             <h3 class="display-3 text-center fw-normal col-lg-4 offset-lg-4">Danh sách dịch vụ</h3>
 
             <div class="d-flex justify-content-end mb-4">
-                <a href="#"
+                <a href="{{route('service.add')}}"
                     class="btn btn-primary rounded-pill px-4 py-2 d-flex align-items-center gap-2 shadow-sm transition-all"
                     style="transition: all 0.3s ease-in-out;"
                     onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 16px rgba(0,0,0,0.2)'"

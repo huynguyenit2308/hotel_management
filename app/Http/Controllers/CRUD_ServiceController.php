@@ -13,4 +13,24 @@ class CRUD_ServiceController extends Controller
         $service = Service::all();
         return view('crud_service.list', compact('service'));
     }
+    // Thêm dịch vụ
+    public function addService()
+    {
+        return view('crud_service.add');
+    }
+
+    public function postAddService(Request $request)
+    {
+        $request->validate([
+            'service_name' => 'required',
+            'price' => 'required',
+            'description' => 'required',
+        ]);
+        Service::create([
+            'service_name' => $request->service_name,
+            'price' => $request->price,
+            'description' => $request->description,
+        ]);
+        return redirect()->route('service.list');
+    }
 }
