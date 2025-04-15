@@ -10,8 +10,18 @@
         <div class="container-fluid padding-side" data-aos="fade-up">
             <h3 class="display-3 text-center fw-normal col-lg-4 offset-lg-4">Danh sách dịch vụ</h3>
 
-            <div class="d-flex justify-content-end mb-4">
-                <a href="{{route('service.add')}}"
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <form action="{{ route('service.search') }}" method="GET" class="position-relative">
+                    <input type="text" name="keyword" class="form-control bg-secondary border-0 rounded-5 px-4 py-2"
+                        placeholder="Tìm kiếm dịch vụ..." value="{{ request('keyword') }}">
+                    <button type="submit"
+                        class="position-absolute top-50 end-0 translate-middle-y p-1 me-3 border-0 bg-transparent">
+                        <svg width="20" height="20">
+                            <use xlink:href="#search"></use>
+                        </svg>
+                    </button>
+                </form>
+                <a href="{{ route('service.add') }}"
                     class="btn btn-primary rounded-pill px-4 py-2 d-flex align-items-center gap-2 shadow-sm transition-all"
                     style="transition: all 0.3s ease-in-out;"
                     onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 16px rgba(0,0,0,0.2)'"

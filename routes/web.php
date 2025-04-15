@@ -29,3 +29,5 @@ Route::get('deleteService', [CRUD_ServiceController::class, 'deleteService'])->n
 // Sửa dịch vụ
 Route::get('updateService', [CRUD_ServiceController::class, 'updateService'])->name('service.edit');
 Route::post('updateService', [CRUD_ServiceController::class, 'updatePostService'])->name('service.update');
+// Tìm kiếm dịch vụ
+Route::get('searchService', [CRUD_ServiceController::class, 'searchService'])->name('service.search');
