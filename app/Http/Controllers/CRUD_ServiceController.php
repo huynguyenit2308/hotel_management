@@ -83,4 +83,17 @@ class CRUD_ServiceController extends Controller
 
         return redirect()->route('service.list');
     }
+
+    // Tìm kiếm dịch vụ
+    public function searchService(Request $request)
+    {
+        $keyword = $request->get('keyword');
+
+        $service = Service::where('service_name', 'like', "%{$keyword}%")
+            ->orWhere('price', 'like', "%{$keyword}%")
+            ->orWhere('description', 'like', "%{$keyword}%")
+            ->paginate(10);
+
+        return view('crud_service.list', compact('service'));
+    }
 }
