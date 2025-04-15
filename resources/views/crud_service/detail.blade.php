@@ -12,7 +12,7 @@
                         <p><strong>Mô tả:</strong> {{ $service->description }}</p>
                         <div class="row mt-4">
                             <div class="col-6 d-flex gap-2">
-                                <a href="{{ route('service.edit', ['id' => $service->id]) }}"
+                                <a href="#"
                                     class="btn btn-primary rounded-pill flex-fill d-flex align-items-center justify-content-center gap-2 shadow-sm"
                                     style="transition: all 0.3s ease-in-out;"
                                     onmouseover="this.style.transform='scale(1.05)'"

@@ -26,6 +26,3 @@ Route::post('addService', [CRUD_ServiceController::class, 'postAddService'])->na
 Route::get('detailService', [CRUD_ServiceController::class, 'detailService'])->name('service.detail');
 // Xóa dịch vụ
 Route::get('deleteService', [CRUD_ServiceController::class, 'deleteService'])->name('service.delete');
-// Sửa dịch vụ
-Route::get('updateService', [CRUD_ServiceController::class, 'updateService'])->name('service.edit');
-Route::post('updateService', [CRUD_ServiceController::class, 'updatePostService'])->name('service.update');
