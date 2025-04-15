@@ -22,3 +22,5 @@ Route::get('listService', [CRUD_ServiceController::class, 'listService'])->name(
 // Thêm dịch vụ
 Route::get('addService', [CRUD_ServiceController::class, 'addService'])->name('service.add');
 Route::post('addService', [CRUD_ServiceController::class, 'postAddService'])->name('service.store');
+// Chi tiết dịch vụ
+Route::get('detailService', [CRUD_ServiceController::class, 'detailService'])->name('service.detail');

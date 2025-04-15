@@ -25,7 +25,7 @@
                     <div class="col-md-6 col-xl-4">
                         <div class="service mb-4 text-center rounded-4 p-5">
                             <h4 class="display-6 fw-normal my-3">{{ $value->service_name }}</h4>
-                            <a href="#" class="btn btn-arrow">
+                            <a href="{{ route('service.detail', ['id' => $value->id]) }}" class="btn btn-arrow">
                                 <span class="text-decoration-underline">
                                     Xem chi tiết
                                     <svg width="18" height="18">
