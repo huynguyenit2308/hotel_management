@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\InvoiceDetail;
 use App\Models\Service;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CRUD_ServiceController extends Controller
 {
@@ -95,5 +97,21 @@ class CRUD_ServiceController extends Controller
             ->paginate(10);
 
         return view('crud_service.list', compact('service'));
+    }
+
+    // Thống kê dịch vụ
+    public function statisticService()
+    {
+        $statistic = InvoiceDetail::join('service', 'invoice_detail.service_id', '=', 'service.id')
+            ->select(
+                'service.service_name as service_name',
+                DB::raw('SUM(invoice_detail.quantity) as total_quantity'),
+                DB::raw('SUM(invoice_detail.amount) as total_amount')
+            )
+            ->groupBy('service.service_name')
+            ->orderByDesc('total_amount')
+            ->get();
+
+        return view('crud_service.statistic', compact('statistic'));
     }
 }
