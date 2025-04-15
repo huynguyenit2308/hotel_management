@@ -15,4 +15,12 @@ class Service extends Model
         'price',
         'description'
     ];
+
+    public function getDynamicPriceAttribute()
+    {
+        if (now()->isWeekend()) {
+            return $this->price * 1.1;
+        }
+        return $this->price;
+    }
 }
