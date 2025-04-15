@@ -13,6 +13,7 @@ class CRUD_ServiceController extends Controller
         $service = Service::all();
         return view('crud_service.list', compact('service'));
     }
+
     // Thêm dịch vụ
     public function addService()
     {
@@ -33,4 +34,18 @@ class CRUD_ServiceController extends Controller
         ]);
         return redirect()->route('service.list');
     }
+
+    // Chi tiết dịch vụ
+    public function detailService(Request $request)
+    {
+        $id = $request->get('id');
+        $service = Service::find($id);
+
+        if (!$service) {
+            return redirect()->route('service.list')->with('error', 'Dịch vụ không tồn tại.');
+        }
+
+        return view('crud_service.detail', compact('service'));
+    }
+
 }
