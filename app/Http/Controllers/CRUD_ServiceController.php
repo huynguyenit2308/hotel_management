@@ -65,5 +65,22 @@ class CRUD_ServiceController extends Controller
         return view('crud_service.update', compact('service'));
     }
 
-    
+    public function updatePostService(Request $request)
+    {
+        $request->validate([
+            'service_name' => 'required',
+            'price' => 'required',
+            'description' => 'required',
+        ]);
+
+        $id = $request->get('id');
+        $service = Service::find($id);
+        $service->update([
+            'service_name' => $request->service_name,
+            'price' => $request->price,
+            'description' => $request->description,
+        ]);
+
+        return redirect()->route('service.list');
+    }
 }
