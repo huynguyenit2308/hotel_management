@@ -31,3 +31,5 @@ Route::get('updateService', [CRUD_ServiceController::class, 'updateService'])->n
 Route::post('updateService', [CRUD_ServiceController::class, 'updatePostService'])->name('service.update');
 // Tìm kiếm dịch vụ
 Route::get('searchService', [CRUD_ServiceController::class, 'searchService'])->name('service.search');
+// Thống kê dịch vụ
+Route::get('statisticService', [CRUD_ServiceController::class, 'statisticService'])->name('service.statistic');
