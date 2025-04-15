@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CRUD_ServiceController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +17,5 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('home');
 })->name('home');
+// Danh sách dịch vụ
+Route::get('listService', [CRUD_ServiceController::class, 'listService'])->name('service.list');
