@@ -192,7 +192,24 @@
                                     <a class="nav-link  p-0" href="#">Dịch vụ</a>
                                 </li>
                                 <li class="nav-item px-3">
-                                    <a class="nav-link p-0" href="#">Đăng nhập</a>
+                                    @if(Auth::check())
+                                        <li class="nav-item px-3">
+                                            <span class="nav-link p-0">Xin chào, {{ Auth::user()->username }}</span>
+                                        </li>
+                                    @endif
+                                @if(Auth::check())
+                                    <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                                        @csrf
+                                        <button type="submit" class="nav-link btn btn-link p-0"
+                                            style="border: none; background: none;">
+                                            Đăng xuất
+                                        </button>
+                                    </form>
+                                @else
+                                    <a class="nav-link p-0" href="{{ route('login') }}">
+                                        Đăng nhập
+                                    </a>
+                                @endif
                                 </li>
                                 <li class="nav-item px-3 dropdown">
                                     <a class="nav-link p-0 {{ request()->routeIs('service.list', 'service.add', 'service.detail', 'service.edit', 'service.search') ? 'active text-warning' : '' }} dropdown-toggle text-center "

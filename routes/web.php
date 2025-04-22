@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\CRUD_ServiceController;
+use App\Http\Controllers\AccountRegisterController;
+use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,3 +35,12 @@ Route::post('updateService', [CRUD_ServiceController::class, 'updatePostService'
 Route::get('searchService', [CRUD_ServiceController::class, 'searchService'])->name('service.search');
 // Thống kê dịch vụ
 Route::get('statisticService', [CRUD_ServiceController::class, 'statisticService'])->name('service.statistic');
+
+//Mở form đăng ký tài khoản
+Route::get('/register', [AccountRegisterController::class, 'showForm'])->name('register.form');
+Route::post('/register', [AccountRegisterController::class, 'register'])->name('register');
+
+//Mở form đăng nhập
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login']);
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
