@@ -16,6 +16,14 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Cormorant+Upright:wght@300;400;500;600;700&family=Sora:wght@100..800&display=swap"
         rel="stylesheet">
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<!-- AOS CSS -->
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+<!-- AOS JS -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script></symbol>
 </head>
 
 <body>
@@ -226,8 +234,7 @@
                                         </li>
                                         <li><a href="#" class="dropdown-item ">Hóa đơn </a>
                                         </li>
-                                        <li><a href="#" class="dropdown-item ">Nhân viên </a>
-                                        </li>
+                                        <li><a href="{{ route('users.index') }}" class="dropdown-item">Nhân viên</a></li>
                                         <li><a href="#" class="dropdown-item ">Chấm công </a>
                                         </li>
                                     </ul>
