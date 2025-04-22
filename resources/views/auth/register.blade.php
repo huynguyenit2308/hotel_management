@@ -6,7 +6,15 @@
   <div class="row justify-content-center">
     <div class="col-lg-8 col-md-10">
       <h2 class="mb-4 text-center">Đăng Ký Tài Khoản</h2>
+      {{-- Hiển thị thông báo thành công sau khi đăng ký --}}
+      @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          {{ session('success') }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      @endif
 
+      {{-- Hiển thị lỗi validate --}}
       @if($errors->any())
         <div class="alert alert-danger">
           <ul class="mb-0">
@@ -122,6 +130,11 @@
               <button type="submit" class="btn btn-primary px-5">
                 Đăng ký
               </button>
+            </div>
+            {{-- Link chuyển sang trang đăng nhập --}}
+            <div class="text-center mt-3">
+              Bạn đã có tài khoản?
+              <a href="{{ route('login') }}" class="btn btn-link p-0">Đăng nhập</a>
             </div>
           </form>
         </div>

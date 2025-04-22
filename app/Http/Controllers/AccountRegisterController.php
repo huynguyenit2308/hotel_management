@@ -18,7 +18,7 @@ class AccountRegisterController extends Controller
     // Chức năng đăng ký tài khoản
     //Xử lý dữ liệu người dùng khi gửi form
     public function register(Request $request)
-    {   
+    {
         //Dữ liệu đầu vào
         $request->validate([
             'full_name' => 'required|string|max:255',
@@ -47,6 +47,6 @@ class AccountRegisterController extends Controller
             'status' => 1,
         ]);
         //Đi đến form đăng nhập sau khi đăng ký thành công
-       // return redirect()->route('login')->with('success', 'Tạo tài khoản thành công!');
+        return redirect()->route('login')->with('success', 'Tạo tài khoản thành công!');
     }
 }
