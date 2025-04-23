@@ -61,11 +61,20 @@ Route::get('/users/{user}/edit', [App\Http\Controllers\UserController::class, 'e
 Route::put('/users/{user}', [App\Http\Controllers\UserController::class, 'update'])->name('users.update');
 Route::delete('/users/{user}', [App\Http\Controllers\UserController::class, 'destroy'])->name('users.destroy');
 
-// Quản lý khách hàng
+
 //Hiển thị danh sách khách hàng
 Route::get('/listCustomer', [CRUD_CustomerController::class, 'list'])->name('customers.list');
+//Hiển thị chi tiết khách hàng
+Route::get('/customers/{id}', [CRUD_CustomerController::class, 'detail'])->name('customers.detail');
 
-//Route::get('/customers/{id}', [CRUD_CustomerController::class, 'detail'])->name('customers.detail');
-//Route::get('/customers/{id}/edit', [CRUD_CustomerController::class, 'edit'])->name('customers.edit');
-//Route::post('/customers/{id}/update', [CRUD_CustomerController::class, 'update'])->name('customers.update');
-//Route::get('/customers/{id}/delete', [CRUD_CustomerController::class, 'delete'])->name('customers.delete');
+// User management routes
+Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('users.index');
+Route::get('/users/create', [App\Http\Controllers\UserController::class, 'create'])->name('users.create');
+Route::post('/users', [App\Http\Controllers\UserController::class, 'store'])->name('users.store');
+Route::get('/users/{user}', [App\Http\Controllers\UserController::class, 'show'])->name('users.show');
+Route::get('/users/{user}/edit', [App\Http\Controllers\UserController::class, 'edit'])->name('users.edit');
+Route::put('/users/{user}', [App\Http\Controllers\UserController::class, 'update'])->name('users.update');
+Route::delete('/users/{user}', [App\Http\Controllers\UserController::class, 'destroy'])->name('users.destroy');
+
+//Hiển thị danh sách khách hàng
+Route::get('/listCustomer', [CRUD_CustomerController::class, 'list'])->name('customers.list');

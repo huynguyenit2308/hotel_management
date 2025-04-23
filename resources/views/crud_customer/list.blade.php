@@ -29,8 +29,8 @@
           <td>{{ $customer->phone }}</td>
           <td>{{ $customer->registration_date }}</td>
           <td>
-          <a href="" class="btn btn-info">Chi tiết</a>
-           <a href="#" class="btn btn-danger">Xóa</a>
+          <a href="{{ route('customers.detail', ['id' => $customer->id]) }}" class="btn btn-info btn-sm">Chi tiết</a>
+          <a href="#" class="btn btn-danger">Xóa</a>
            <a href="#" class="btn btn-warning">Sửa</a>
         </td>
         </tr>
