@@ -62,7 +62,7 @@ class CRUD_ServiceController extends Controller
         $id = $request->get('id');
         $service = Service::find($id);
         $service->delete();
-        return redirect()->route('service.list')->with('success', 'Xóa dịch vụ thành công!');
+        return redirect()->route('service.list')->with('success', 'Xóa dịch vụ "' . $service->service_name . '" thành công!');
     }
 
     // Sửa dịch vụ
