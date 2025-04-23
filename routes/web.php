@@ -3,6 +3,7 @@
 use App\Http\Controllers\CRUD_ServiceController;
 use App\Http\Controllers\AccountRegisterController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\CRUD_CustomerController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -56,3 +57,13 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
     Route::get('/users/{user}/edit', [App\Http\Controllers\UserController::class, 'edit'])->name('users.edit');
     Route::put('/users/{user}', [App\Http\Controllers\UserController::class, 'update'])->name('users.update');
     Route::delete('/users/{user}', [App\Http\Controllers\UserController::class, 'destroy'])->name('users.destroy');
+
+ // Quản lý khách hàng
+ //Hiển thị danh sách khách hàng
+ Route::get('/listCustomer', [CRUD_CustomerController::class, 'list'])->name('customers.list');
+
+//Route::get('/customers/{id}', [CRUD_CustomerController::class, 'detail'])->name('customers.detail');
+//Route::get('/customers/{id}/edit', [CRUD_CustomerController::class, 'edit'])->name('customers.edit');
+//Route::post('/customers/{id}/update', [CRUD_CustomerController::class, 'update'])->name('customers.update');
+//Route::get('/customers/{id}/delete', [CRUD_CustomerController::class, 'delete'])->name('customers.delete');
+   
