@@ -81,7 +81,7 @@ class CRUD_ServiceController extends Controller
             'description' => $request->description,
         ]);
 
-        return redirect()->route('service.list');
+        return redirect()->route('service.detail', ['id' => $id]);
     }
 
     // Tìm kiếm dịch vụ
@@ -95,5 +95,37 @@ class CRUD_ServiceController extends Controller
             ->paginate(10);
 
         return view('crud_service.list', compact('service'));
+    }
+
+    // Quản lý giá dịch vụ
+    public function editPriceService(Request $request)
+    {
+        $id = $request->get('id');
+        $service = Service::find($id);
+        return view('crud_service.price', compact('service'));
+    }
+
+    public function updatePriceService(Request $request)
+    {
+        $request->validate([
+            'base_price' => 'required|numeric|min:0',
+            'adjust_type' => 'required|in:increase,decrease',
+            'adjust_percent' => 'required|numeric|min:0|max:100',
+        ]);
+
+        $basePrice = $request->base_price;
+        $percent = $request->adjust_percent;
+        $adjustType = $request->adjust_type;
+
+        $adjustedPrice = $adjustType === 'increase'
+            ? $basePrice * (1 + $percent / 100)
+            : $basePrice * (1 - $percent / 100);
+
+        $id = $request->get('id');
+        $service = Service::find($id);
+        $service->price = round($adjustedPrice, 0);
+        $service->save();
+
+        return redirect()->route('service.detail', ['id' => $id])->with('success', 'Cập nhật giá thành công!');
     }
 }

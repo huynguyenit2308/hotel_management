@@ -11,9 +11,9 @@
                         <p><strong>Giá:</strong> {{ number_format($service->price, 0, ',', '.') }} VNĐ</p>
                         <p><strong>Mô tả:</strong> {{ $service->description }}</p>
                         <div class="row mt-4">
-                            <div class="col-6 d-flex gap-2">
+                            <div class="col-12 d-flex flex-wrap gap-2">
                                 <a href="{{ route('service.edit', ['id' => $service->id]) }}"
-                                    class="btn btn-primary rounded-pill flex-fill d-flex align-items-center justify-content-center gap-2 shadow-sm"
+                                    class="btn btn-primary rounded-4 flex-fill d-flex align-items-center justify-content-center gap-2 shadow-sm py-2 px-3"
                                     style="transition: all 0.3s ease-in-out;"
                                     onmouseover="this.style.transform='scale(1.05)'"
                                     onmouseout="this.style.transform='scale(1)'">
@@ -22,8 +22,10 @@
 
                                 <form action="{{ route('service.delete', ['id' => $service->id]) }}" method="POST"
                                     class="flex-fill">
+                                    @csrf
+                                    @method('DELETE')
                                     <button type="button"
-                                        class="btn btn-primary rounded-pill w-100 d-flex align-items-center justify-content-center gap-2 shadow-sm"
+                                        class="btn btn-primary rounded-4 w-100 d-flex align-items-center justify-content-center gap-2 shadow-sm py-2 px-3"
                                         style="transition: all 0.3s ease-in-out;"
                                         onmouseover="this.style.transform='scale(1.05)'"
                                         onmouseout="this.style.transform='scale(1)'" data-bs-toggle="modal"
@@ -31,11 +33,17 @@
                                         <i class="bi bi-trash3-fill"></i> Xóa dịch vụ
                                     </button>
                                 </form>
-                            </div>
 
-                            <div class="col-6">
+                                <a href="{{ route('service.price.update', ['id' => $service->id]) }}"
+                                    class="btn btn-primary rounded-4 flex-fill d-flex align-items-center justify-content-center gap-2 shadow-sm py-2 px-3"
+                                    style="transition: all 0.3s ease-in-out;"
+                                    onmouseover="this.style.transform='scale(1.05)'"
+                                    onmouseout="this.style.transform='scale(1)'">
+                                    <i class="bi bi-pencil-square"></i> Quản lý giá
+                                </a>
+
                                 <a href="{{ route('service.list') }}"
-                                    class="btn btn-primary rounded-pill w-100 d-flex align-items-center justify-content-center gap-2 shadow-sm"
+                                    class="btn btn-primary rounded-4 w-100 d-flex align-items-center justify-content-center gap-2 shadow-sm py-2 px-3"
                                     style="transition: all 0.3s ease-in-out;"
                                     onmouseover="this.style.transform='scale(1.05)'"
                                     onmouseout="this.style.transform='scale(1)'">

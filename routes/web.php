@@ -31,3 +31,6 @@ Route::get('updateService', [CRUD_ServiceController::class, 'updateService'])->n
 Route::post('updateService', [CRUD_ServiceController::class, 'updatePostService'])->name('service.update');
 // Tìm kiếm dịch vụ
 Route::get('searchService', [CRUD_ServiceController::class, 'searchService'])->name('service.search');
+// Quản lý giá dịch vụ
+Route::get('priceService', [CRUD_ServiceController::class, 'editPriceService'])->name('service.price');
+Route::post('priceService', [CRUD_ServiceController::class, 'updatePriceService'])->name('service.price.update');
