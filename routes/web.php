@@ -33,6 +33,9 @@ Route::get('updateService', [CRUD_ServiceController::class, 'updateService'])->n
 Route::post('updateService', [CRUD_ServiceController::class, 'updatePostService'])->name('service.update');
 // Tìm kiếm dịch vụ
 Route::get('searchService', [CRUD_ServiceController::class, 'searchService'])->name('service.search');
+// Quản lý giá dịch vụ
+Route::get('priceService', [CRUD_ServiceController::class, 'editPriceService'])->name('service.price');
+Route::post('priceService', [CRUD_ServiceController::class, 'updatePriceService'])->name('service.price.update');
 // Thống kê dịch vụ
 Route::get('statisticService', [CRUD_ServiceController::class, 'statisticService'])->name('service.statistic');
 
@@ -44,15 +47,15 @@ Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->name('dashboard');
 
-    // User management routes
-    Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('users.index');
-    Route::get('/users/create', [App\Http\Controllers\UserController::class, 'create'])->name('users.create');
-    Route::post('/users', [App\Http\Controllers\UserController::class, 'store'])->name('users.store');
-    Route::get('/users/{user}', [App\Http\Controllers\UserController::class, 'show'])->name('users.show');
-    Route::get('/users/{user}/edit', [App\Http\Controllers\UserController::class, 'edit'])->name('users.edit');
-    Route::put('/users/{user}', [App\Http\Controllers\UserController::class, 'update'])->name('users.update');
-    Route::delete('/users/{user}', [App\Http\Controllers\UserController::class, 'destroy'])->name('users.destroy');
+// User management routes
+Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('users.index');
+Route::get('/users/create', [App\Http\Controllers\UserController::class, 'create'])->name('users.create');
+Route::post('/users', [App\Http\Controllers\UserController::class, 'store'])->name('users.store');
+Route::get('/users/{user}', [App\Http\Controllers\UserController::class, 'show'])->name('users.show');
+Route::get('/users/{user}/edit', [App\Http\Controllers\UserController::class, 'edit'])->name('users.edit');
+Route::put('/users/{user}', [App\Http\Controllers\UserController::class, 'update'])->name('users.update');
+Route::delete('/users/{user}', [App\Http\Controllers\UserController::class, 'destroy'])->name('users.destroy');
