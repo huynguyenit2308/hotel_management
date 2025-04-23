@@ -31,7 +31,7 @@
           <td>
           <a href="{{ route('customers.detail', ['id' => $customer->id]) }}" class="btn btn-info btn-sm">Chi tiết</a>
           <a href="#" class="btn btn-danger">Xóa</a>
-           <a href="#" class="btn btn-warning">Sửa</a>
+           <a href="{{ route('customers.edit', ['id' => $customer->id]) }}" class="btn btn-warning">Sửa</a>
         </td>
         </tr>
       @endforeach

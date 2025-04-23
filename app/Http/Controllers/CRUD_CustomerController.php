@@ -50,7 +50,7 @@ class CRUD_CustomerController extends Controller
         $customer = Customer::findOrFail($id);
         $customer->update($request->all());
 
-        return redirect()->route('crud_customer.list')->with('success', 'Cập nhật thông tin khách hàng thành công!');
+        return redirect()->route('customers.list')->with('success', 'Cập nhật thông tin khách hàng thành công!');
     }
 
 
