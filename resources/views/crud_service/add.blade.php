@@ -13,36 +13,46 @@
                         </div>
 
                         <div class="card-body p-4 bg-white rounded-bottom-4">
-                            @if ($errors->any())
-                                <div class="alert alert-danger">
-                                    <ul class="mb-0">
-                                        @foreach ($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            @endif
-
                             <form action="{{ route('service.store') }}" method="POST">
                                 @csrf
-
                                 <div class="mb-3">
                                     <label for="service_name" class="form-label fw-semibold">Tên dịch vụ</label>
-                                    <input type="text" class="form-control rounded-3 shadow-sm" id="service_name"
-                                        name="service_name" placeholder="Nhập tên dịch vụ..."
-                                        value="{{ old('service_name') }}" required>
+                                    <input type="text"
+                                        class="form-control rounded-3 shadow-sm @error('service_name') is-invalid @enderror"
+                                        id="service_name" name="service_name" placeholder="Nhập tên dịch vụ..."
+                                        value="{{ old('service_name') }}">
+
+                                    @error('service_name')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="price" class="form-label fw-semibold">Giá (VNĐ)</label>
-                                    <input type="number" class="form-control rounded-3 shadow-sm" id="price"
-                                        name="price" placeholder="Nhập giá tiền..." value="{{ old('price') }}" required>
+                                    <input type="number"
+                                        class="form-control rounded-3 shadow-sm @error('price') is-invalid @enderror"
+                                        id="price" name="price" placeholder="Nhập giá tiền..."
+                                        value="{{ old('price') }}">
+
+                                    @error('price')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
 
                                 <div class="mb-4">
                                     <label for="description" class="form-label fw-semibold">Mô tả</label>
-                                    <textarea class="form-control rounded-3 shadow-sm" id="description" name="description" rows="4"
-                                        placeholder="Nhập mô tả dịch vụ..." required>{{ old('description') }}</textarea>
+                                    <textarea class="form-control rounded-3 shadow-sm @error('description') is-invalid @enderror" id="description"
+                                        name="description" rows="4" placeholder="Nhập mô tả dịch vụ...">{{ old('description') }}</textarea>
+
+                                    @error('description')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
 
                                 <div class="d-flex gap-3">
