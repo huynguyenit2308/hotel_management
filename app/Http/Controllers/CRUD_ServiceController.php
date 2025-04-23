@@ -11,6 +11,9 @@ class CRUD_ServiceController extends Controller
     public function listService()
     {
         $service = Service::all();
+        if ($service->isEmpty()) {
+            return view('crud_service.list', compact('service'))->with('error', 'Không có dịch vụ nào!!!');
+        }
         return view('crud_service.list', compact('service'));
     }
 }
