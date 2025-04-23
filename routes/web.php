@@ -5,6 +5,7 @@ use App\Http\Controllers\AccountRegisterController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\CRUD_CustomerController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RoomController;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,3 +67,5 @@ Route::delete('/users/{user}', [App\Http\Controllers\UserController::class, 'des
 Route::get('/listCustomer', [CRUD_CustomerController::class, 'list'])->name('customers.list');
 //Hiển thị chi tiết khách hàng
 Route::get('/customers/{id}', [CRUD_CustomerController::class, 'detail'])->name('customers.detail');
+//phongf
+Route::resource('rooms', RoomController::class);
