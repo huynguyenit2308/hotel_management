@@ -48,11 +48,12 @@ class CRUD_ServiceController extends Controller
         return view('crud_service.detail', compact('service'));
     }
 
-     // Xóa dịch vụ
-     public function deleteService(Request $request) {
+    // Xóa dịch vụ
+    public function deleteService(Request $request)
+    {
         $id = $request->get('id');
         $service = Service::find($id);
         $service->delete();
-        return redirect()->route('service.list')->with('success', 'Xóa dịch vụ thành công!');
+        return redirect()->route('service.list')->with('success', 'Xóa dịch vụ "' . $service->service_name . '" thành công!');
     }
 }

@@ -1,17 +1,22 @@
-@if (session('error'))
-    <div class="alert alert-danger shadow-sm" id="error-alert">
-        {{ session('error') }}
-    </div>
-@endif
 @extends('dashboard')
 
 @section('content')
     <section id="services" class="py-5">
         <div class="container-fluid padding-side" data-aos="fade-up">
             <h3 class="display-3 text-center fw-normal col-lg-4 offset-lg-4">Danh sách dịch vụ</h3>
-
+            @if (session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
+                </div>
+            @endif
+            @if (session('error'))
+                <div class="alert alert-danger shadow-sm" id="error-alert">
+                    {{ session('error') }}
+                </div>
+            @endif
             <div class="d-flex justify-content-end mb-4">
-                <a href="{{route('service.add')}}"
+                <a href="{{ route('service.add') }}"
                     class="btn btn-primary rounded-pill px-4 py-2 d-flex align-items-center gap-2 shadow-sm transition-all"
                     style="transition: all 0.3s ease-in-out;"
                     onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 16px rgba(0,0,0,0.2)'"
