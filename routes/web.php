@@ -67,6 +67,11 @@ Route::delete('/users/{user}', [App\Http\Controllers\UserController::class, 'des
 Route::get('/listCustomer', [CRUD_CustomerController::class, 'list'])->name('customers.list');
 //Hiển thị chi tiết khách hàng
 Route::get('/customers/{id}', [CRUD_CustomerController::class, 'detail'])->name('customers.detail');
+
+//Hiển thị form chỉnh sửa
+ Route::get('/customers/{id}/edit', [CRUD_CustomerController::class, 'edit'])->name('customers.edit');
+ //Cập nhật thông tin khách hàng
+ Route::post('/customers/{id}/update', [CRUD_CustomerController::class, 'update'])->name('customers.update');
 //Xóa khách hàng
  Route::get('/customers/{id}/delete', [CRUD_CustomerController::class, 'delete'])->name('customers.delete');
 //phongf
