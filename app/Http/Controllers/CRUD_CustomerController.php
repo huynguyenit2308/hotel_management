@@ -58,8 +58,15 @@ class CRUD_CustomerController extends Controller
     public function delete($id)
     {
         $customer = Customer::findOrFail($id);
-        $customer->delete();
 
-        return redirect()->route('crud_customer.list')->with('success', 'Xóa khách hàng thành công!');
+    // Xóa account nếu tồn tại
+    if ($customer->account) {
+        $customer->account->delete();
+    }
+
+    // Sau đó xóa customer
+    $customer->delete();
+
+    return redirect()->route('customers.list')->with('success', 'Xóa khách hàng thành công.');
     }
 }

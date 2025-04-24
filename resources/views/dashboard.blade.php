@@ -226,6 +226,8 @@
                                     <ul class="dropdown-menu dropdown-menu-end animate slide mt-3 border-0 shadow">
                                         <li><a href="#" class="dropdown-item ">Tài khoản </a>
                                         </li>
+                                        <li><a href="{{ route('customers.list') }}" class="dropdown-item ">Khách hàng </a>
+                                        </li>
                                         <li><a href="{{ route('rooms.index') }}" class="dropdown-item ">Phòng </a>
                                         </li>
                                         <li><a href="{{ route('service.list') }}"

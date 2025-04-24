@@ -67,5 +67,7 @@ Route::delete('/users/{user}', [App\Http\Controllers\UserController::class, 'des
 Route::get('/listCustomer', [CRUD_CustomerController::class, 'list'])->name('customers.list');
 //Hiển thị chi tiết khách hàng
 Route::get('/customers/{id}', [CRUD_CustomerController::class, 'detail'])->name('customers.detail');
+//Xóa khách hàng
+ Route::get('/customers/{id}/delete', [CRUD_CustomerController::class, 'delete'])->name('customers.delete');
 //phongf
 Route::resource('rooms', RoomController::class);
