@@ -80,19 +80,28 @@ class CRUD_ServiceController extends Controller
     {
         $request->validate([
             'service_name' => 'required',
-            'price' => 'required',
+            'price' => 'required|numeric|min:0',
             'description' => 'required',
+        ], [
+            'service_name.required' => 'Vui lòng nhập tên dịch vụ.',
+            'price.required' => 'Vui lòng nhập giá dịch vụ.',
+            'price.numeric' => 'Giá phải là một số.',
+            'price.min' => 'Giá phải lớn hơn hoặc bằng 0.',
+            'description.required' => 'Vui lòng nhập mô tả dịch vụ.',
         ]);
 
         $id = $request->get('id');
         $service = Service::find($id);
+        if (!$service) {
+            return redirect()->back()->with('error', 'Dịch vụ không tồn tại!');
+        }
         $service->update([
             'service_name' => $request->service_name,
             'price' => $request->price,
             'description' => $request->description,
         ]);
 
-        return redirect()->route('service.detail', ['id' => $id]);
+        return redirect()->route('service.detail', ['id' => $service->id])->with('success', 'Sửa dịch vụ "' . $service->service_name . '" thành công!');
     }
 
     // Tìm kiếm dịch vụ
