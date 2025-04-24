@@ -238,6 +238,8 @@
                                         </li>
                                         <li><a href="{{ route('users.index') }}" class="dropdown-item">Nhân viên</a></li>
                                         <li><a href="#" class="dropdown-item ">Chấm công </a>
+                                        <li><a href="{{ route('bookings.index') }}" class="dropdown-item {{ request()->routeIs('bookings.index', 'bookings.create', 'bookings.createDirect', 'bookings.show', 'bookings.edit') ? 'bg-warning-subtle' : '' }}">Các phòng đã đặt</a></li>
+
                                         </li>
                                     </ul>
                                 </li>
