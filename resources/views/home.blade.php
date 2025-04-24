@@ -123,7 +123,7 @@
                                                 </tr>
                                                 <tr class="text-white">
                                                     <td class="pe-2">Dịch vụ:</td>
-                                                    <td>Wifi, Tivi, Máy lạnh, ...</td>
+                                                    <td>Wifi, Tivi, Máy lạnh,Tủ lạnh...</td>
                                                 </tr>
                                             </tbody>
                                         </table>
