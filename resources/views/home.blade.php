@@ -89,46 +89,55 @@
                     <div>
                         <h3 class="display-3 fw-normal text-center">Khám phá phòng của chúng tôi</h3>
                     </div>
-                    <a href="#" class="btn btn-arrow btn-primary mt-3">
-                        <span>Khám phá phòng<svg width="18" height="18">
+                    <div class="d-flex gap-3">
+                        <a href="{{ route('bookings.createDirect') }}" class="btn btn-arrow btn-primary mt-3">
+                            <span>Đặt phòng trực tiếp<svg width="18" height="18">
                                 <use xlink:href="#arrow-right"></use>
                             </svg></span>
-                    </a>
+                        </a>
+                        <a href="#" class="btn btn-arrow btn-primary mt-3">
+                            <span>Khám phá phòng<svg width="18" height="18">
+                                <use xlink:href="#arrow-right"></use>
+                            </svg></span>
+                        </a>
+                    </div>
                 </div>
 
                 <div class="swiper room-swiper mt-5">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            <div class="room-item position-relative bg-black rounded-4 overflow-hidden">
-                                <img src="images/room1.jpg" alt="img" class="post-image img-fluid rounded-4">
-                                <div class="product-description position-absolute p-5 text-start">
-                                    <h4 class="display-6 fw-normal text-white">Phòng V.I.P</h4>
-                                    <table>
-                                        <tbody>
-                                            <tr class="text-white">
-                                                <td class="pe-2">Giá:</td>
-                                                <td class="price">299k /Qua đêm</td>
-                                            </tr>
-                                            <tr class="text-white">
-                                                <td class="pe-2">Loại:</td>
-                                                <td>Giường đơn</td>
-                                            </tr>
-                                            <tr class="text-white">
-                                                <td class="pe-2">Dịch vụ:</td>
-                                                <td>Wifi, Tivi, Máy lạnh, ...</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <a href="#">
-                                        <p class="text-decoration-underline text-white m-0 mt-2">Đặt ngay</p>
-                                    </a>
+                        @foreach ($rooms as $room)
+                            <div class="swiper-slide">
+                                <div class="room-item position-relative bg-black rounded-4 overflow-hidden">
+                                    <img src="images/room1.jpg" alt="img" class="post-image img-fluid rounded-4">
+                                    <div class="product-description position-absolute p-5 text-start">
+                                        <h4 class="display-6 fw-normal text-white">{{ $room->room_type }}</h4>
+                                        <table>
+                                            <tbody>
+                                                <tr class="text-white">
+                                                    <td class="pe-2">Giá:</td>
+                                                    <td class="price">{{ number_format($room->price, 0, ',', '.') }} VNĐ /Đêm</td>
+                                                </tr>
+                                                <tr class="text-white">
+                                                    <td class="pe-2">Loại:</td>
+                                                    <td>{{ $room->room_type }}</td>
+                                                </tr>
+                                                <tr class="text-white">
+                                                    <td class="pe-2">Dịch vụ:</td>
+                                                    <td>Wifi, Tivi, Máy lạnh, ...</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <a href="{{ route('bookings.create', ['room_id' => $room->id]) }}">
+                                            <p class="text-decoration-underline text-white m-0 mt-2">Đặt ngay</p>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="room-content text-center mt-3">
+                                    <h4 class="display-6 fw-normal"><a href="#">{{ $room->room_type }}</a></h4>
+                                    <p><span class="text-primary fs-4">{{ number_format($room->price, 0, ',', '.') }} VNĐ</span>/Đêm</p>
                                 </div>
                             </div>
-                            <div class="room-content text-center mt-3">
-                                <h4 class="display-6 fw-normal"><a href="#">Phòng V.I.P</a></h4>
-                                <p><span class="text-primary fs-4">299k</span>/Đêm</p>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                     <div class="swiper-pagination room-pagination position-relative mt-5"></div>
                 </div>

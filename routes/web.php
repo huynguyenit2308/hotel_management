@@ -6,7 +6,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\CRUD_CustomerController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoomController;
-
+use App\Http\Controllers\BookingController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,7 +19,8 @@ use App\Http\Controllers\RoomController;
 */
 
 Route::get('/', function () {
-    return view('home');
+    $rooms = App\Models\Room::with('status')->get();
+    return view('home', compact('rooms'));
 })->name('home');
 // Danh sách dịch vụ
 Route::get('listService', [CRUD_ServiceController::class, 'listService'])->name('service.list');
@@ -69,3 +70,14 @@ Route::get('/listCustomer', [CRUD_CustomerController::class, 'list'])->name('cus
 Route::get('/customers/{id}', [CRUD_CustomerController::class, 'detail'])->name('customers.detail');
 //phongf
 Route::resource('rooms', RoomController::class);
+
+// Đặt phòng
+Route::get('/bookings/create', [BookingController::class, 'create'])->name('bookings.create');
+Route::post('/bookings/storeOnline', [BookingController::class, 'storeOnline'])->name('bookings.storeOnline');
+Route::get('/bookings/create_direct', [BookingController::class, 'createDirect'])->name('bookings.createDirect');
+Route::post('/bookings/storeDirect', [BookingController::class, 'storeDirect'])->name('bookings.storeDirect');
+Route::get('/bookings', [BookingController::class, 'index'])->name('bookings.index');
+Route::get('/bookings/{booking}', [BookingController::class, 'show'])->name('bookings.show');
+Route::get('/bookings/{booking}/edit', [BookingController::class, 'edit'])->name('bookings.edit');
+Route::put('/bookings/{booking}', [BookingController::class, 'update'])->name('bookings.update');
+Route::delete('/bookings/{booking}', [BookingController::class, 'destroy'])->name('bookings.destroy');
