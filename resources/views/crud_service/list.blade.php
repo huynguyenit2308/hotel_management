@@ -6,14 +6,24 @@
 @extends('dashboard')
 
 @section('content')
+    <style>
+        .suggestion-item:hover {
+            background-color: #EAE5DD;
+        }
+    </style>
     <section id="services" class="py-5">
         <div class="container-fluid padding-side" data-aos="fade-up">
             <h3 class="display-3 text-center fw-normal col-lg-4 offset-lg-4">Danh sách dịch vụ</h3>
 
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <form action="{{ route('service.search') }}" method="GET" class="position-relative">
-                    <input type="text" name="keyword" class="form-control bg-secondary border-0 rounded-5 px-4 py-2"
-                        placeholder="Tìm kiếm dịch vụ..." value="{{ request('keyword') }}">
+                    <input type="text" name="keyword" id="search-input"
+                        class="form-control bg-secondary border-0 rounded-5 px-4 py-2" placeholder="Tìm kiếm dịch vụ..."
+                        value="{{ request('keyword') }}" autocomplete="off">
+                    <div id="search-suggestions"
+                        class="list-group position-absolute w-100 bg-white border rounded mt-1 d-none shadow"
+                        style="z-index: 1000; max-height: 250px; overflow-y: auto;">
+                    </div>
                     <button type="submit"
                         class="position-absolute top-50 end-0 translate-middle-y p-1 me-3 border-0 bg-transparent">
                         <svg width="20" height="20">

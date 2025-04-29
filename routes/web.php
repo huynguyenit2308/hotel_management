@@ -31,3 +31,4 @@ Route::get('updateService', [CRUD_ServiceController::class, 'updateService'])->n
 Route::post('updateService', [CRUD_ServiceController::class, 'updatePostService'])->name('service.update');
 // Tìm kiếm dịch vụ
 Route::get('searchService', [CRUD_ServiceController::class, 'searchService'])->name('service.search');
+Route::get('autoCompleteService', [CRUD_ServiceController::class, 'autoCompleteService']);

@@ -96,4 +96,11 @@ class CRUD_ServiceController extends Controller
 
         return view('crud_service.list', compact('service'));
     }
+
+    public function autoCompleteService(Request $request)
+    {
+        $keyword = $request->get('keyword');
+        $services = Service::where('service_name', 'like', '%' . $keyword . '%')->pluck('service_name');
+        return response()->json($services);
+    }
 }

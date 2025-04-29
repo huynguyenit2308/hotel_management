@@ -126,9 +126,51 @@
 setTimeout(() => {
   const alert = document.getElementById('error-alert');
   if (alert) {
-      alert.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-      alert.style.opacity = '0';
-      alert.style.transform = 'translateY(-10px)';
-      setTimeout(() => alert.remove(), 500);
+    alert.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    alert.style.opacity = '0';
+    alert.style.transform = 'translateY(-10px)';
+    setTimeout(() => alert.remove(), 500);
   }
 }, 3000);
+
+document.addEventListener('DOMContentLoaded', function () {
+  const input = document.getElementById('search-input');
+  const suggestionsBox = document.getElementById('search-suggestions');
+  const form = input.closest('form');
+
+  input.addEventListener('input', function () {
+    const keyword = this.value.trim();
+
+    if (keyword.length < 2) {
+      suggestionsBox.classList.add('d-none');
+      suggestionsBox.innerHTML = '';
+      return;
+    }
+
+    fetch(`/autoCompleteService?keyword=${encodeURIComponent(keyword)}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.length === 0) {
+          suggestionsBox.innerHTML = '<div class="p-2 text-muted">Không có kết quả</div>';
+        } else {
+          suggestionsBox.innerHTML = data.map(item =>
+            `<div class="list-group-item list-group-item-action suggestion-item">${item}</div>`
+          ).join('');
+        }
+        suggestionsBox.classList.remove('d-none');
+
+        document.querySelectorAll('.suggestion-item').forEach(el => {
+          el.addEventListener('click', function () {
+            input.value = this.textContent; 
+            form.submit();
+          });
+        });
+      });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!input.contains(e.target) && !suggestionsBox.contains(e.target)) {
+      suggestionsBox.classList.add('d-none');
+    }
+  });
+});
