@@ -82,15 +82,18 @@ class CRUD_ServiceController extends Controller
     public function updatePostService(Request $request)
     {
         $request->validate([
-            'service_name' => 'required',
-            'price' => 'required|numeric|min:0',
-            'description' => 'required',
+            'service_name' => 'required|max:255|unique:service,service_name',
+            'price' => 'required',
+            'description' => 'required|max:1000',
         ], [
             'service_name.required' => 'Vui lòng nhập tên dịch vụ.',
+            'service_name.max' => 'Tên dịch vụ không được vượt quá 255 ký tự.',
+            'service_name.unique' => 'Tên dịch vụ đã tồn tại.',
             'price.required' => 'Vui lòng nhập giá dịch vụ.',
             'price.numeric' => 'Giá phải là một số.',
             'price.min' => 'Giá phải lớn hơn hoặc bằng 0.',
             'description.required' => 'Vui lòng nhập mô tả dịch vụ.',
+            'description.max' => 'Mô tả dịch vụ không được vượt quá 1000 ký tự.',
         ]);
 
         $id = $request->get('id');
