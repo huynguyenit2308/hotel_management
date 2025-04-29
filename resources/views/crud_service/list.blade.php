@@ -68,5 +68,10 @@
                 @endif
             </div>
         </div>
+        <div class="d-flex justify-content-center mt-4">
+            <div class="pagination-wrapper">
+                {{ $service->links('pagination::bootstrap-5') }}
+            </div>
+        </div>
     </section>
 @endsection
