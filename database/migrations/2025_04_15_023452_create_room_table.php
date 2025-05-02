@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('room_number', 50);
             $table->string('room_type', 50);
-            $table->integer('price');
+            $table->decimal('price', 10, 2);
+            $table->string('image')->nullable();
             $table->foreignId('status_id')->constrained('room_status');
             $table->timestamps();
         });
