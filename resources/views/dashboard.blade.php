@@ -17,13 +17,14 @@
         href="https://fonts.googleapis.com/css2?family=Cormorant+Upright:wght@300;400;500;600;700&family=Sora:wght@100..800&display=swap"
         rel="stylesheet">
 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
-<!-- AOS CSS -->
-<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- AOS CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
-<!-- AOS JS -->
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script></symbol>
+    <!-- AOS JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    </symbol>
 </head>
 
 <body>
@@ -201,23 +202,20 @@
                                 </li>
                                 <li class="nav-item px-3">
                                     @if(Auth::check())
-                                        <li class="nav-item px-3">
-                                            <span class="nav-link p-0">Xin chào, {{ Auth::user()->username }}</span>
-                                        </li>
+                                        <div class="d-flex align-items-center gap-3">
+                                            <a href="{{ route('profile') }}" class="nav-link p-0">
+                                                Xin chào, {{ Auth::user()->username }}
+                                            </a>
+
+                                            <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                                                @csrf
+                                                <button type="submit" class="nav-link btn btn-link p-0"
+                                                    style="border: none; background: none;">
+                                                    Đăng Xuất
+                                                </button>
+                                            </form>
+                                        </div>
                                     @endif
-                                @if(Auth::check())
-                                    <form action="{{ route('logout') }}" method="POST" class="d-inline">
-                                        @csrf
-                                        <button type="submit" class="nav-link btn btn-link p-0"
-                                            style="border: none; background: none;">
-                                            Đăng xuất
-                                        </button>
-                                    </form>
-                                @else
-                                    <a class="nav-link p-0" href="{{ route('login') }}">
-                                        Đăng nhập
-                                    </a>
-                                @endif
                                 </li>
                                 <li class="nav-item px-3 dropdown">
                                     <a class="nav-link p-0 {{ request()->routeIs('service.list', 'service.add', 'service.detail', 'service.edit', 'service.search') ? 'active text-warning' : '' }} dropdown-toggle text-center "
@@ -226,7 +224,8 @@
                                     <ul class="dropdown-menu dropdown-menu-end animate slide mt-3 border-0 shadow">
                                         <li><a href="#" class="dropdown-item ">Tài khoản </a>
                                         </li>
-                                        <li><a href="{{ route('customers.list') }}" class="dropdown-item ">Khách hàng </a>
+                                        <li><a href="{{ route('customers.list') }}" class="dropdown-item ">Khách hàng
+                                            </a>
                                         </li>
                                         <li><a href="{{ route('rooms.index') }}" class="dropdown-item ">Phòng </a>
                                         </li>
@@ -236,13 +235,16 @@
                                         </li>
                                         <li><a href="#" class="dropdown-item ">Hóa đơn </a>
                                         </li>
-                                        <li><a href="{{ route('users.index') }}" class="dropdown-item">Nhân viên</a></li>
-                                        <li><a href="#" class="dropdown-item ">Chấm công </a>
-                                        <li><a href="{{ route('bookings.index') }}" class="dropdown-item {{ request()->routeIs('bookings.index', 'bookings.create', 'bookings.createDirect', 'bookings.show', 'bookings.edit') ? 'bg-warning-subtle' : '' }}">Các phòng đã đặt</a></li>
-
+                                        <li><a href="{{ route('users.index') }}" class="dropdown-item">Nhân viên</a>
                                         </li>
-                                    </ul>
+                                        <li><a href="#" class="dropdown-item ">Chấm công </a>
+                                        <li><a href="{{ route('bookings.index') }}"
+                                                class="dropdown-item {{ request()->routeIs('bookings.index', 'bookings.create', 'bookings.createDirect', 'bookings.show', 'bookings.edit') ? 'bg-warning-subtle' : '' }}">Các
+                                                phòng đã đặt</a></li>
+
                                 </li>
+                            </ul>
+                            </li>
                             </ul>
                         </div>
                     </div>
