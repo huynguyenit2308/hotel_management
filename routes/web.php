@@ -7,6 +7,9 @@ use App\Http\Controllers\CRUD_CustomerController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\PasswordController;
+use App\Http\Controllers\ProfileController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -90,3 +93,12 @@ Route::get('/bookings/{booking}', [BookingController::class, 'show'])->name('boo
 Route::get('/bookings/{booking}/edit', [BookingController::class, 'edit'])->name('bookings.edit');
 Route::put('/bookings/{booking}', [BookingController::class, 'update'])->name('bookings.update');
 Route::delete('/bookings/{booking}', [BookingController::class, 'destroy'])->name('bookings.destroy');
+
+
+//Đổi mật khẩu
+Route::get('/change-password', [PasswordController::class, 'showChangePasswordForm'])
+    ->middleware('auth')
+    ->name('password.change');
+Route::post('/change-password', [PasswordController::class, 'updatePassword'])->name('password.update')->middleware('auth');
+//Hiển thị thông tin khách hàng
+Route::get('/profile', [ProfileController::class, 'show'])->name('profile')->middleware('auth');
