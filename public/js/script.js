@@ -161,7 +161,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         document.querySelectorAll('.suggestion-item').forEach(el => {
           el.addEventListener('click', function () {
-            input.value = this.textContent; 
+            input.value = this.textContent;
             form.submit();
           });
         });
@@ -174,3 +174,18 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 });
+function previewImage(event) {
+  const input = event.target;
+  const preview = document.getElementById('image-preview');
+
+  if (input.files && input.files[0]) {
+    const reader = new FileReader();
+
+    reader.onload = function (e) {
+      preview.src = e.target.result;
+      preview.classList.remove('d-none');
+    };
+
+    reader.readAsDataURL(input.files[0]);
+  }
+}

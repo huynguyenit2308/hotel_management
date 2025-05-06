@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('full_name', 255);
             $table->string('position', 255);
-            $table->decimal('wage', 10, 2);
+            $table->integer('wage');
             $table->string('phone', 15)->unique();
             $table->string('email', 255)->unique();
             $table->timestamps();

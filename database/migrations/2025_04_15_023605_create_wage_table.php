@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('employee_id')->constrained('employee');
             $table->integer('total_hours');
-            $table->decimal('total_wage', 10, 2);
+            $table->integer('total_wage');
             $table->timestamps();
         });
     }
