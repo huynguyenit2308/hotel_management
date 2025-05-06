@@ -13,7 +13,7 @@
                         </div>
 
                         <div class="card-body p-4 bg-white rounded-bottom-4">
-                            <form action="{{ route('service.store') }}" method="POST">
+                            <form action="{{ route('service.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="mb-3">
                                     <label for="service_name" class="form-label fw-semibold">Tên dịch vụ</label>
@@ -41,6 +41,24 @@
                                             {{ $message }}
                                         </div>
                                     @enderror
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="image" class="form-label fw-semibold">Ảnh dịch vụ</label>
+                                    <input type="file"
+                                        class="form-control rounded-3 shadow-sm @error('image') is-invalid @enderror"
+                                        id="image" name="image" accept="image/*" onchange="previewImage(event)">
+
+                                    @error('image')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+
+                                    <div class="mt-3">
+                                        <img id="image-preview" src="#" alt="Xem trước ảnh..."
+                                            class="img-fluid rounded-3 d-none mx-auto d-block" style="max-height: 250px;">
+                                    </div>
                                 </div>
 
                                 <div class="mb-4">
