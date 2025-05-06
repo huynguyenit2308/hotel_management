@@ -174,7 +174,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 });
-function previewImage(event) {
+function addImage(event) {
   const input = event.target;
   const preview = document.getElementById('image-preview');
 
@@ -187,5 +187,18 @@ function previewImage(event) {
     };
 
     reader.readAsDataURL(input.files[0]);
+  }
+}
+function updateImage(event) {
+  const file = event.target.files[0];
+  const update = document.getElementById('update');
+
+  if (file && update) {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      update.src = e.target.result;
+      update.style.display = 'inline-block';
+    }
+    reader.readAsDataURL(file);
   }
 }

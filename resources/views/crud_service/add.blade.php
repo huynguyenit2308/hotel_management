@@ -47,7 +47,7 @@
                                     <label for="image" class="form-label fw-semibold">Ảnh dịch vụ</label>
                                     <input type="file"
                                         class="form-control rounded-3 shadow-sm @error('image') is-invalid @enderror"
-                                        id="image" name="image" accept="image/*" onchange="previewImage(event)">
+                                        id="image" name="image" accept="image/*" onchange="addImage(event)">
 
                                     @error('image')
                                         <div class="invalid-feedback">

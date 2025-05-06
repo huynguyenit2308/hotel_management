@@ -13,7 +13,8 @@
                         </div>
 
                         <div class="card-body p-4 bg-white rounded-bottom-4">
-                            <form action="{{ route('service.update', ['id' => $service->id]) }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('service.update', ['id' => $service->id]) }}" method="POST"
+                                enctype="multipart/form-data">
                                 @csrf
                                 <div class="mb-3">
                                     <label for="service_name" class="form-label fw-semibold">Tên dịch vụ</label>
@@ -41,24 +42,26 @@
                                     @enderror
                                 </div>
 
-                                <div class="mb-3">
-                                    <label class="form-label fw-semibold">Ảnh hiện tại</label><br>
-                                    @if ($service->image)
-                                        <img src="{{ asset('storage/' . $service->image) }}" alt="Ảnh dịch vụ" class="img-fluid rounded-3 shadow-sm mb-2" style="max-height: 200px;">
-                                    @else
-                                        <p>Không có ảnh</p>
-                                    @endif
-                                </div>
-                            
+                                <label for="image" class="form-label fw-semibold">Chọn ảnh mới (nếu muốn
+                                    thay)</label>
                                 <div class="mb-4">
-                                    <label for="image" class="form-label fw-semibold">Chọn ảnh mới (nếu muốn thay)</label>
-                                    <input type="file" name="image"
-                                        class="form-control rounded-3 shadow-sm @error('image') is-invalid @enderror" id="image" accept="image/*">
+                                    <input type="file"
+                                        class="form-control rounded-3 shadow-sm @error('image') is-invalid @enderror"
+                                        id="image" name="image" accept="image/*" onchange="updateImage(event)">
                                     @error('image')
                                         <div class="invalid-feedback">
                                             {{ $message }}
                                         </div>
                                     @enderror
+                                </div>
+                                <div class="mb-3 text-center">
+                                    @if ($service->image)
+                                        <img id="update" src="{{ asset('storage/' . $service->image) }}"
+                                            alt="Ảnh dịch vụ" class="img-fluid rounded-3 shadow-sm mb-2 d-inline-block"
+                                            style="max-height: 250px;">
+                                    @else
+                                        <p>Không có ảnh</p>
+                                    @endif
                                 </div>
 
                                 <div class="mb-4">

@@ -31,7 +31,7 @@ class CRUD_ServiceController extends Controller
         $request->validate([
             'service_name' => 'required|max:255|unique:service,service_name',
             'price' => 'required|numeric|min:0',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:4096',
             'description' => 'required|max:1000',
         ], [
             'service_name.required' => 'Vui lòng nhập tên dịch vụ.',
@@ -42,7 +42,7 @@ class CRUD_ServiceController extends Controller
             'price.min' => 'Giá phải lớn hơn hoặc bằng 0.',
             'image.image' => 'Tập tin phải là một ảnh.',
             'image.mimes' => 'Ảnh phải có định dạng jpeg, png, jpg, gif, hoặc svg.',
-            'image.max' => 'Ảnh phải có kích thước nhỏ hơn 2MB.',
+            'image.max' => 'Ảnh phải có kích thước nhỏ hơn 4MB.',
             'description.required' => 'Vui lòng nhập mô tả dịch vụ.',
             'description.max' => 'Mô tả dịch vụ không được vượt quá 1000 ký tự.',
         ]);
@@ -106,7 +106,7 @@ class CRUD_ServiceController extends Controller
         $request->validate([
             'service_name' => 'required|max:255',
             'price' => 'required|numeric|min:0',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:4096',
             'description' => 'required|max:1000',
         ], [
             'service_name.required' => 'Vui lòng nhập tên dịch vụ.',
@@ -116,7 +116,7 @@ class CRUD_ServiceController extends Controller
             'price.min' => 'Giá phải lớn hơn hoặc bằng 0.',
             'image.image' => 'Tập tin phải là một ảnh.',
             'image.mimes' => 'Ảnh phải có định dạng jpeg, png, jpg, gif, hoặc svg.',
-            'image.max' => 'Ảnh phải có kích thước nhỏ hơn 2MB.',
+            'image.max' => 'Ảnh phải có kích thước nhỏ hơn 4MB.',
             'description.required' => 'Vui lòng nhập mô tả dịch vụ.',
             'description.max' => 'Mô tả dịch vụ không được vượt quá 1000 ký tự.',
         ]);
