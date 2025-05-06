@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Service;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CRUD_ServiceController extends Controller
 {
@@ -53,7 +54,18 @@ class CRUD_ServiceController extends Controller
     {
         $id = $request->get('id');
         $service = Service::find($id);
+
+        if (!$service) {
+            return redirect()->route('service.list')->with('error', 'Dịch vụ không tồn tại!');
+        }
+
+        if ($service->image && Storage::exists('public/' . $service->image)) {
+            Storage::delete('public/' . $service->image);
+        }
+
+        $serviceName = $service->service_name;
         $service->delete();
-        return redirect()->route('service.list')->with('success', 'Xóa dịch vụ "' . $service->service_name . '" thành công!');
+
+        return redirect()->route('service.list')->with('success', 'Xóa dịch vụ "' . $serviceName . '" thành công!');
     }
 }
