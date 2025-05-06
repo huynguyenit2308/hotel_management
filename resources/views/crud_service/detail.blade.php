@@ -18,10 +18,34 @@
                         </div>
                     @endif
                     <div class="card shadow rounded-4 p-4">
-                        <h1 class="text-center">Chi tiết dịch vụ {{ $service->service_name }}</h1>
-                        <p><strong>Tên:</strong> {{ $service->service_name }}</p>
-                        <p><strong>Giá:</strong> {{ number_format($service->price, 0, ',', '.') }} VNĐ</p>
-                        <p><strong>Mô tả:</strong> {{ $service->description }}</p>
+                        <h1 class="text-center mb-4">Chi tiết dịch vụ</h1>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="bg-light p-3 rounded-4 shadow-sm h-100">
+                                    <p class="mb-3">
+                                        <i class="bi bi-tag-fill me-2 text-primary"></i>
+                                        <strong>Tên:</strong> {{ $service->service_name }}
+                                    </p>
+                                    <p class="mb-3">
+                                        <i class="bi bi-currency-dollar me-2 text-success"></i>
+                                        <strong>Giá:</strong> {{ number_format($service->price, 0, ',', '.') }} VNĐ
+                                    </p>
+                                    <p>
+                                        <i class="bi bi-card-text me-2 text-info"></i>
+                                        <strong>Mô tả:</strong> {{ $service->description }}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 text-center">
+                                @if ($service->image)
+                                    <img src="{{ asset('storage/' . $service->image) }}" alt="Ảnh dịch vụ"
+                                        class="img-fluid rounded-3 shadow-sm mb-3" style="max-height: 250px;">
+                                @else
+                                    <p><strong>Ảnh:</strong> Không có ảnh</p>
+                                @endif
+                            </div>
+                        </div>
                         <div class="row mt-4">
                             <div class="col-12 d-flex flex-wrap gap-2">
                                 <a href="{{ route('service.edit', ['id' => $service->id]) }}"
