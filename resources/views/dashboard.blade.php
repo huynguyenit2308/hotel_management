@@ -215,6 +215,10 @@
                                                 </button>
                                             </form>
                                         </div>
+                                    @else
+                                        <div class="d-flex align-items-center gap-3">
+                                            <a href="{{ route('login') }}" class="nav-link p-0">Đăng nhập</a>                                      
+                                        </div>
                                     @endif
                                 </li>
                                 <li class="nav-item px-3 dropdown">
