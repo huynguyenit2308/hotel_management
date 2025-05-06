@@ -8,12 +8,28 @@ use App\Models\Customer;
 class CRUD_CustomerController extends Controller
 {
     // Hiển thị danh sách khách hàng
-    public function list()
+    /*public function list()
     {
         $customers = Customer::all();
         return view('crud_customer.list', compact('customers'));
+    }*/
+
+    //Hiển thị danh sách khách hàng có phân trang và tìm kiếm khách hàng
+    public function list(Request $request)
+{
+    $query = Customer::query();
+
+    // Nếu có từ khóa tìm kiếm
+    if ($request->has('keyword') && $request->keyword != '') {
+        $keyword = $request->keyword;
+        $query->where('full_name', 'like', '%' . $keyword . '%');
     }
 
+    // Sắp xếp ID mới nhất và phân trang 10 dòng mỗi trang
+    $customers = $query->orderBy('id', 'desc')->paginate(10);
+
+    return view('crud_customer.list', compact('customers'));
+}
     // Hiển thị thông tin chi tiết khách hàng
     public function detail($id)
     {
@@ -59,14 +75,14 @@ class CRUD_CustomerController extends Controller
     {
         $customer = Customer::findOrFail($id);
 
-    // Xóa account nếu tồn tại
-    if ($customer->account) {
-        $customer->account->delete();
-    }
+        // Xóa account nếu tồn tại
+        if ($customer->account) {
+            $customer->account->delete();
+        }
 
-    // Sau đó xóa customer
-    $customer->delete();
+        // Sau đó xóa customer
+        $customer->delete();
 
-    return redirect()->route('customers.list')->with('success', 'Xóa khách hàng thành công.');
+        return redirect()->route('customers.list')->with('success', 'Xóa khách hàng thành công.');
     }
 }
