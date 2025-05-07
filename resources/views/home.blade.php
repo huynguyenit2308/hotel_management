@@ -1,6 +1,12 @@
 @extends('dashboard')
 
 @section('content')
+    @if (session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
+        </div>
+    @endif
     <main>
         <section id="slider" data-aos="fade-up">
             <div class="container-fluid padding-side">
@@ -92,13 +98,13 @@
                     <div class="d-flex gap-3">
                         <a href="{{ route('bookings.createDirect') }}" class="btn btn-arrow btn-primary mt-3">
                             <span>Đặt phòng trực tiếp<svg width="18" height="18">
-                                <use xlink:href="#arrow-right"></use>
-                            </svg></span>
+                                    <use xlink:href="#arrow-right"></use>
+                                </svg></span>
                         </a>
                         <a href="#" class="btn btn-arrow btn-primary mt-3">
                             <span>Khám phá phòng<svg width="18" height="18">
-                                <use xlink:href="#arrow-right"></use>
-                            </svg></span>
+                                    <use xlink:href="#arrow-right"></use>
+                                </svg></span>
                         </a>
                     </div>
                 </div>
@@ -115,15 +121,12 @@
                                             <tbody>
                                                 <tr class="text-white">
                                                     <td class="pe-2">Giá:</td>
-                                                    <td class="price">{{ number_format($room->price, 0, ',', '.') }} VNĐ /Đêm</td>
+                                                    <td class="price">{{ number_format($room->price, 0, ',', '.') }} VNĐ
+                                                        /Đêm</td>
                                                 </tr>
                                                 <tr class="text-white">
                                                     <td class="pe-2">Loại:</td>
                                                     <td>{{ $room->room_type }}</td>
-                                                </tr>
-                                                <tr class="text-white">
-                                                    <td class="pe-2">Dịch vụ:</td>
-                                                    <td>Wifi, Tivi, Máy lạnh,Tủ lạnh...</td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -134,7 +137,8 @@
                                 </div>
                                 <div class="room-content text-center mt-3">
                                     <h4 class="display-6 fw-normal"><a href="#">{{ $room->room_type }}</a></h4>
-                                    <p><span class="text-primary fs-4">{{ number_format($room->price, 0, ',', '.') }} VNĐ</span>/Đêm</p>
+                                    <p><span class="text-primary fs-4">{{ number_format($room->price, 0, ',', '.') }}
+                                            VNĐ</span>/Đêm</p>
                                 </div>
                             </div>
                         @endforeach
@@ -147,17 +151,56 @@
         <section id="services" class="pb-5">
             <div class="container-fluid padding-side" data-aos="fade-up">
                 <h3 class="display-3 text-center fw-normal col-lg-4 offset-lg-4">Khám phá dịch vụ</h3>
-                <div class="row mt-5">
-                    <div class="col-md-6 col-xl-4">
-                        <div class="service mb-4 text-center rounded-4 p-5">
-                            <h4 class="display-6 fw-normal my-3">Yoga</h4>
-                            <a href="#" class="btn btn-arrow">
-                                <span class="text-decoration-underline">Sử dụng ngay<svg width="18" height="18">
-                                        <use xlink:href="#arrow-right"></use>
-                                    </svg></span>
-                            </a>
-                        </div>
+                <div class="swiper room-swiper mt-5">
+                    <div class="swiper-wrapper">
+                        @foreach ($services as $service)
+                            <div class="swiper-slide">
+                                <div class="room-item position-relative bg-black rounded-4 overflow-hidden">
+                                    <img src="{{ $service->image ? asset('storage/' . $service->image) : asset('images/default-room.jpg') }}"
+                                        alt="{{ $service->service_name }}" ... height="300px" width="100%"
+                                        class="post-image rounded-4">
+                                    <div class="product-description position-absolute px-5 text-start">
+                                        <h4 class="display-6 fw-normal text-white">{{ $service->service_name }}</h4>
+                                        <table>
+                                            <tbody>
+                                                <tr class="text-white">
+                                                    <td class="pe-2">Giá:</td>
+                                                    <td class="price">{{ number_format($service->price, 0, ',', '.') }}
+                                                        VNĐ</td>
+                                                </tr>
+                                                <tr class="text-white">
+                                                    <td class="pe-2">Mô tả:</td>
+                                                    <td>
+                                                        @php
+                                                            $words = explode(' ', strip_tags($service->description));
+                                                            $shortDesc = implode(' ', array_slice($words, 0, 7));
+                                                            $isTruncated = count($words) > 7;
+                                                        @endphp
+                                                        {{ $shortDesc }}@if ($isTruncated)
+                                                            ...
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <a href="{{ route('booking.service', ['id' => $service->id]) }}">
+                                            <p class="text-decoration-underline text-white m-0 mt-2">Đặt ngay</p>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="room-content text-center mt-3">
+                                    <h4 class="display-6 fw-normal"><a href="#">{{ $service->service_name }}</a>
+                                    </h4>
+                                    <p>
+                                        <span
+                                            class="text-primary fs-4">{{ number_format($service->price, 0, ',', '.') }}VNĐ
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        @endforeach
                     </div>
+                    <div class="swiper-pagination room-pagination position-relative mt-5"></div>
                 </div>
             </div>
         </section>

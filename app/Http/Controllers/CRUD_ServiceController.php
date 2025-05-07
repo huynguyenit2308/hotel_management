@@ -212,4 +212,11 @@ class CRUD_ServiceController extends Controller
 
         return view('crud_service.statistic', compact('statistic'));
     }
+
+    // Lấy dịch vụ
+    public function getAllService()
+    {
+        $service = Service::all();
+        return view('home', compact('service'));
+    }
 }
