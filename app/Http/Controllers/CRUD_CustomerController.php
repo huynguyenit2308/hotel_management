@@ -16,20 +16,20 @@ class CRUD_CustomerController extends Controller
 
     //Hiển thị danh sách khách hàng có phân trang và tìm kiếm khách hàng
     public function list(Request $request)
-{
-    $query = Customer::query();
+    {
+        $query = Customer::query();
 
-    // Nếu có từ khóa tìm kiếm
-    if ($request->has('keyword') && $request->keyword != '') {
-        $keyword = $request->keyword;
-        $query->where('full_name', 'like', '%' . $keyword . '%');
+        // Nếu có từ khóa tìm kiếm
+        if ($request->has('keyword') && $request->keyword != '') {
+            $keyword = $request->keyword;
+            $query->where('full_name', 'like', '%' . $keyword . '%');
+        }
+
+        // Sắp xếp ID mới nhất và phân trang 10 dòng mỗi trang
+        $customers = $query->orderBy('id', 'desc')->paginate(10);
+
+        return view('crud_customer.list', compact('customers'));
     }
-
-    // Sắp xếp ID mới nhất và phân trang 10 dòng mỗi trang
-    $customers = $query->orderBy('id', 'desc')->paginate(10);
-
-    return view('crud_customer.list', compact('customers'));
-}
     // Hiển thị thông tin chi tiết khách hàng
     public function detail($id)
     {
@@ -52,15 +52,39 @@ class CRUD_CustomerController extends Controller
                 'required',
                 'string',
                 'max:255',
-                'regex:/^[a-zA-ZÀ-ỹ\s]+$/u' // Chỉ cho phép chữ cái và khoảng trắng
+                'regex:/^[a-zA-ZÀ-ỹ\s]+$/u' // Cho phép chữ cái có dấu và khoảng trắng
             ],
-            'email' => 'required|email|max:255', // Ký tự tối đa 255
-            'phone' => 'required|string|max:15', // Ký tự tối đa 15
-            'address' => 'required|string|max:255', //Ký tự tối đa 255
+            'email' => [
+                'required',
+                'email',
+                'max:255',
+            ],
+            'phone' => [
+                'required',
+                'string',
+                'max:15',
+                'regex:/^(0|\+84)[0-9]{8,14}$/'
+            ],
+            'address' => 'required|string|max:255',
             'birth_day' => 'required|date',
         ], [
+            'full_name.required' => 'Họ tên không được để trống.',
             'full_name.regex' => 'Họ tên chỉ được chứa chữ cái và khoảng trắng.',
+            'full_name.max' => 'Họ tên không được vượt quá 255 ký tự.',
+        
+            'email.required' => 'Email không được để trống.',
             'email.email' => 'Email phải đúng định dạng.',
+            'email.max' => 'Email không được vượt quá 255 ký tự.',
+        
+            'phone.required' => 'Số điện thoại không được để trống.',
+            'phone.max' => 'Số điện thoại không được vượt quá 15 ký tự.',
+            'phone.regex' => 'Số điện thoại phải bắt đầu bằng 0 hoặc +84 và có 9 số theo sau.',
+        
+            'address.required' => 'Địa chỉ không được để trống.',
+            'address.max' => 'Địa chỉ không được vượt quá 255 ký tự.',
+        
+            'birth_day.required' => 'Ngày sinh không được để trống.',
+            'birth_day.date' => 'Ngày sinh phải là ngày hợp lệ.',
         ]);
 
         $customer = Customer::findOrFail($id);
