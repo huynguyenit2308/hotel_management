@@ -62,7 +62,7 @@ class AccountRegisterController extends Controller
             ],
         ], [
             'full_name.required' => '"Vui lòng nhập họ và tên!"',
-            'full_name.regex' => 'Họ tên chỉ được chứa chữ cái và dấu cách.',
+            'full_name.regex' => 'Họ tên chỉ được chứa chữ cái và dấu cách. Không được chứa ký tự đặc biệt và số !',
             
             'email.required' => 'Email không được để trống.',
             'email.email' => 'Email phải đúng định dạng abc@gmail.com.',
