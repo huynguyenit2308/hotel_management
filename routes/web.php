@@ -10,6 +10,8 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\BookingServiceController;
 use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RatingController;
+
 use App\Models\BookingService;
 use App\Models\Service;
 
@@ -108,3 +110,17 @@ Route::get('/change-password', [PasswordController::class, 'showChangePasswordFo
 Route::post('/change-password', [PasswordController::class, 'updatePassword'])->name('password.update')->middleware('auth');
 //Hiển thị thông tin khách hàng
 Route::get('/profile', [ProfileController::class, 'show'])->name('profile')->middleware('auth');
+
+
+//Đánh giá khách hàng
+Route::middleware('auth')->group(function () { // Chỉ có khách hàng đã đăng nhập mới được đánh giá
+    Route::get('/ratings/create', [RatingController::class, 'create'])->name('ratings.create');//Hiển thị form đánh giá
+    Route::post('/ratings', [RatingController::class, 'store'])->name('ratings.store'); // Xử lí việc đánh giá
+});
+
+//Danh sách khách hàng đã đánh giá
+Route::get('/listRatings', [RatingController::class, 'list'])->name('ratings.list');
+
+//Hiển thị đánh giá của khách hàng trên trang
+Route::get('/showRating', [RatingController::class, 'showRatings'])->name('ratings.customerRatings');
+
