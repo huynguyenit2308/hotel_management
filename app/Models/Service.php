@@ -16,4 +16,9 @@ class Service extends Model
         'image',
         'description'
     ];
+
+    public function bookings()
+    {
+        return $this->hasMany(BookingService::class);
+    }
 }
