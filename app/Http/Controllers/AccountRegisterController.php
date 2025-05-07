@@ -20,14 +20,69 @@ class AccountRegisterController extends Controller
     public function register(Request $request)
     {
         //Dữ liệu đầu vào
+       
         $request->validate([
-            'full_name' => 'required|string|max:255',
-            'email' => 'required|email|unique:customer,email',
-            'phone' => 'required|string',
+            'full_name' => [
+                'required',
+                'string',
+                'max:255',
+                'regex:/^[\pL\s]+$/u' // Chỉ chữ cái và dấu cách (không số, không ký tự đặc biệt)
+            ],
+            'email' => [
+                'required',
+                'email',
+                'unique:customer,email', // Không được trùng
+                'regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/'
+                // Định dạng abc@gmail.com
+            ],
+            'phone' => [
+                'required',
+                'string',
+                'max:15',
+                'unique:customer,phone', // Không được trùng
+                'regex:/^(0|\+84)[0-9]{9}$/'
+                // Định dạng: 0123456789 hoặc +84123456789 (10 số)
+            ],
             'address' => 'required|string',
             'birth_day' => 'required|date',
-            'username' => 'required|string|unique:account,username',
-            'password' => 'required|string|min:6|confirmed',
+            'username' => [
+                'required',
+                'string',
+                'unique:account,username',
+                'regex:/^[a-zA-Z0-9_]+$/'
+                // Chỉ chứa chữ, số, gạch dưới
+            ],
+            'password' => [
+                'required',
+                'string',
+                'min:6',
+                'confirmed',
+                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/'
+                // Ít nhất 1 chữ hoa, 1 chữ thường, 1 số, 1 ký tự đặc biệt
+            ],
+        ], [
+            'full_name.required' => '"Vui lòng nhập họ và tên!"',
+            'full_name.regex' => 'Họ tên chỉ được chứa chữ cái và dấu cách.',
+            
+            'email.required' => 'Email không được để trống.',
+            'email.email' => 'Email phải đúng định dạng abc@gmail.com.',
+            'email.unique' => 'Email đã tồn tại.',
+        
+            'phone.required' => 'Số điện thoại không được để trống.',
+            'phone.regex' => 'Số điện thoại phải đúng định dạng 0123456789 hoặc +84123456789.',
+            'phone.unique' => 'Số điện thoại đã tồn tại.',
+        
+            'address.required' => 'Địa chỉ không được để trống.',
+            'birth_day.required' => 'Ngày tháng năm sinh không được để trống.',
+
+            'username.required' => 'Tên đăng nhập không được để trống.',
+            'username.regex' => 'Tên đăng nhập chỉ được chứa chữ, số và dấu gạch dưới.',
+            'username.unique' => 'Tên đăng nhập đã tồn tại.',
+        
+            'password.required' => 'Mật khẩu không được để trống.',
+            'password.regex' => 'Mật khẩu phải chứa ít nhất 1 chữ hoa, 1 chữ thường, 1 số và 1 ký tự đặc biệt.',
+            'password.confirmed' => 'Xác nhận mật khẩu không khớp.',
+            'password.min' => 'Mật khẩu phải từ 6 ký tự trở lên',
         ]);
         //Tạo bảng khách hàng trong bảng Customer
         $customer = Customer::create([
@@ -44,7 +99,7 @@ class AccountRegisterController extends Controller
             'username' => $request->username,
             'password' => Hash::make($request->password),
             'admin_id' => 2, // 1 admin , 2 user
-            'status' => 1,
+            'status' => 1, //1 Còn hoạt động , 2 không hoạt động
         ]);
         //Đi đến form đăng nhập sau khi đăng ký thành công
         return redirect()->route('login')->with('success', 'Tạo tài khoản thành công!');
