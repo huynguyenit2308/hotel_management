@@ -23,7 +23,7 @@
                                     </span>
                                 </div>
                                 <div class="text-center">
-                                    <a href="{{ route('service.detail', $invoice->service->id) }}" class="btn btn-arrow">
+                                    <a href="{{ route('invoice.detail', ['id' => $invoice->id]) }}" class="btn btn-arrow">
                                         <span class="text-decoration-underline">
                                             Xem chi tiết
                                             <svg width="18" height="18">
