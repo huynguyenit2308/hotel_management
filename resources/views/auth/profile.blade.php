@@ -38,6 +38,10 @@
             </tr>
         </table>
 
-        <a href="{{ route('password.change') }}" class="btn btn-warning">Đổi mật khẩu</a>
+        <div class="d-flex gap-2">
+            <a href="{{ route('password.change') }}" class="btn btn-info">Đổi mật khẩu</a>
+            <a href="{{ route('customer.booking.history') }}" class="btn btn-info	">Xem lịch sử đặt phòng</a>
+        </div>
+
     </div>
 @endsection

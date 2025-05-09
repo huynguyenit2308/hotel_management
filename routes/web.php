@@ -11,6 +11,8 @@ use App\Http\Controllers\BookingServiceController;
 use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RatingController;
+use App\Http\Controllers\CustomerBookingController;
+
 
 use App\Models\BookingService;
 use App\Models\Service;
@@ -124,3 +126,5 @@ Route::get('/listRatings', [RatingController::class, 'list'])->name('ratings.lis
 //Hiển thị đánh giá của khách hàng trên trang
 Route::get('/showRating', [RatingController::class, 'showRatings'])->name('ratings.customerRatings');
 
+//Hiển thị lịch sử đã đặt phòng
+Route::get('/customer/history', [CustomerBookingController::class, 'history'])->name('customer.booking.history');
