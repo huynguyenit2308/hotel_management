@@ -206,32 +206,28 @@
                                 <li class="nav-item px-3">
                                     <a class="nav-link  p-0" href="#">Dịch vụ</a>
                                 </li>
-                                <li class="nav-item px-3">
+                                {{-- <li class="nav-item px-3">
                                     <a class="nav-link p-0 {{ request()->routeIs('ratings.customerRatings') ? 'active text-warning' : '' }}"
                                         href="{{ route('ratings.customerRatings') }}">
                                         Đánh giá của khách hàng
                                     </a>
-                                </li>
+                                </li> --}}
                                 <li class="nav-item px-3">
                                     @if (Auth::check())
-                                        <div class="d-flex align-items-center gap-3">
-                                            <a href="{{ route('ratings.create') }}" class="nav-link p-0">
+                                        {{-- <div class="d-flex align-items-center gap-3"> --}}
+                                        {{-- <a href="{{ route('ratings.create') }}" class="nav-link p-0">
                                                 Đánh giá
-                                            </a>
-                                            <a href="{{ route('profile') }}" class="nav-link p-0">
-                                                Xin chào, {{ Auth::user()->username }}
-                                            </a>
-                                            <form action="{{ route('logout') }}" method="POST" class="d-inline">
-                                                @csrf
-                                                <button type="submit" class="nav-link btn btn-link p-0"
-                                                    style="border: none; background: none;">
-                                                    Đăng Xuất
-                                                </button>
-                                            </form>
-                                        </div>
+                                            </a> --}}
+                                        <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                                            @csrf
+                                            <button type="submit" class="nav-link btn btn-link p-0"
+                                                style="border: none; background: none;">
+                                                Đăng Xuất
+                                            </button>
+                                        </form>
+                                        {{-- </div> --}}
                                     @else
                                         <div class="d-flex align-items-center gap-3">
-                                            <a href="{{ route('login') }}" class="nav-link p-0">Đăng nhập</a>
                                             <a href="{{ route('login') }}" class="nav-link p-0">Đăng nhập</a>
                                         </div>
                                     @endif
@@ -252,7 +248,7 @@
                                                 class="dropdown-item {{ request()->routeIs('service.list', ' service.add', 'service.detail', 'service.edit', 'service.search') ? 'bg-warning-subtle' : '' }}">Dịch
                                                 vụ </a>
                                         </li>
-                                        <li><a href="{{route('invoice.list')}}" class="dropdown-item ">Hóa đơn </a>
+                                        <li><a href="{{ route('invoice.list') }}" class="dropdown-item ">Hóa đơn </a>
                                         </li>
                                         <li><a href="{{ route('users.index') }}" class="dropdown-item">Nhân viên</a>
                                         </li>
@@ -261,11 +257,15 @@
                                                 class="dropdown-item {{ request()->routeIs('bookings.index', 'bookings.create', 'bookings.createDirect', 'bookings.show', 'bookings.edit') ? 'bg-warning-subtle' : '' }}">Các
                                                 phòng đã đặt</a>
                                         </li>
+                                        <li><a href="{{ route('ratings.list') }}" class="dropdown-item">Danh sách
+                                                Đánh
+                                                giá</a>
+                                        </li>
                                     </ul>
-                                                phòng đã đặt</a></li>
-                                        <li><a href="{{ route('ratings.list') }}" class="dropdown-item">Danh sách Đánh
-                                                giá</a></li>
                                 </li>
+                            </ul>
+                            </li>
+
                             </ul>
                             </li>
                             </ul>

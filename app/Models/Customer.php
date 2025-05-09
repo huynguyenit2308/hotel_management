@@ -15,12 +15,6 @@ class Customer extends Model
         'address',
         'birth_day',
         'registration_date'
-        'full_name',
-        'email',
-        'phone',
-        'address',
-        'birth_day',
-        'registration_date'
     ];
 
     //Mối quan hệ 1 1 account với customer
@@ -30,10 +24,7 @@ class Customer extends Model
     }
     public function bookings()
     {
-        return $this->hasMany(BookingService::class);
-    }
-    public function bookings()
-    {
         return $this->hasMany(Booking::class, 'customer_id');
+        return $this->hasMany(BookingService::class);
     }
 }
