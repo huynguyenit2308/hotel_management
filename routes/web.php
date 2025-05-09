@@ -33,6 +33,12 @@ Route::get('/', function () {
     $services = Service::all();
     return view('home', compact('rooms', 'services'));
 })->name('home');
+
+// Dashboard route
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->name('dashboard');
+
 // Danh sách dịch vụ
 Route::get('list-service', [CRUD_ServiceController::class, 'listService'])->name('service.list');
 // Thêm dịch vụ
@@ -71,10 +77,6 @@ Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->name('dashboard');
-
 // User management routes
 Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('users.index');
 Route::get('/users/create', [App\Http\Controllers\UserController::class, 'create'])->name('users.create');
@@ -84,6 +86,27 @@ Route::get('/users/{user}/edit', [App\Http\Controllers\UserController::class, 'e
 Route::put('/users/{user}', [App\Http\Controllers\UserController::class, 'update'])->name('users.update');
 Route::delete('/users/{user}', [App\Http\Controllers\UserController::class, 'destroy'])->name('users.destroy');
 
+// Employee CRUD Routes
+Route::get('/employees', [App\Http\Controllers\EmployeeController::class, 'index'])->name('employees.index');
+Route::get('/employees/create', [App\Http\Controllers\EmployeeController::class, 'create'])->name('employees.create');
+Route::post('/employees', [App\Http\Controllers\EmployeeController::class, 'store'])->name('employees.store');
+Route::get('/employees/{employee}', [App\Http\Controllers\EmployeeController::class, 'show'])->name('employees.show');
+Route::get('/employees/{employee}/edit', [App\Http\Controllers\EmployeeController::class, 'edit'])->name('employees.edit');
+Route::put('/employees/{employee}', [App\Http\Controllers\EmployeeController::class, 'update'])->name('employees.update');
+Route::delete('/employees/{employee}', [App\Http\Controllers\EmployeeController::class, 'destroy'])->name('employees.destroy');
+
+// Phân quyền tài khoản Routes - Chỉ cho phép Super Admin và Admin truy cập
+Route::middleware('auth')->group(function () {
+    Route::get('/permissions', [App\Http\Controllers\AccountPermissionController::class, 'index'])
+        ->name('permissions.index')
+        ->middleware('admin.role');
+    Route::get('/permissions/{account}/edit', [App\Http\Controllers\AccountPermissionController::class, 'edit'])
+        ->name('permissions.edit')
+        ->middleware('admin.role');
+    Route::put('/permissions/{account}', [App\Http\Controllers\AccountPermissionController::class, 'update'])
+        ->name('permissions.update')
+        ->middleware('admin.role');
+});
 
 //Hiển thị danh sách khách hàng
 Route::get('/listCustomer', [CRUD_CustomerController::class, 'list'])->name('customers.list');
