@@ -49,7 +49,10 @@ class BookingServiceController extends Controller
             'status' => 'pending',
         ]);
 
-        $bookingCount = BookingService::where('customer_id', auth()->user()->id)->count();
+        session()->forget('booking_count');
+        $bookingCount = BookingService::where('customer_id', auth()->user()->id)
+            ->where('status', 'pending')
+            ->count();
         session(['booking_count' => $bookingCount]);
 
         return redirect()->route('home')->with('success', 'Đặt dịch vụ thành công!');
@@ -57,7 +60,7 @@ class BookingServiceController extends Controller
 
     public function listInvoice()
     {
-        $invoices = BookingService::where('status', 'pending')->paginate(6);
+        $invoices = BookingService::where('status', 'confirmend')->paginate(6);
         return view('userService.listInvoice', compact('invoices'));
     }
 
@@ -65,7 +68,7 @@ class BookingServiceController extends Controller
     {
         $id = $request->get('id');
         $invoice = BookingService::where('id', $id)
-            ->where('status', 'pending')
+            ->where('status', 'confirmend')
             ->first();
 
         if (!$invoice) {
@@ -73,5 +76,14 @@ class BookingServiceController extends Controller
         }
 
         return view('userService.detailInvoice', compact('invoice'));
+    }
+
+    public function listInvoiceUser()
+    {
+        $invoices = BookingService::where('customer_id', auth()->user()->id)
+            ->where('status', 'pending')
+            ->get();
+
+        return view('userService.listInvoiceUser', compact('invoices'));
     }
 }

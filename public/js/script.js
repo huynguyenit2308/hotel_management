@@ -202,3 +202,35 @@ function updateImage(event) {
     reader.readAsDataURL(file);
   }
 }
+document.addEventListener('DOMContentLoaded', function () {
+  const checkboxes = document.querySelectorAll('input[name="invoice_ids[]"]');
+  const selectAll = document.getElementById('selectAll');
+  const summary = document.getElementById('selectedSummary');
+
+  function updateSummary() {
+    let checked = 0;
+    let total = 0;
+    checkboxes.forEach(cb => {
+      if (cb.checked) {
+        checked++;
+        const price = parseFloat(cb.dataset.price);
+        total += price;
+      }
+    });
+
+    if (checked > 0) {
+      summary.innerHTML = `Đã chọn ${checked} hóa đơn - Tổng: <strong>${total.toLocaleString('vi-VN')} VND</strong>`;
+    } else {
+      summary.textContent = '';
+    }
+  }
+
+  selectAll.addEventListener('change', function () {
+    checkboxes.forEach(cb => cb.checked = this.checked);
+    updateSummary();
+  });
+
+  checkboxes.forEach(cb => cb.addEventListener('change', updateSummary));
+
+  updateSummary();
+});
