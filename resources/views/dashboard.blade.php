@@ -214,24 +214,25 @@
                                 </li> --}}
                                 <li class="nav-item px-3">
                                     @if (Auth::check())
-                                        {{-- <div class="d-flex align-items-center gap-3"> --}}
-                                        {{-- <a href="{{ route('ratings.create') }}" class="nav-link p-0">
-                                                Đánh giá
-                                            </a> --}}
-                                        <form action="{{ route('logout') }}" method="POST" class="d-inline">
-                                            @csrf
-                                            <button type="submit" class="nav-link btn btn-link p-0"
-                                                style="border: none; background: none;">
-                                                Đăng Xuất
-                                            </button>
-                                        </form>
-                                        {{-- </div> --}}
+                                        <li class="nav-item px-3">
+                                            <a href="{{ route('profile') }}" class="nav-link p-0">
+                                                {{ Auth::user()->username }}
+                                            </a>
+                                        </li>
+                                        <li class="nav-item px-3">
+                                            <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                                                @csrf
+                                                <button type="submit" class="nav-link btn btn-link p-0"
+                                                    style="border: none; background: none;">
+                                                    Đăng Xuất
+                                                </button>
+                                            </form>
+                                        </li>
                                     @else
-                                        <div class="d-flex align-items-center gap-3">
-                                            <a href="{{ route('login') }}" class="nav-link p-0">Đăng nhập</a>
-                                        </div>
-                                    @endif
-                                </li>
+                                    <li class="nav-item px-3">
+                                        <a href="{{ route('login') }}" class="nav-link p-0">Đăng nhập</a>
+                                    </li>
+                                @endif
                                 <li class="nav-item px-3 dropdown">
                                     <a class="nav-link p-0 {{ request()->routeIs('service.list', 'service.add', 'service.detail', 'service.edit', 'service.search') ? 'active text-warning' : '' }} dropdown-toggle text-center "
                                         data-bs-toggle="dropdown" href="#" role="button"
