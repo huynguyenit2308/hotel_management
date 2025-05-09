@@ -57,7 +57,21 @@ class BookingServiceController extends Controller
 
     public function listInvoice()
     {
-        $invoices = BookingService::where('status', 'confirmed')->paginate(6);
+        $invoices = BookingService::where('status', 'pending')->paginate(6);
         return view('userService.listInvoice', compact('invoices'));
+    }
+
+    public function detailInvoice(Request $request)
+    {
+        $id = $request->get('id');
+        $invoice = BookingService::where('id', $id)
+            ->where('status', 'pending')
+            ->first();
+
+        if (!$invoice) {
+            return redirect()->route('invoice.list')->with('error', 'Hóa đơn không tồn tại hoặc chưa được xác nhận.');
+        }
+
+        return view('userService.detailInvoice', compact('invoice'));
     }
 }
