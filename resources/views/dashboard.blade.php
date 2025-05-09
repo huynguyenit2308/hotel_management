@@ -215,11 +215,6 @@
                                 <li class="nav-item px-3">
                                     @if (Auth::check())
                                         <li class="nav-item px-3">
-                                            <a href="{{ route('profile') }}" class="nav-link p-0">
-                                                {{ Auth::user()->username }}
-                                            </a>
-                                        </li>
-                                        <li class="nav-item px-3">
                                             <form action="{{ route('logout') }}" method="POST" class="d-inline">
                                                 @csrf
                                                 <button type="submit" class="nav-link btn btn-link p-0"
@@ -271,6 +266,14 @@
                             </li>
                             </ul>
                         </div>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        @if (Auth::check())
+                            <a href="{{ route('profile') }}" class="nav-link d-flex align-items-center p-0">
+                                <i class="fas fa-user-circle" style="font-size: 40px; line-height: 1;"></i>
+                                <span class="ms-2">{{ Auth::user()->username }}</span>
+                            </a>
+                        @endif
                     </div>
                     <div class="cart-icon position-relative">
                         <svg class="social" width="50" height="50">

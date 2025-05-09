@@ -15,6 +15,7 @@
                     <th>Ngày nhận</th>
                     <th>Ngày trả</th>
                     <th>Trạng thái</th>
+                    <th>Đánh giá</th>
                 </tr>
             </thead>
             <tbody>
@@ -25,6 +26,9 @@
                         <td>{{ $booking->check_in_date }}</td>
                         <td>{{ $booking->check_out_date }}</td>
                         <td>{{ $booking->status }}</td>
+                        <td> <a href="{{ route('ratings.create', ['booking_id' => $booking->id]) }}" class="btn btn-sm btn-primary">
+                    Đánh giá
+                </a></td>
                     </tr>
                 @endforeach
             </tbody>
