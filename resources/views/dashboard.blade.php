@@ -271,7 +271,7 @@
                         @if (Auth::check())
                             <a href="{{ route('profile') }}" class="nav-link d-flex align-items-center p-0">
                                 <i class="fas fa-user-circle" style="font-size: 40px; line-height: 1;"></i>
-                                <span class="ms-2">{{ Auth::user()->username }}</span>
+                                <span class="ms-2"></span>
                             </a>
                         @endif
                     </div>
