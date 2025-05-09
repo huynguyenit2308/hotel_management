@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Account;
+use App\Models\BookingService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -29,7 +31,11 @@ class LoginController extends Controller
         // Kiểm tra nếu tài khoản tồn tại và mật khẩu đúng
         if ($account && Hash::check($request->password, $account->password)) {
             Auth::login($account); // Đăng nhập
-            return redirect()->route('home')->with('success', 'Đăng nhập thành công!');// Đưa người dùng đến home hoặc trang cần thiết
+
+            $bookingCount = BookingService::where('customer_id', $account->id)->count();
+            session(['booking_count' => $bookingCount]);
+
+            return redirect()->route('home')->with('success', 'Đăng nhập thành công!'); // Đưa người dùng đến home hoặc trang cần thiết
         }
 
         // Nếu đăng nhập không thành công
@@ -41,6 +47,7 @@ class LoginController extends Controller
     // Xử lý đăng xuất
     public function logout()
     {
+        session()->forget('booking_count');
         Auth::logout();
         return redirect('/login')->with('success', 'Đăng xuất thành công!');
     }

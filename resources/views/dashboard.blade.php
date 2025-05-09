@@ -135,7 +135,12 @@
         <symbol xmlns="http://www.w3.org/2000/svg" id="minus" viewBox="0 0 16 16">
             <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z" />
         </symbol>
+        <symbol xmlns="http://www.w3.org/2000/svg" id="invoice" viewBox="0 0 256 256">
+            <path fill="currentColor"
+                d="M208 32H48a16 16 0 0 0-16 16v176a8 8 0 0 0 12.48 6.65L64 216l19.52 14.65a8 8 0 0 0 9 0L112 216l19.52 14.65a8 8 0 0 0 9 0L160 216l19.52 14.65A8 8 0 0 0 192 224a8 8 0 0 0 8-8V48a16 16 0 0 0-16-16ZM200 203.31l-11.52-8.65a8 8 0 0 0-9 0L160 208l-19.52-13.34a8 8 0 0 0-9 0L112 208l-19.52-13.34a8 8 0 0 0-9 0L56 208V48h144ZM88 96h80a8 8 0 0 0 0-16H88a8 8 0 0 0 0 16Zm0 40h80a8 8 0 0 0 0-16H88a8 8 0 0 0 0 16Zm0 40h56a8 8 0 0 0 0-16H88a8 8 0 0 0 0 16Z" />
+        </symbol>
     </svg>
+
 
     <div class="preloader">
         <div class="loader"></div>
@@ -208,7 +213,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item px-3">
-                                    @if(Auth::check())
+                                    @if (Auth::check())
                                         <div class="d-flex align-items-center gap-3">
                                             <a href="{{ route('ratings.create') }}" class="nav-link p-0">
                                                 Đánh giá
@@ -226,6 +231,7 @@
                                         </div>
                                     @else
                                         <div class="d-flex align-items-center gap-3">
+                                            <a href="{{ route('login') }}" class="nav-link p-0">Đăng nhập</a>
                                             <a href="{{ route('login') }}" class="nav-link p-0">Đăng nhập</a>
                                         </div>
                                     @endif
@@ -246,13 +252,16 @@
                                                 class="dropdown-item {{ request()->routeIs('service.list', ' service.add', 'service.detail', 'service.edit', 'service.search') ? 'bg-warning-subtle' : '' }}">Dịch
                                                 vụ </a>
                                         </li>
-                                        <li><a href="#" class="dropdown-item ">Hóa đơn </a>
+                                        <li><a href="{{route('invoice.list')}}" class="dropdown-item ">Hóa đơn </a>
                                         </li>
                                         <li><a href="{{ route('users.index') }}" class="dropdown-item">Nhân viên</a>
                                         </li>
                                         <li><a href="#" class="dropdown-item ">Chấm công </a>
                                         <li><a href="{{ route('bookings.index') }}"
                                                 class="dropdown-item {{ request()->routeIs('bookings.index', 'bookings.create', 'bookings.createDirect', 'bookings.show', 'bookings.edit') ? 'bg-warning-subtle' : '' }}">Các
+                                                phòng đã đặt</a>
+                                        </li>
+                                    </ul>
                                                 phòng đã đặt</a></li>
                                         <li><a href="{{ route('ratings.list') }}" class="dropdown-item">Danh sách Đánh
                                                 giá</a></li>
@@ -262,16 +271,14 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="search d-lg-block d-none">
-                        <form class=" position-relative">
-                            <input type="text" class="form-control bg-secondary border-0 rounded-5 px-4 py-2"
-                                placeholder="Search...">
-                            <a href="#" class="position-absolute top-50 end-0 translate-middle-y p-1 me-3">
-                                <svg class="" width="20" height="20">
-                                    <use xlink:href="#search"></use>
-                                </svg>
-                            </a>
-                        </form>
+                    <div class="cart-icon position-relative">
+                        <svg class="social" width="50" height="50">
+                            <use xlink:href="#invoice"></use>
+                        </svg>
+                        <span id="cart-count"
+                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            {{ session('booking_count', 0) }}
+                        </span>
                     </div>
                 </div>
             </div>

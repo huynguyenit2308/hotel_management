@@ -48,6 +48,16 @@ class BookingServiceController extends Controller
             'note' => $request->note,
             'status' => 'pending',
         ]);
+
+        $bookingCount = BookingService::where('customer_id', auth()->user()->id)->count();
+        session(['booking_count' => $bookingCount]);
+
         return redirect()->route('home')->with('success', 'Đặt dịch vụ thành công!');
+    }
+
+    public function listInvoice()
+    {
+        $invoices = BookingService::where('status', 'confirmed')->paginate(6);
+        return view('userService.listInvoice', compact('invoices'));
     }
 }
