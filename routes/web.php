@@ -52,6 +52,8 @@ Route::get('statistic-service', [CRUD_ServiceController::class, 'statisticServic
 // Sử dụng dịch vụ
 Route::get('booking-service', [BookingServiceController::class, 'bookingService'])->name('booking.service');
 Route::post('booking-service', [BookingServiceController::class, 'postBookingService'])->name('post.booking.service');
+// Hóa đơn
+Route::get('invoice-list', [BookingServiceController::class, 'listInvoice'])->name('invoice.list');
 
 //Mở form đăng ký tài khoản
 Route::get('/register', [AccountRegisterController::class, 'showForm'])->name('register.form');

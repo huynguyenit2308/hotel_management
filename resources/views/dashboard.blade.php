@@ -242,7 +242,7 @@
                                                 class="dropdown-item {{ request()->routeIs('service.list', ' service.add', 'service.detail', 'service.edit', 'service.search') ? 'bg-warning-subtle' : '' }}">Dịch
                                                 vụ </a>
                                         </li>
-                                        <li><a href="#" class="dropdown-item ">Hóa đơn </a>
+                                        <li><a href="{{route('invoice.list')}}" class="dropdown-item ">Hóa đơn </a>
                                         </li>
                                         <li><a href="{{ route('users.index') }}" class="dropdown-item">Nhân viên</a>
                                         </li>
