@@ -214,19 +214,19 @@
                                 </li> --}}
                                 <li class="nav-item px-3">
                                     @if (Auth::check())
-                                        <li class="nav-item px-3">
-                                            <form action="{{ route('logout') }}" method="POST" class="d-inline">
-                                                @csrf
-                                                <button type="submit" class="nav-link btn btn-link p-0"
-                                                    style="border: none; background: none;">
-                                                    Đăng Xuất
-                                                </button>
-                                            </form>
-                                        </li>
-                                    @else
-                                    <li class="nav-item px-3">
-                                        <a href="{{ route('login') }}" class="nav-link p-0">Đăng nhập</a>
-                                    </li>
+                                <li class="nav-item px-3">
+                                    <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                                        @csrf
+                                        <button type="submit" class="nav-link btn btn-link p-0"
+                                            style="border: none; background: none;">
+                                            Đăng Xuất
+                                        </button>
+                                    </form>
+                                </li>
+                            @else
+                                <li class="nav-item px-3">
+                                    <a href="{{ route('login') }}" class="nav-link p-0">Đăng nhập</a>
+                                </li>
                                 @endif
                                 <li class="nav-item px-3 dropdown">
                                     <a class="nav-link p-0 {{ request()->routeIs('service.list', 'service.add', 'service.detail', 'service.edit', 'service.search') ? 'active text-warning' : '' }} dropdown-toggle text-center "
@@ -276,13 +276,15 @@
                         @endif
                     </div>
                     <div class="cart-icon position-relative">
-                        <svg class="social" width="50" height="50">
-                            <use xlink:href="#invoice"></use>
-                        </svg>
-                        <span id="cart-count"
-                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                            {{ session('booking_count', 0) }}
-                        </span>
+                        <a href="{{route('invoice.list.user')}}">
+                            <svg class="social" width="50" height="50">
+                                <use xlink:href="#invoice"></use>
+                            </svg>
+                            <span id="cart-count"
+                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                {{ session('booking_count', 0) }}
+                            </span>
+                        </a>
                     </div>
                 </div>
             </div>

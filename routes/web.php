@@ -60,6 +60,8 @@ Route::post('booking-service', [BookingServiceController::class, 'postBookingSer
 Route::get('invoice-list', [BookingServiceController::class, 'listInvoice'])->name('invoice.list');
 // Chi tiết hóa đơn
 Route::get('detail-invoice', [BookingServiceController::class, 'detailInvoice'])->name('invoice.detail');
+// Danh sách hóa đơn của người dùng
+Route::get('invoice-list-user', [BookingServiceController::class, 'listInvoiceUser'])->name('invoice.list.user');
 
 //Mở form đăng ký tài khoản
 Route::get('/register', [AccountRegisterController::class, 'showForm'])->name('register.form');
