@@ -31,4 +31,12 @@ class Employee extends Model
     {
         return $this->belongsTo(Admin::class, 'admin_id');
     }
+    
+    /**
+     * Lấy thông tin chấm công của nhân viên
+     */
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class, 'employee_id');
+    }
 } 
