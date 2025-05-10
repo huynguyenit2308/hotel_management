@@ -185,6 +185,34 @@ class AccountSeeder extends Seeder
                     ]);
                 }
             }
+            DB::table('account')->insert([
+            [
+                'customer_id' => 1,
+                'username' => 'customer1',
+                'password' => bcrypt('NhomA123@'),
+                'admin_id' => 1,
+                'status' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'customer_id' => 2,
+                'username' => 'customer2',
+                'password' => bcrypt('NhomA123@'),
+                'admin_id' => 1,
+                'status' => 1, 
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'customer_id' => 3,
+                'username' => 'customer3',
+                'password' => bcrypt('NhomA123@'),
+                'admin_id' => 1,
+                'status' => 0,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+        ]);
         }
     }
-} 

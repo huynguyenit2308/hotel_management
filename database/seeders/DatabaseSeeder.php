@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Service;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -26,8 +28,12 @@ class DatabaseSeeder extends Seeder
             CustomerSeeder::class,
             BookingSeeder::class,
             RoleSeeder::class,
-            AdminRoleSeeder::class,
+            ServiceSeeder::class,
+            InvoiceSeeder::class,
+            BookingServiceSeeder::class,
             AccountSeeder::class
+            AdminRoleSeeder::class,
+
         ]);
     }
 }

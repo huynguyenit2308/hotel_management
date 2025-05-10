@@ -68,6 +68,8 @@ Route::get('invoice-list', [BookingServiceController::class, 'listInvoice'])->na
 Route::get('detail-invoice', [BookingServiceController::class, 'detailInvoice'])->name('invoice.detail');
 // Danh sách hóa đơn của người dùng
 Route::get('invoice-list-user', [BookingServiceController::class, 'listInvoiceUser'])->name('invoice.list.user');
+// Hủy hóa đơn
+Route::get('invoice-cancel-user', [BookingServiceController::class, 'cancelInvoiceUser'])->name('invoice.cancel.user');
 
 //Mở form đăng ký tài khoản
 Route::get('/register', [AccountRegisterController::class, 'showForm'])->name('register.form');

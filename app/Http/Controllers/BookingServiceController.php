@@ -60,7 +60,7 @@ class BookingServiceController extends Controller
 
     public function listInvoice()
     {
-        $invoices = BookingService::where('status', 'confirmend')->paginate(6);
+        $invoices = BookingService::where('status', 'confirmed')->paginate(6);
         return view('userService.listInvoice', compact('invoices'));
     }
 
@@ -68,7 +68,7 @@ class BookingServiceController extends Controller
     {
         $id = $request->get('id');
         $invoice = BookingService::where('id', $id)
-            ->where('status', 'confirmend')
+            ->where('status', 'confirmed')
             ->first();
 
         if (!$invoice) {
@@ -85,5 +85,30 @@ class BookingServiceController extends Controller
             ->get();
 
         return view('userService.listInvoiceUser', compact('invoices'));
+    }
+
+    public function cancelInvoiceUser(Request $request)
+    {
+        $id = $request->get('id');
+        $invoice = BookingService::find($id);
+
+        if (!$invoice) {
+            return redirect()->route('home')->with('error', 'Dịch vụ không tồn tại.');
+        }
+
+        if ($invoice->status === 'pending') {
+            $invoice->status = 'cancelled';
+            $invoice->save();
+
+            $bookingCount = BookingService::where('customer_id', auth()->user()->id)
+                ->where('status', 'pending')
+                ->count();
+            session(['booking_count' => $bookingCount]);
+
+            return back()->with('success', 'Hóa đơn đã được hủy thành công.');
+        }
+
+
+        return back()->with('error', 'Không thể hủy hóa đơn này.');
     }
 }
