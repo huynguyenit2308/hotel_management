@@ -77,14 +77,14 @@ Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-// User management routes
-Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('users.index');
-Route::get('/users/create', [App\Http\Controllers\UserController::class, 'create'])->name('users.create');
-Route::post('/users', [App\Http\Controllers\UserController::class, 'store'])->name('users.store');
-Route::get('/users/{user}', [App\Http\Controllers\UserController::class, 'show'])->name('users.show');
-Route::get('/users/{user}/edit', [App\Http\Controllers\UserController::class, 'edit'])->name('users.edit');
-Route::put('/users/{user}', [App\Http\Controllers\UserController::class, 'update'])->name('users.update');
-Route::delete('/users/{user}', [App\Http\Controllers\UserController::class, 'destroy'])->name('users.destroy');
+// // User management routes
+// Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('users.index');
+// Route::get('/users/create', [App\Http\Controllers\UserController::class, 'create'])->name('users.create');
+// Route::post('/users', [App\Http\Controllers\UserController::class, 'store'])->name('users.store');
+// Route::get('/users/{user}', [App\Http\Controllers\UserController::class, 'show'])->name('users.show');
+// Route::get('/users/{user}/edit', [App\Http\Controllers\UserController::class, 'edit'])->name('users.edit');
+// Route::put('/users/{user}', [App\Http\Controllers\UserController::class, 'update'])->name('users.update');
+// Route::delete('/users/{user}', [App\Http\Controllers\UserController::class, 'destroy'])->name('users.destroy');
 
 // Employee CRUD Routes
 Route::get('/employees', [App\Http\Controllers\EmployeeController::class, 'index'])->name('employees.index');
