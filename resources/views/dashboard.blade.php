@@ -256,6 +256,8 @@
                                         @if(Auth::check() && Auth::user()->adminRole && (Auth::user()->adminRole->role_name == 'Super Admin' || Auth::user()->adminRole->role_name == 'Admin'))
                                         <li><a href="{{ route('attendances.index') }}" class="dropdown-item {{ request()->routeIs('attendances.index', 'attendances.create', 'attendances.edit', 'attendances.salary_report') ? 'bg-warning-subtle' : '' }}">Quản lý chấm công</a>
                                         </li>
+                                        <li><a href="{{ route('salaries.index') }}" class="dropdown-item {{ request()->routeIs('salaries.index', 'salaries.edit') ? 'bg-warning-subtle' : '' }}">Quản lý lương</a>
+                                        </li>
                                         @endif
                                         <li><a href="{{ route('bookings.index') }}"
                                                 class="dropdown-item {{ request()->routeIs('bookings.index', 'bookings.create', 'bookings.createDirect', 'bookings.show', 'bookings.edit') ? 'bg-warning-subtle' : '' }}">Các
