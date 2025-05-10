@@ -9,6 +9,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Account extends Authenticatable
 {
+    use HasFactory;
+
     protected $table = 'account';
     protected $fillable = [
         'customer_id',
@@ -18,13 +20,23 @@ class Account extends Authenticatable
         'status'
     ];
 
+    protected $hidden = [
+        'password',
+    ];
+
+    /**
+     * Lấy thông tin khách hàng liên kết với tài khoản
+     */
     public function customer(): BelongsTo
     {
-        return $this->belongsTo(Customer::class);
+        return $this->belongsTo(Customer::class, 'customer_id');
     }
 
-    public function role()
+    /**
+     * Lấy thông tin quyền của tài khoản
+     */
+    public function adminRole()
     {
-        return $this->belongsTo(Role::class);
+        return $this->belongsTo(Admin::class, 'admin_id');
     }
 }
