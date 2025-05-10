@@ -253,7 +253,10 @@
                                       
                                         <li><a href="{{ route('employees.index') }}" class="dropdown-item {{ request()->routeIs('employees.index', 'employees.create', 'employees.show', 'employees.edit') ? 'bg-warning-subtle' : '' }}">Quản lý nhân viên (mới)</a>
                                         </li>
-                                        <li><a href="#" class="dropdown-item ">Chấm công </a>
+                                        @if(Auth::check() && Auth::user()->adminRole && (Auth::user()->adminRole->role_name == 'Super Admin' || Auth::user()->adminRole->role_name == 'Admin'))
+                                        <li><a href="{{ route('attendances.index') }}" class="dropdown-item {{ request()->routeIs('attendances.index', 'attendances.create', 'attendances.edit', 'attendances.salary_report') ? 'bg-warning-subtle' : '' }}">Quản lý chấm công</a>
+                                        </li>
+                                        @endif
                                         <li><a href="{{ route('bookings.index') }}"
                                                 class="dropdown-item {{ request()->routeIs('bookings.index', 'bookings.create', 'bookings.createDirect', 'bookings.show', 'bookings.edit') ? 'bg-warning-subtle' : '' }}">Các
                                                 phòng đã đặt</a>

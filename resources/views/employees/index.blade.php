@@ -120,10 +120,45 @@
                 </table>
             </div>
 
-            <div class="d-flex justify-content-center mt-4">
-                {{ $employees->links() }}
+            <div class="d-flex justify-content-between align-items-center mt-4">
+                <div>
+                    <p class="text-muted mb-0">Hiển thị {{ $employees->firstItem() ?? 0 }} đến {{ $employees->lastItem() ?? 0 }} của {{ $employees->total() }} nhân viên</p>
+                </div>
+                <div>
+                    {{ $employees->onEachSide(1)->links('pagination::bootstrap-5') }}
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+    .pagination {
+        margin-bottom: 0;
+    }
+    .pagination .page-item .page-link {
+        border-radius: 0.2rem;
+        margin: 0 3px;
+        color: #5a5c69;
+        font-size: 0.9rem;
+    }
+    .pagination .page-item.active .page-link {
+        background-color: #4e73df;
+        border-color: #4e73df;
+        color: #fff;
+    }
+    .pagination .page-item.disabled .page-link {
+        color: #b7b9cc;
+    }
+    .pagination .page-item:first-child .page-link,
+    .pagination .page-item:last-child .page-link {
+        font-size: 0.8rem;
+    }
+    .table th {
+        font-weight: 600;
+    }
+    .table tbody tr:hover {
+        background-color: #f8f9fc;
+    }
+</style>
 @endsection 

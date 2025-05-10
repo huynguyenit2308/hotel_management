@@ -33,8 +33,8 @@ class DatabaseSeeder extends Seeder
             BookingServiceSeeder::class,
             AdminRoleSeeder::class,
             AccountSeeder::class,
-            
-
+            EmployeeSeeder::class,
+            AttendanceSeeder::class,
         ]);
     }
 }

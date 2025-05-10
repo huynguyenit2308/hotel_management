@@ -12,6 +12,7 @@ use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\CustomerBookingController;
+use App\Http\Controllers\AttendanceController;
 
 
 use App\Models\BookingService;
@@ -159,3 +160,15 @@ Route::get('/showRating', [RatingController::class, 'showRatings'])->name('ratin
 
 //Hiển thị lịch sử đã đặt phòng
 Route::get('/customer/history', [CustomerBookingController::class, 'history'])->name('customer.booking.history');
+
+// Quản lý chấm công - Chỉ cho phép Super Admin và Admin truy cập
+Route::middleware(['auth', 'admin.role'])->group(function () {
+    Route::get('/attendances', [AttendanceController::class, 'index'])->name('attendances.index');
+    Route::get('/attendances/create', [AttendanceController::class, 'create'])->name('attendances.create');
+    Route::post('/attendances', [AttendanceController::class, 'store'])->name('attendances.store');
+    Route::get('/attendances/{attendance}/edit', [AttendanceController::class, 'edit'])->name('attendances.edit');
+    Route::put('/attendances/{attendance}', [AttendanceController::class, 'update'])->name('attendances.update');
+    Route::delete('/attendances/{attendance}', [AttendanceController::class, 'destroy'])->name('attendances.destroy');
+    Route::get('/salary-report', [AttendanceController::class, 'salaryReport'])->name('attendances.salary_report');
+    Route::get('/employees/{id}/attendances', [AttendanceController::class, 'employeeDetail'])->name('attendances.employeeDetail');
+});
