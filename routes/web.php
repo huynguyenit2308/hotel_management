@@ -98,6 +98,14 @@ Route::get('/employees/{employee}/edit', [App\Http\Controllers\EmployeeControlle
 Route::put('/employees/{employee}', [App\Http\Controllers\EmployeeController::class, 'update'])->name('employees.update');
 Route::delete('/employees/{employee}', [App\Http\Controllers\EmployeeController::class, 'destroy'])->name('employees.destroy');
 
+// Salary management routes - only accessible by admin and super admin
+Route::middleware('admin.role')->group(function () {
+    Route::get('/salaries', [App\Http\Controllers\SalaryController::class, 'index'])->name('salaries.index');
+    Route::get('/salaries/{employee}/edit', [App\Http\Controllers\SalaryController::class, 'edit'])->name('salaries.edit');
+    Route::put('/salaries/{employee}', [App\Http\Controllers\SalaryController::class, 'update'])->name('salaries.update');
+    // Route::get('/salaries/{employee}/history', [App\Http\Controllers\SalaryController::class, 'history'])->name('salaries.history'); // Để cho tương lai
+});
+
 // Phân quyền tài khoản Routes - Chỉ cho phép Super Admin và Admin truy cập
 Route::middleware('auth')->group(function () {
     Route::get('/permissions', [App\Http\Controllers\AccountPermissionController::class, 'index'])
