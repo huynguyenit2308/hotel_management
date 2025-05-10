@@ -31,8 +31,9 @@ class DatabaseSeeder extends Seeder
             ServiceSeeder::class,
             InvoiceSeeder::class,
             BookingServiceSeeder::class,
-            AccountSeeder::class
             AdminRoleSeeder::class,
+            AccountSeeder::class,
+            
 
         ]);
     }
