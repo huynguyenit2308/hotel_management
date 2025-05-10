@@ -34,46 +34,46 @@
           <div class="col-md-6">
           <label for="full_name" class="form-label">Họ tên</label>
           <input type="text" class="form-control" id="full_name" name="full_name" value="{{ old('full_name') }}"
-            required>    
+            >    
           </div>
 
           <div class="col-md-6">
           <label for="email" class="form-label">Email</label>
-          <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" required>
+          <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" >
           </div>
 
           <div class="col-md-6">
           <label for="phone" class="form-label">Số điện thoại</label>
-          <input type="text" class="form-control" id="phone" name="phone" value="{{ old('phone') }}" required>
+          <input type="text" class="form-control" id="phone" name="phone" value="{{ old('phone') }}" >
           </div>
 
           <div class="col-md-6">
           <label for="address" class="form-label">Địa chỉ</label>
           <input type="text" class="form-control" id="address" name="address" value="{{ old('address') }}"
-            required>
+            >
           </div>
 
           <div class="col-md-6">
           <label for="birth_day" class="form-label">Ngày sinh</label>
           <input type="date" class="form-control" id="birth_day" name="birth_day" value="{{ old('birth_day') }}"
-            required>
+            >
           </div>
 
           <div class="col-md-6">
           <label for="username" class="form-label">Tên đăng nhập</label>
           <input type="text" class="form-control" id="username" name="username" value="{{ old('username') }}"
-            required>
+            >
           </div>
 
           <div class="col-md-6">
           <label for="password" class="form-label">Mật khẩu</label>
-          <input type="password" class="form-control" id="password" name="password" required>
+          <input type="password" class="form-control" id="password" name="password" >
           </div>
 
           <div class="col-md-6">
           <label for="password_confirmation" class="form-label">Xác nhận mật khẩu</label>
           <input type="password" class="form-control" id="password_confirmation" name="password_confirmation"
-            required>
+            >
           </div>
         </div>
 
