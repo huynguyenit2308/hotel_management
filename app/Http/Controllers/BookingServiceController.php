@@ -55,7 +55,8 @@ class BookingServiceController extends Controller
             ->count();
         session(['booking_count' => $bookingCount]);
 
-        return redirect()->route('home')->with('success', 'Đặt dịch vụ thành công!');
+        $serviceName = Service::find($request->service_id)?->service_name ?? 'dịch vụ';
+        return redirect()->route('invoice.list.user')->with('success', "Đặt dịch vụ $serviceName thành công!");
     }
 
     public function listInvoice()
@@ -105,10 +106,9 @@ class BookingServiceController extends Controller
                 ->count();
             session(['booking_count' => $bookingCount]);
 
-            return back()->with('success', 'Hóa đơn đã được hủy thành công.');
+            return redirect()->route('invoice.list.user')->with('success', 'Hóa đơn đã được hủy thành công.');
         }
 
-
-        return back()->with('error', 'Không thể hủy hóa đơn này.');
+        return redirect()->route('invoice.list.user')->with('error', 'Không thể hủy hóa đơn này.');
     }
 }

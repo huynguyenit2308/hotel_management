@@ -17,7 +17,7 @@ class ServiceSeeder extends Seeder
             [
                 'service_name' => 'Massage',
                 'price' => 500000,
-                'image' => 'massage.jpg',
+                'image' => 'massage.png',
                 'description' => 'Dịch vụ massage thư giãn với các kỹ thuật chuyên nghiệp.',
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -25,7 +25,7 @@ class ServiceSeeder extends Seeder
             [
                 'service_name' => 'Spa',
                 'price' => 700000,
-                'image' => 'spa.jpg',
+                'image' => 'quaybar.jfif',
                 'description' => 'Dịch vụ spa giúp thư giãn và làm đẹp da.',
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -33,7 +33,7 @@ class ServiceSeeder extends Seeder
             [
                 'service_name' => 'Tắm bùn',
                 'price' => 600000,
-                'image' => 'tam_bun.jpg',
+                'image' => 'boiloi.jpg',
                 'description' => 'Dịch vụ tắm bùn khoáng giúp làn da khỏe mạnh và săn chắc.',
                 'created_at' => now(),
                 'updated_at' => now(),

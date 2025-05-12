@@ -32,7 +32,9 @@ class LoginController extends Controller
         if ($account && Hash::check($request->password, $account->password)) {
             Auth::login($account); // Đăng nhập
 
-            $bookingCount = BookingService::where('customer_id', $account->id)->count();
+            $bookingCount = BookingService::where('customer_id', auth()->user()->id)
+                ->where('status', 'pending')
+                ->count();
             session(['booking_count' => $bookingCount]);
 
             return redirect()->route('home')->with('success', 'Đăng nhập thành công!'); // Đưa người dùng đến home hoặc trang cần thiết

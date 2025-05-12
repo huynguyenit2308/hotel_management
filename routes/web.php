@@ -12,8 +12,7 @@ use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\CustomerBookingController;
-
-
+use App\Http\Controllers\PaymentController;
 use App\Models\BookingService;
 use App\Models\Service;
 
@@ -63,7 +62,11 @@ Route::get('detail-invoice', [BookingServiceController::class, 'detailInvoice'])
 // Danh sách hóa đơn của người dùng
 Route::get('invoice-list-user', [BookingServiceController::class, 'listInvoiceUser'])->name('invoice.list.user');
 // Hủy hóa đơn
-Route::get('invoice-cancel-user', [BookingServiceController::class, 'cancelInvoiceUser'])->name('invoice.cancel.user');
+Route::post('invoice-cancel-user', [BookingServiceController::class, 'cancelInvoiceUser'])->name('invoice.cancel.user');
+// Thanh toán
+Route::post('payment', [PaymentController::class, 'payment'])->name('invoice.payment');
+// Thanh toán bằng tiền mặt
+Route::post('payment-cash', [PaymentController::class, 'paymentCash'])->name('payment.cash');
 
 //Mở form đăng ký tài khoản
 Route::get('/register', [AccountRegisterController::class, 'showForm'])->name('register.form');
