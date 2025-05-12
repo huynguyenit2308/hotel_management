@@ -77,14 +77,18 @@ class CRUD_ServiceController extends Controller
     // Chi tiết dịch vụ
     public function detailService(Request $request)
     {
-        $id = $request->get('id');
-        $service = Service::find($id);
+        try {
+            $id = $request->get('id');
+            $service = Service::find($id);
 
-        if (!$service) {
-            return redirect()->route('service.list')->with('error', 'Dịch vụ không tồn tại.');
+            if (!$service) {
+                return redirect()->route('service.list')->with('error', 'Dịch vụ không tồn tại.');
+            }
+
+            return view('crud_service.detail', compact('service'));
+        } catch (\Exception $e) {
+            return redirect()->route('service.list')->with('error', 'Đã có lỗi xảy ra: ' . $e->getMessage());
         }
-
-        return view('crud_service.detail', compact('service'));
     }
 
     // Xóa dịch vụ
