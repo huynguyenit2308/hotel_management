@@ -35,37 +35,44 @@ class CRUD_ServiceController extends Controller
 
     public function postAddService(Request $request)
     {
-        $request->validate([
-            'service_name' => 'required|max:255|unique:service,service_name',
-            'price' => 'required|numeric|min:0',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:4096',
-            'description' => 'required|max:1000',
-        ], [
-            'service_name.required' => 'Vui lòng nhập tên dịch vụ.',
-            'service_name.max' => 'Tên dịch vụ không được vượt quá 255 ký tự.',
-            'service_name.unique' => 'Tên dịch vụ đã tồn tại.',
-            'price.required' => 'Vui lòng nhập giá dịch vụ.',
-            'price.numeric' => 'Giá phải là một số.',
-            'price.min' => 'Giá phải lớn hơn hoặc bằng 0.',
-            'image.image' => 'Tập tin phải là một ảnh.',
-            'image.mimes' => 'Ảnh phải có định dạng jpeg, png, jpg, gif, hoặc svg.',
-            'image.max' => 'Ảnh phải có kích thước nhỏ hơn 4MB.',
-            'description.required' => 'Vui lòng nhập mô tả dịch vụ.',
-            'description.max' => 'Mô tả dịch vụ không được vượt quá 1000 ký tự.',
-        ]);
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('service_images', 'public');
-        } else {
-            $imagePath = null;
+        try {
+            $request->validate([
+                'service_name' => 'required|max:255|unique:service,service_name',
+                'price' => 'required|numeric|min:0',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'description' => 'required|max:1000',
+            ], [
+                'service_name.required' => 'Vui lòng nhập tên dịch vụ.',
+                'service_name.max' => 'Tên dịch vụ không được vượt quá 255 ký tự.',
+                'service_name.unique' => 'Tên dịch vụ đã tồn tại.',
+                'price.required' => 'Vui lòng nhập giá dịch vụ.',
+                'price.numeric' => 'Giá phải là một số.',
+                'price.min' => 'Giá phải lớn hơn hoặc bằng 0.',
+                'image.image' => 'Tập tin phải là một ảnh.',
+                'image.mimes' => 'Ảnh phải có định dạng jpeg, png, jpg, gif, hoặc svg.',
+                'image.max' => 'Ảnh phải có kích thước nhỏ hơn 2MB.',
+                'description.required' => 'Vui lòng nhập mô tả dịch vụ.',
+                'description.max' => 'Mô tả dịch vụ không được vượt quá 1000 ký tự.',
+            ]);
+
+            if ($request->hasFile('image')) {
+                $imagePath = $request->file('image')->store('service_images', 'public');
+            } else {
+                $imagePath = null;
+            }
+
+            $service = Service::create([
+                'service_name' => $request->service_name,
+                'price' => $request->price,
+                'image' => $imagePath,
+                'description' => $request->description,
+            ]);
+            return redirect()->route('service.list')->with('success', 'Thêm dịch vụ "' . $service->service_name . '" thành công!');
+        } catch (\Exception $e) {
+            return redirect()->route('service.list')->with('error', 'Đã có lỗi xảy ra: ' . $e->getMessage());
         }
-        $service = Service::create([
-            'service_name' => $request->service_name,
-            'price' => $request->price,
-            'image' => $imagePath,
-            'description' => $request->description,
-        ]);
-        return redirect()->route('service.list')->with('success', 'Thêm dịch vụ "' . $service->service_name . '" thành công!');
     }
+
 
     // Chi tiết dịch vụ
     public function detailService(Request $request)
