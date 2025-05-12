@@ -7,13 +7,32 @@
             <ul class="list-group">
                 @foreach ($invoices as $invoice)
                     <li class="list-group-item">
-                        <h2 class="fw-bold">{{ $invoice->service->service_name }}</h2>
-                        <p>Ngày đặt:
-                           <strong> {{ \Carbon\Carbon::parse($invoice->created_at)->format('d/m/Y H:i') }}</strong></p>
-                        <p>Ngày sử dụng:
-                            <strong>{{ \Carbon\Carbon::parse($invoice->booking_date)->format('d/m/Y H:i') }}</strong></p>
-                        <p>Giá dịch vụ:<strong> {{ number_format($invoice->service->price, 0, ',', '.') }} VND</strong></p>
-                        <p>Ghi chú: {{ $invoice->note ?? 'Không có ghi chú' }}</p>
+                        <div class="d-flex align-items-start gap-5">
+                            <div style="flex-shrink: 0;">
+                                @if ($invoice->service->image)
+                                    <img src="{{ asset('storage/' . $invoice->service->image) }}" alt="Ảnh dịch vụ"
+                                        class="img-fluid rounded-3 shadow-sm"
+                                        style="width: 220px; height: 220px; object-fit: cover;">
+                                @else
+                                    <img src="{{ asset('images/no-image.png') }}" alt="Không có ảnh"
+                                        class="img-fluid rounded-3 shadow-sm"
+                                        style="width: 220px; height: 220px; object-fit: cover;">
+                                @endif
+                            </div>
+                            <div>
+
+                                <h2 class="fw-bold">{{ $invoice->service->service_name }}</h2>
+                                <p>Ngày đặt:
+                                    <strong> {{ \Carbon\Carbon::parse($invoice->created_at)->format('d/m/Y H:i') }}</strong>
+                                </p>
+                                <p>Ngày sử dụng:
+                                    <strong>{{ \Carbon\Carbon::parse($invoice->booking_date)->format('d/m/Y H:i') }}</strong>
+                                </p>
+                                <p>Giá dịch vụ:<strong> {{ number_format($invoice->service->price, 0, ',', '.') }}
+                                        VND</strong></p>
+                                <p>Ghi chú: {{ $invoice->note ?? 'Không có ghi chú' }}</p>
+                            </div>
+                        </div>
                     </li>
                 @endforeach
             </ul>
@@ -23,7 +42,7 @@
             <p><strong>Tổng tiền:</strong> {{ number_format($totalAmount, 0, ',', '.') }} VND</p>
         </div>
 
-        <form action="{{route('payment.cash')}}" method="POST">
+        <form action="{{ route('payment.cash') }}" method="POST">
             @csrf
             @foreach ($invoices as $invoice)
                 <input type="hidden" name="invoice_ids[]" value="{{ $invoice->id }}">
