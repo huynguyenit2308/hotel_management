@@ -94,21 +94,25 @@ class CRUD_ServiceController extends Controller
     // Xóa dịch vụ
     public function deleteService(Request $request)
     {
-        $id = $request->get('id');
-        $service = Service::find($id);
+        try {
+            $id = $request->get('id');
+            $service = Service::find($id);
 
-        if (!$service) {
-            return redirect()->route('service.list')->with('error', 'Dịch vụ không tồn tại!');
+            if (!$service) {
+                return redirect()->route('service.list')->with('error', 'Dịch vụ không tồn tại!');
+            }
+
+            if ($service->image && Storage::exists('public/' . $service->image)) {
+                Storage::delete('public/' . $service->image);
+            }
+
+            $serviceName = $service->service_name;
+            $service->delete();
+
+            return redirect()->route('service.list')->with('success', 'Xóa dịch vụ "' . $serviceName . '" thành công!');
+        } catch (\Exception $e) {
+            return redirect()->route('service.list')->with('error', 'Đã có lỗi xảy ra: ' . $e->getMessage());
         }
-
-        if ($service->image && Storage::exists('public/' . $service->image)) {
-            Storage::delete('public/' . $service->image);
-        }
-
-        $serviceName = $service->service_name;
-        $service->delete();
-
-        return redirect()->route('service.list')->with('success', 'Xóa dịch vụ "' . $serviceName . '" thành công!');
     }
 
     // Sửa dịch vụ
