@@ -20,14 +20,30 @@
                     <div class="list-group">
                         @foreach ($invoices as $invoice)
                             <div class="list-group-item d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h3 class="mb-2 fw-bold">{{ $invoice->service->service_name }}</h3>
-                                    <p class="mt-2 mb-0">Giá:
-                                        <span class="fw-bold">{{ number_format($invoice->service->price, 0, ',', '.') }} VND</span></p>
-                                    <p class="mb-1">Ngày đặt:
-                                        {{ \Carbon\Carbon::parse($invoice->booking_date)->format('d/m/Y H:i') }}</p>
-                                    <p class="mb-1">Ghi chú: {{ $invoice->note ?? 'Không có ghi chú' }}</p>
-                                    <span class="badge bg-warning">{{ ucfirst($invoice->status) }}</span>
+                                <div class=" d-flex align-items-start gap-5">
+                                    <div style="flex-shrink: 0;">
+                                        @if ($invoice->service->image)
+                                            <img src="{{ asset('storage/' . $invoice->service->image) }}" alt="Ảnh dịch vụ"
+                                                class="img-fluid rounded-3 shadow-sm"
+                                                style="width: 170px; height: 170px; object-fit: cover;">
+                                        @else
+                                            <img src="{{ asset('images/no-image.png') }}" alt="Không có ảnh"
+                                                class="img-fluid rounded-3 shadow-sm"
+                                                style="width: 170px; height: 170px; object-fit: cover;">
+                                        @endif
+                                    </div>
+
+                                    <div class="flex-grow-1">
+                                        <h3 class="mb-2 fw-bold">{{ $invoice->service->service_name }}</h3>
+                                        <p class="mb-1">Giá:
+                                            <span class="fw-bold">{{ number_format($invoice->service->price, 0, ',', '.') }}
+                                                VND</span>
+                                        </p>
+                                        <p class="mb-1">Ngày đặt:
+                                            {{ \Carbon\Carbon::parse($invoice->booking_date)->format('d/m/Y H:i') }}</p>
+                                        <p class="mb-1">Ghi chú: {{ $invoice->note ?? 'Không có ghi chú' }}</p>
+                                        <span class="badge bg-warning">{{ ucfirst($invoice->status) }}</span>
+                                    </div>
                                 </div>
                                 <div class="form-check ms-3">
                                     <input class="form-check-input" type="checkbox" name="invoice_ids[]"
