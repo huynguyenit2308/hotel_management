@@ -6,6 +6,7 @@ use App\Models\BookingService;
 use App\Models\Service;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\MessageBag;
 
 class BookingServiceController extends Controller
 {
@@ -35,11 +36,21 @@ class BookingServiceController extends Controller
             'time.required' => 'Vui lòng chọn giờ sử dụng.',
             'note.string' => 'Ghi chú phải là văn bản.',
         ]);
+
         if (!auth()->check()) {
             return redirect()->route('login')->with('error', 'Vui lòng đăng nhập để đặt dịch vụ.');
         }
 
         $bookingDateTime = $request->date . ' ' . $request->time;
+
+        $hasConflict = BookingService::where('service_id', $request->service_id)
+            ->where('booking_date', $bookingDateTime)
+            ->exists();
+
+        if ($hasConflict) {
+            $errors = new MessageBag(['time' => 'Đã trùng thời gian. Vui lòng chọn thời gian khác.']);
+            return redirect()->back()->withErrors($errors)->withInput();
+        }
 
         BookingService::create([
             'service_id' => $request->service_id,
@@ -48,6 +59,7 @@ class BookingServiceController extends Controller
             'note' => $request->note,
             'status' => 'pending',
         ]);
+
         return redirect()->route('home')->with('success', 'Đặt dịch vụ thành công!');
     }
 }
