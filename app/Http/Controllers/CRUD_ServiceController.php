@@ -10,10 +10,17 @@ class CRUD_ServiceController extends Controller
     // Danh sách dịch vụ
     public function listService()
     {
-        $service = Service::paginate(6);
-        if ($service->isEmpty()) {
-            return view('crud_service.list', compact('service'))->with('error', 'Không có dịch vụ nào!!!');
+        try {
+            $service = Service::paginate(6);
+
+            if ($service->isEmpty()) {
+                return view('crud_service.list', compact('service'))
+                    ->with('error', 'Không có dịch vụ nào!!!');
+            }
+
+            return view('crud_service.list', compact('service'));
+        } catch (\Exception $e) {
+            return back()->with('error', 'Đã xảy ra lỗi khi tải danh sách dịch vụ: ' . $e->getMessage());
         }
-        return view('crud_service.list', compact('service'));
     }
 }
