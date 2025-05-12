@@ -55,15 +55,6 @@
                                         <p class="mb-1">Ghi chú: {{ $invoice->note ?? 'Không có ghi chú' }}</p>
                                         <span class="badge bg-warning">{{ ucfirst($invoice->status) }}</span>
                                     </div>
-                                <div>
-                                    <h3 class="mb-2 fw-bold">{{ $invoice->service->service_name }}</h3>
-                                    <p class="mt-2 mb-0">Giá: <span
-                                            class="fw-bold">{{ number_format($invoice->service->price, 0, ',', '.') }}
-                                            VND</span></p>
-                                    <p class="mb-1">Ngày đặt:
-                                        {{ \Carbon\Carbon::parse($invoice->created_at)->format('d/m/Y H:i') }}</p>
-                                    <p class="mb-1">Ghi chú: {{ $invoice->note ?? 'Không có ghi chú' }}</p>
-                                    <span class="badge bg-warning">{{ ucfirst($invoice->status) }}</span>
                                 </div>
 
                                 <div class="d-flex align-items-center gap-2 px-2 py-1 rounded" style="min-width: 130px;">
