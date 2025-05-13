@@ -89,26 +89,33 @@ class BookingServiceController extends Controller
 
     public function cancelInvoiceUser(Request $request)
     {
-        $id = $request->get('id');
-        $invoice = BookingService::find($id);
+        try {
+            $id = $request->get('id');
+            $invoice = BookingService::find($id);
 
-        if (!$invoice) {
-            return redirect()->route('home')->with('error', 'Dịch vụ không tồn tại.');
+            if (!$invoice) {
+                return redirect()->route('home')->with('error', 'Hóa đơn không tồn tại.');
+            }
+
+            if ($invoice->customer_id !== auth()->id()) {
+                return redirect()->route('home')->with('error', 'Bạn không có quyền hủy hóa đơn này.');
+            }
+
+            if ($invoice->status === 'pending') {
+                $invoice->status = 'cancelled';
+                $invoice->save();
+
+                $bookingCount = BookingService::where('customer_id', auth()->id())
+                    ->where('status', 'pending')
+                    ->count();
+                session(['booking_count' => $bookingCount]);
+
+                return back()->with('success', 'Hóa đơn đã được hủy thành công.');
+            }
+
+            return back()->with('error', 'Chỉ có thể hủy hóa đơn ở trạng thái đang chờ xác nhận.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Có lỗi xảy ra: ' . $e->getMessage());
         }
-
-        if ($invoice->status === 'pending') {
-            $invoice->status = 'cancelled';
-            $invoice->save();
-
-            $bookingCount = BookingService::where('customer_id', auth()->user()->id)
-                ->where('status', 'pending')
-                ->count();
-            session(['booking_count' => $bookingCount]);
-
-            return back()->with('success', 'Hóa đơn đã được hủy thành công.');
-        }
-
-
-        return back()->with('error', 'Không thể hủy hóa đơn này.');
     }
 }
