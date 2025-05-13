@@ -47,11 +47,12 @@
                     <option value="{{ $voucher->code }}" {{ $voucher->code == $voucherCode ? 'selected' : '' }}>
                         {{ $voucher->code }} -
                         {{ $voucher->type === 'percent' ? $voucher->value . '%' : number_format($voucher->value, 0, ',', '.') . ' VND' }}
+                        - <span class="badge bg-info">Còn {{ $voucher->usage_limit - $voucher->used_count }} lần sử dụng</span>
                     </option>
                 @endforeach
             </select>
         </form>
-        <div class="mb-3 text-end">
+        <div class="my-3 text-end">
             <p><strong>Tổng tiền:</strong> {{ number_format($originalTotal, 0, ',', '.') }} VND</p>
             @if ($discount > 0)
                 <p class="text-success"><strong>Giảm giá:</strong> -{{ number_format($discount, 0, ',', '.') }} VND</p>
@@ -61,6 +62,7 @@
 
         <form action="{{ route('payment.cash') }}" method="POST">
             @csrf
+            <input type="hidden" name="voucher_code" value="{{ $voucherCode }}">
             @foreach ($invoices as $invoice)
                 <input type="hidden" name="invoice_ids[]" value="{{ $invoice->id }}">
             @endforeach

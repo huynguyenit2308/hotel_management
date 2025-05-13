@@ -21,7 +21,7 @@
                                     <p class="mb-3">
                                         <i class="bi bi-calendar-event me-2 text-warning"></i>
                                         <strong>Ngày đặt:</strong>
-                                        {{ \Carbon\Carbon::parse($invoice->created_at)->format('d/m/Y H:i') }}
+                                        {{ \Carbon\Carbon::parse($invoice->booking_date)->format('d/m/Y H:i') }}
                                     </p>
                                     <p class="mb-3">
                                         <i class="bi bi-check-circle-fill me-2 text-info"></i>

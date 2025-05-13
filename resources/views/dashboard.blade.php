@@ -201,17 +201,11 @@
                                         aria-current="page" href="{{ route('home') }}">Trang chủ</a>
                                 </li>
                                 <li class="nav-item px-3">
-                                    <a class="nav-link p-0" href="#">Khám phá phòng</a>
+                                    <a class="nav-link p-0" href="/#room">Khám phá phòng</a>
                                 </li>
                                 <li class="nav-item px-3">
-                                    <a class="nav-link  p-0" href="#">Dịch vụ</a>
+                                    <a class="nav-link  p-0" href="/#services">Dịch vụ</a>
                                 </li>
-                                {{-- <li class="nav-item px-3">
-                                    <a class="nav-link p-0 {{ request()->routeIs('ratings.customerRatings') ? 'active text-warning' : '' }}"
-                                        href="{{ route('ratings.customerRatings') }}">
-                                        Đánh giá của khách hàng
-                                    </a>
-                                </li> --}}
                                 <li class="nav-item px-3">
                                     @if (Auth::check())
                                 <li class="nav-item px-3">

@@ -26,4 +26,8 @@ class Voucher extends Model
         'end_date' => 'datetime',
         'active' => 'boolean',
     ];
+
+    protected $attributes = [
+        'used_count' => 0,
+    ];
 }
