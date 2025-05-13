@@ -13,8 +13,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\CustomerBookingController;
 use App\Http\Controllers\AttendanceController;
-
-
+use App\Http\Controllers\CRUD_VoucherController;
 use App\Http\Controllers\PaymentController;
 use App\Models\BookingService;
 use App\Models\Service;
@@ -76,6 +75,19 @@ Route::post('invoice-cancel-user', [BookingServiceController::class, 'cancelInvo
 Route::post('payment', [PaymentController::class, 'payment'])->name('invoice.payment');
 // Thanh toán bằng tiền mặt
 Route::post('payment-cash', [PaymentController::class, 'paymentCash'])->name('payment.cash');
+
+// Danh sách voucher
+Route::get('list-voucher', [CRUD_VoucherController::class, 'listvoucher'])->name('voucher.list');
+// Thêm voucher
+Route::get('add-voucher', [CRUD_VoucherController::class, 'addvoucher'])->name('voucher.add');
+Route::post('add-voucher', [CRUD_VoucherController::class, 'postAddvoucher'])->name('voucher.store');
+// Chi tiết voucher
+Route::get('detail-voucher', [CRUD_VoucherController::class, 'detailvoucher'])->name('voucher.detail');
+// Xóa voucher
+Route::get('delete-voucher', [CRUD_VoucherController::class, 'deletevoucher'])->name('voucher.delete');
+// Sửa voucher
+Route::get('update-voucher', [CRUD_VoucherController::class, 'updatevoucher'])->name('voucher.edit');
+Route::post('update-voucher', [CRUD_VoucherController::class, 'updatePostvoucher'])->name('voucher.update');
 
 //Mở form đăng ký tài khoản
 Route::get('/register', [AccountRegisterController::class, 'showForm'])->name('register.form');
