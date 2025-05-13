@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\BookingService;
+use App\Models\Invoice;
 use App\Models\Voucher;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class PaymentController extends Controller
@@ -75,29 +77,76 @@ class PaymentController extends Controller
         ));
     }
 
-
     public function paymentCash(Request $request)
     {
         $paymentMethod = $request->input('payment_method');
         $invoiceIds = $request->input('invoice_ids');
+        $voucherCode = $request->input('voucher_code');
 
         if ($paymentMethod === 'cash') {
-            $invoices = BookingService::whereIn('id', $invoiceIds)->get();
-            foreach ($invoices as $invoice) {
-                $invoice->status = 'confirmed';
-                $invoice->save();
+            $invoices = BookingService::whereIn('id', $invoiceIds)->with('service')->get();
+            if ($invoices->isEmpty()) {
+                return redirect()->back()->with('error', 'Không tìm thấy hóa đơn.');
             }
+
+            $originalTotal = $invoices->sum(fn($item) => $item->service->price);
+            $totalAmount = $originalTotal;
+            $discount = 0;
+            $voucher = null;
+
+            if ($voucherCode) {
+                $voucher = Voucher::where('code', $voucherCode)
+                    ->where('active', true)
+                    ->where(function ($query) {
+                        $now = now();
+                        $query->whereNull('start_date')->orWhere('start_date', '<=', $now);
+                    })
+                    ->where(function ($query) {
+                        $now = now();
+                        $query->whereNull('end_date')->orWhere('end_date', '>=', $now);
+                    })
+                    ->first();
+
+                if (!$voucher) {
+                    return redirect()->back()->with('error', 'Voucher không hợp lệ hoặc đã hết hạn.');
+                }
+
+                if ($voucher->used_count >= $voucher->usage_limit) {
+                    return redirect()->back()->with('error', 'Voucher đã hết lượt sử dụng.');
+                }
+
+                $discount = $voucher->type === 'percent'
+                    ? $originalTotal * ($voucher->value / 100)
+                    : $voucher->value;
+
+                $discount = min($discount, $originalTotal);
+                $totalAmount = $originalTotal - $discount;
+            }
+
+            $invoice = Invoice::create([
+                'customer_id' => auth()->user()->id,
+                'create_at' => Carbon::now(),
+                'total_amount' => $totalAmount,
+                'status' => 'paid',
+            ]);
+
+            foreach ($invoices as $invoiceItem) {
+                $invoiceItem->status = 'confirmed';
+                $invoiceItem->save();
+            }
+
             $bookingCount = BookingService::where('customer_id', auth()->user()->id)
                 ->where('status', 'pending')
                 ->count();
             session(['booking_count' => $bookingCount]);
-            return redirect()->route('invoice.list.user')->with('success', 'Thanh toán tiền mặt thành công');
+
+            if ($voucher) {
+                $voucher->increment('used_count');
+            }
+
+            return redirect()->route('invoice.detail', ['invoice' => $invoice->id])->with('success', 'Thanh toán tiền mặt thành công');
         }
 
-        if ($paymentMethod === 'online') {
-            return redirect()->route('invoice.list.user')->with('error', 'Thanh toán online chưa được xử lý.');
-        }
-
-        return redirect()->route('invoice.list.user')->with('error', 'Phương thức thanh toán không hợp lệ');
+        return redirect()->route('invoice.list.user')->with('error', 'Phương thức thanh toán không được hỗ trợ.');
     }
 }

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('code')->unique();
             $table->enum('type', ['percent', 'fixed']);
-            $table->decimal('value', 8, 2);
+            $table->integer('value');
             $table->integer('usage_limit')->nullable();
             $table->integer('used_count')->default(0);
             $table->timestamp('start_date')->nullable();
