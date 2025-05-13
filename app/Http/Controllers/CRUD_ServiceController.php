@@ -87,20 +87,28 @@ class CRUD_ServiceController extends Controller
     // Tìm kiếm dịch vụ
     public function searchService(Request $request)
     {
-        $keyword = $request->get('keyword');
+        try {
+            $keyword = $request->get('keyword');
 
-        $service = Service::where('service_name', 'like', "%{$keyword}%")
-            ->orWhere('price', 'like', "%{$keyword}%")
-            ->orWhere('description', 'like', "%{$keyword}%")
-            ->paginate(10);
+            $service = Service::where('service_name', 'like', "%{$keyword}%")
+                ->orWhere('price', 'like', "%{$keyword}%")
+                ->orWhere('description', 'like', "%{$keyword}%")
+                ->paginate(10);
 
-        return view('crud_service.list', compact('service'));
+            return view('crud_service.list', compact('service'));
+        } catch (\Exception $e) {
+            return redirect()->route('service.list')->with('error', 'Lỗi khi tìm kiếm: ' . $e->getMessage());
+        }
     }
 
     public function autoCompleteService(Request $request)
     {
-        $keyword = $request->get('keyword');
-        $services = Service::where('service_name', 'like', '%' . $keyword . '%')->pluck('service_name');
-        return response()->json($services);
+        try {
+            $keyword = $request->get('keyword');
+            $services = Service::where('service_name', 'like', '%' . $keyword . '%')->pluck('service_name');
+            return response()->json($services);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Lỗi khi gợi ý dịch vụ: ' . $e->getMessage()], 500);
+        }
     }
 }
