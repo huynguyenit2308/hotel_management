@@ -80,8 +80,12 @@ class BookingServiceController extends Controller
 
     public function listInvoice()
     {
-        $invoices = BookingService::where('status', 'confirmed')->paginate(6);
-        return view('userService.listInvoice', compact('invoices'));
+        try {
+            $invoices = BookingService::where('status', 'confirmed')->paginate(6);
+            return view('userService.listInvoice', compact('invoices'));
+        } catch (\Exception $e) {
+            return view('userService.listInvoice')->with('error', 'Đã xảy ra lỗi khi tải danh sách hóa đơn: ' . $e->getMessage());
+        }
     }
 
     public function detailInvoice(Request $request)
