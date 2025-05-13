@@ -6,7 +6,7 @@
             <h2 class="text-center display-4 fw-normal mb-5">Danh sách hóa đơn đang chờ xác nhận</h2>
 
             @if ($invoices->count() > 0)
-                <form action="{{ route('invoice.payment') }}" method="POST" id="paymentForm">
+                <form action="{{ route('invoice.payment') }}" method="GET" id="paymentForm">
                     @if (session('success'))
                         <div class="alert alert-success text-center d-flex justify-content-between align-items-center">
                             <span>{{ session('success') }}</span>

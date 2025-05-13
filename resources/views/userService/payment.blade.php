@@ -37,9 +37,26 @@
                 @endforeach
             </ul>
         </div>
-
+        <form method="GET" action="{{ route('invoice.payment') }}">
+            @foreach ($invoices as $invoice)
+                <input type="hidden" name="invoice_ids[]" value="{{ $invoice->id }}">
+            @endforeach
+            <select name="voucher_code" class="form-select" onchange="this.form.submit()">
+                <option value="">-- Chọn voucher --</option>
+                @foreach ($vouchers as $voucher)
+                    <option value="{{ $voucher->code }}" {{ $voucher->code == $voucherCode ? 'selected' : '' }}>
+                        {{ $voucher->code }} -
+                        {{ $voucher->type === 'percent' ? $voucher->value . '%' : number_format($voucher->value, 0, ',', '.') . ' VND' }}
+                    </option>
+                @endforeach
+            </select>
+        </form>
         <div class="mb-3 text-end">
-            <p><strong>Tổng tiền:</strong> {{ number_format($totalAmount, 0, ',', '.') }} VND</p>
+            <p><strong>Tổng tiền:</strong> {{ number_format($originalTotal, 0, ',', '.') }} VND</p>
+            @if ($discount > 0)
+                <p class="text-success"><strong>Giảm giá:</strong> -{{ number_format($discount, 0, ',', '.') }} VND</p>
+            @endif
+            <p><strong>Thành tiền:</strong> {{ number_format($totalAmount, 0, ',', '.') }} VND</p>
         </div>
 
         <form action="{{ route('payment.cash') }}" method="POST">
@@ -60,7 +77,6 @@
                     Thanh toán online (VNPay, Momo...)
                 </label>
             </div>
-
             <div class="d-flex justify-content-center gap-3">
                 <a href="{{ route('invoice.list.user') }}"
                     class="py-3 btn btn-primary rounded-pill d-flex align-items-center justify-content-center gap-2 shadow-sm"

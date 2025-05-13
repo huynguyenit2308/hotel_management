@@ -72,7 +72,7 @@ Route::get('invoice-list-user', [BookingServiceController::class, 'listInvoiceUs
 // Hủy hóa đơn
 Route::post('invoice-cancel-user', [BookingServiceController::class, 'cancelInvoiceUser'])->name('invoice.cancel.user');
 // Thanh toán
-Route::post('payment', [PaymentController::class, 'payment'])->name('invoice.payment');
+Route::get('payment', [PaymentController::class, 'payment'])->name('invoice.payment');
 // Thanh toán bằng tiền mặt
 Route::post('payment-cash', [PaymentController::class, 'paymentCash'])->name('payment.cash');
 

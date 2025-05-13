@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\BookingService;
+use App\Models\Voucher;
 use Illuminate\Http\Request;
 
 class PaymentController extends Controller
@@ -10,6 +11,8 @@ class PaymentController extends Controller
     public function payment(Request $request)
     {
         $invoiceIds = $request->input('invoice_ids', []);
+        $voucherCode = $request->input('voucher_code');
+
         $invoices = BookingService::whereIn('id', $invoiceIds)
             ->where('status', 'pending')
             ->with('service')
@@ -19,10 +22,59 @@ class PaymentController extends Controller
             return redirect()->back()->with('error', 'Bạn chưa chọn hóa đơn thanh toán.');
         }
 
-        $totalAmount = $invoices->sum(fn($invoice) => $invoice->service->price);
+        $originalTotal = $invoices->sum(fn($invoice) => $invoice->service->price);
+        $discount = 0;
 
-        return view('userService.payment', compact('invoices', 'totalAmount'));
+        $voucher = null;
+        if ($voucherCode) {
+            $voucher = Voucher::where('code', $voucherCode)
+                ->where('active', true)
+                ->where(function ($query) {
+                    $now = now();
+                    $query->whereNull('start_date')->orWhere('start_date', '<=', $now);
+                })
+                ->where(function ($query) {
+                    $now = now();
+                    $query->whereNull('end_date')->orWhere('end_date', '>=', $now);
+                })
+                ->first();
+
+            if ($voucher) {
+                if ($voucher->type === 'percent') {
+                    $discount = $originalTotal * ($voucher->value / 100);
+                } elseif ($voucher->type === 'fixed') {
+                    $discount = $voucher->value;
+                }
+
+                $discount = min($discount, $originalTotal);
+            } else {
+                return redirect()->back()->with('error', 'Mã giảm giá không hợp lệ hoặc đã hết hạn.');
+            }
+        }
+
+        $totalAmount = $originalTotal - $discount;
+
+        $vouchers = Voucher::where('active', true)
+            ->where(function ($query) {
+                $now = now();
+                $query->whereNull('start_date')->orWhere('start_date', '<=', $now);
+            })
+            ->where(function ($query) {
+                $now = now();
+                $query->whereNull('end_date')->orWhere('end_date', '>=', $now);
+            })
+            ->get();
+
+        return view('userService.payment', compact(
+            'invoices',
+            'originalTotal',
+            'discount',
+            'totalAmount',
+            'voucherCode',
+            'vouchers'
+        ));
     }
+
 
     public function paymentCash(Request $request)
     {
