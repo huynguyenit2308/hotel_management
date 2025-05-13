@@ -80,10 +80,19 @@ class BookingServiceController extends Controller
 
     public function listInvoiceUser()
     {
-        $invoices = BookingService::where('customer_id', auth()->user()->id)
-            ->where('status', 'pending')
-            ->get();
+        try {
+            if (!auth()->check()) {
+                return redirect()->route('login')->with('error', 'Vui lòng đăng nhập để xem hóa đơn.');
+            }
 
-        return view('userService.listInvoiceUser', compact('invoices'));
+            $invoices = BookingService::where('customer_id', auth()->id())
+                ->where('status', 'pending')
+                ->orderBy('booking_date', 'desc')
+                ->get();
+
+            return view('userService.listInvoiceUser', compact('invoices'));
+        } catch (\Exception $e) {
+            return redirect()->route('home')->with('error', 'Đã xảy ra lỗi: ' . $e->getMessage());
+        }
     }
 }
