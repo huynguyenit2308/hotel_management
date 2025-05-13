@@ -84,22 +84,26 @@ class BookingServiceController extends Controller
             $invoices = BookingService::where('status', 'confirmed')->paginate(6);
             return view('userService.listInvoice', compact('invoices'));
         } catch (\Exception $e) {
-            return view('userService.listInvoice')->with('error', 'Đã xảy ra lỗi khi tải danh sách hóa đơn: ' . $e->getMessage());
+            return redirect()->route('invoice.list')->with('error', 'Đã xảy ra lỗi: ' . $e->getMessage());
         }
     }
 
     public function detailInvoice(Request $request)
     {
-        $id = $request->get('id');
-        $invoice = BookingService::where('id', $id)
-            ->where('status', 'confirmed')
-            ->first();
+        try {
+            $id = $request->get('id');
+            $invoice = BookingService::where('id', $id)
+                ->where('status', 'pending')
+                ->first();
 
-        if (!$invoice) {
-            return redirect()->route('invoice.list')->with('error', 'Hóa đơn không tồn tại hoặc chưa được xác nhận.');
+            if (!$invoice) {
+                return redirect()->route('invoice.list')->with('error', 'Hóa đơn không tồn tại hoặc chưa được xác nhận.');
+            }
+
+            return view('userService.detailInvoice', compact('invoice'));
+        } catch (\Exception $e) {
+            return redirect()->route('invoice.list')->with('error', 'Đã xảy ra lỗi: ' . $e->getMessage());
         }
-
-        return view('userService.detailInvoice', compact('invoice'));
     }
 
     public function listInvoiceUser()
