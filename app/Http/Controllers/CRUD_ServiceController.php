@@ -35,42 +35,38 @@ class CRUD_ServiceController extends Controller
 
     public function postAddService(Request $request)
     {
-        try {
-            $request->validate([
-                'service_name' => 'required|max:255|unique:service,service_name',
-                'price' => 'required|numeric|min:0',
-                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                'description' => 'required|max:1000',
-            ], [
-                'service_name.required' => 'Vui lòng nhập tên dịch vụ.',
-                'service_name.max' => 'Tên dịch vụ không được vượt quá 255 ký tự.',
-                'service_name.unique' => 'Tên dịch vụ đã tồn tại.',
-                'price.required' => 'Vui lòng nhập giá dịch vụ.',
-                'price.numeric' => 'Giá phải là một số.',
-                'price.min' => 'Giá phải lớn hơn hoặc bằng 0.',
-                'image.image' => 'Tập tin phải là một ảnh.',
-                'image.mimes' => 'Ảnh phải có định dạng jpeg, png, jpg, gif, hoặc svg.',
-                'image.max' => 'Ảnh phải có kích thước nhỏ hơn 2MB.',
-                'description.required' => 'Vui lòng nhập mô tả dịch vụ.',
-                'description.max' => 'Mô tả dịch vụ không được vượt quá 1000 ký tự.',
-            ]);
+        $request->validate([
+            'service_name' => 'required|max:255|unique:service,service_name',
+            'price' => 'required|numeric|min:0',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'description' => 'required|max:1000',
+        ], [
+            'service_name.required' => 'Vui lòng nhập tên dịch vụ.',
+            'service_name.max' => 'Tên dịch vụ không được vượt quá 255 ký tự.',
+            'service_name.unique' => 'Tên dịch vụ đã tồn tại.',
+            'price.required' => 'Vui lòng nhập giá dịch vụ.',
+            'price.numeric' => 'Giá phải là một số.',
+            'price.min' => 'Giá phải lớn hơn hoặc bằng 0.',
+            'image.image' => 'Tập tin phải là một ảnh.',
+            'image.mimes' => 'Ảnh phải có định dạng jpeg, png, jpg, gif, hoặc svg.',
+            'image.max' => 'Ảnh phải có kích thước nhỏ hơn 2MB.',
+            'description.required' => 'Vui lòng nhập mô tả dịch vụ.',
+            'description.max' => 'Mô tả dịch vụ không được vượt quá 1000 ký tự.',
+        ]);
 
-            if ($request->hasFile('image')) {
-                $imagePath = $request->file('image')->store('service_images', 'public');
-            } else {
-                $imagePath = null;
-            }
-
-            $service = Service::create([
-                'service_name' => $request->service_name,
-                'price' => $request->price,
-                'image' => $imagePath,
-                'description' => $request->description,
-            ]);
-            return redirect()->route('service.list')->with('success', 'Thêm dịch vụ "' . $service->service_name . '" thành công!');
-        } catch (\Exception $e) {
-            return redirect()->route('service.list')->with('error', 'Đã có lỗi xảy ra: ' . $e->getMessage());
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('service_images', 'public');
+        } else {
+            $imagePath = null;
         }
+
+        $service = Service::create([
+            'service_name' => $request->service_name,
+            'price' => $request->price,
+            'image' => $imagePath,
+            'description' => $request->description,
+        ]);
+        return redirect()->route('service.list')->with('success', 'Thêm dịch vụ "' . $service->service_name . '" thành công!');
     }
 
 
@@ -125,50 +121,46 @@ class CRUD_ServiceController extends Controller
 
     public function updatePostService(Request $request)
     {
-        try {
-            $request->validate([
-                'service_name' => 'required|max:255',
-                'price' => 'required|numeric|min:0',
-                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                'description' => 'required|max:1000',
-            ], [
-                'service_name.required' => 'Vui lòng nhập tên dịch vụ.',
-                'service_name.max' => 'Tên dịch vụ không được vượt quá 255 ký tự.',
-                'price.required' => 'Vui lòng nhập giá dịch vụ.',
-                'price.numeric' => 'Giá phải là một số.',
-                'price.min' => 'Giá phải lớn hơn hoặc bằng 0.',
-                'image.image' => 'Tập tin phải là một ảnh.',
-                'image.mimes' => 'Ảnh phải có định dạng jpeg, png, jpg, gif, hoặc svg.',
-                'image.max' => 'Ảnh phải có kích thước nhỏ hơn 2MB.',
-                'description.required' => 'Vui lòng nhập mô tả dịch vụ.',
-                'description.max' => 'Mô tả dịch vụ không được vượt quá 1000 ký tự.',
-            ]);
+        $request->validate([
+            'service_name' => 'required|max:255',
+            'price' => 'required|numeric|min:0',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'description' => 'required|max:1000',
+        ], [
+            'service_name.required' => 'Vui lòng nhập tên dịch vụ.',
+            'service_name.max' => 'Tên dịch vụ không được vượt quá 255 ký tự.',
+            'price.required' => 'Vui lòng nhập giá dịch vụ.',
+            'price.numeric' => 'Giá phải là một số.',
+            'price.min' => 'Giá phải lớn hơn hoặc bằng 0.',
+            'image.image' => 'Tập tin phải là một ảnh.',
+            'image.mimes' => 'Ảnh phải có định dạng jpeg, png, jpg, gif, hoặc svg.',
+            'image.max' => 'Ảnh phải có kích thước nhỏ hơn 2MB.',
+            'description.required' => 'Vui lòng nhập mô tả dịch vụ.',
+            'description.max' => 'Mô tả dịch vụ không được vượt quá 1000 ký tự.',
+        ]);
 
-            $id = $request->get('id');
-            $service = Service::find($id);
-            if (!$service) {
-                return redirect()->back()->with('error', 'Dịch vụ không tồn tại!');
-            }
-            $imagePath = $service->image;
-            if ($request->hasFile('image')) {
-                if ($service->image && Storage::exists('public/' . $service->image)) {
-                    Storage::delete('public/' . $service->image);
-                }
-
-                $imagePath = $request->file('image')->store('service_images', 'public');
-            }
-
-            $service->update([
-                'service_name' => $request->service_name,
-                'price' => $request->price,
-                'image' => $imagePath,
-                'description' => $request->description,
-            ]);
-
-            return redirect()->route('service.detail', ['id' => $service->id])->with('success', 'Sửa dịch vụ "' . $service->service_name . '" thành công!');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Đã có lỗi xảy ra: ' . $e->getMessage());
+        $id = $request->get('id');
+        $service = Service::find($id);
+        if (!$service) {
+            return redirect()->back()->with('error', 'Dịch vụ không tồn tại!');
         }
+        $imagePath = $service->image;
+        if ($request->hasFile('image')) {
+            if ($service->image && Storage::exists('public/' . $service->image)) {
+                Storage::delete('public/' . $service->image);
+            }
+
+            $imagePath = $request->file('image')->store('service_images', 'public');
+        }
+
+        $service->update([
+            'service_name' => $request->service_name,
+            'price' => $request->price,
+            'image' => $imagePath,
+            'description' => $request->description,
+        ]);
+
+        return redirect()->route('service.detail', ['id' => $service->id])->with('success', 'Sửa dịch vụ "' . $service->service_name . '" thành công!');
     }
 
     // Tìm kiếm dịch vụ
@@ -218,30 +210,37 @@ class CRUD_ServiceController extends Controller
 
     public function updatePriceService(Request $request)
     {
-        try {
-            $request->validate([
-                'base_price' => 'required|numeric|min:0',
-                'adjust_type' => 'required|in:increase,decrease',
-                'adjust_percent' => 'required|numeric|min:0|max:100',
-            ]);
+        $request->validate([
+            'base_price' => 'required|numeric|min:0',
+            'adjust_type' => 'required|in:increase,decrease',
+            'adjust_percent' => 'required|numeric|min:0|max:100',
+        ], [
+            'base_price.required' => 'Vui lòng nhập giá gốc.',
+            'base_price.numeric' => 'Giá gốc phải là số.',
+            'base_price.min' => 'Giá gốc phải lớn hơn hoặc bằng 0.',
 
-            $basePrice = $request->base_price;
-            $percent = $request->adjust_percent;
-            $adjustType = $request->adjust_type;
+            'adjust_type.required' => 'Vui lòng chọn loại điều chỉnh.',
+            'adjust_type.in' => 'Loại điều chỉnh không hợp lệ.',
 
-            $adjustedPrice = $adjustType === 'increase'
-                ? $basePrice * (1 + $percent / 100)
-                : $basePrice * (1 - $percent / 100);
+            'adjust_percent.required' => 'Vui lòng nhập phần trăm điều chỉnh.',
+            'adjust_percent.numeric' => 'Phần trăm điều chỉnh phải là số.',
+            'adjust_percent.min' => 'Phần trăm điều chỉnh không được âm.',
+            'adjust_percent.max' => 'Phần trăm điều chỉnh tối đa là 100.',
+        ]);
+        $basePrice = $request->base_price;
+        $percent = $request->adjust_percent;
+        $adjustType = $request->adjust_type;
 
-            $id = $request->get('id');
-            $service = Service::find($id);
-            $service->price = round($adjustedPrice, 0);
-            $service->save();
+        $adjustedPrice = $adjustType === 'increase'
+            ? $basePrice * (1 + $percent / 100)
+            : $basePrice * (1 - $percent / 100);
 
-            return redirect()->route('service.detail', ['id' => $id])->with('success', 'Cập nhật giá thành công!');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Lỗi khi cập nhật giá: ' . $e->getMessage());
-        }
+        $id = $request->get('id');
+        $service = Service::find($id);
+        $service->price = round($adjustedPrice, 0);
+        $service->save();
+
+        return redirect()->route('service.detail', ['id' => $id])->with('success', 'Cập nhật giá thành công!');
     }
 
     // Thống kê dịch vụ

@@ -250,6 +250,8 @@
                                         </li>
                                         <li><a href="{{ route('invoice.list') }}" class="dropdown-item ">Hóa đơn </a>
                                         </li>
+                                        <li><a href="{{ route('voucher.list') }}" class="dropdown-item ">Voucher </a>
+                                        </li>
                                       
                                         <li><a href="{{ route('employees.index') }}" class="dropdown-item {{ request()->routeIs('employees.index', 'employees.create', 'employees.show', 'employees.edit') ? 'bg-warning-subtle' : '' }}">Quản lý nhân viên (mới)</a>
                                         </li>

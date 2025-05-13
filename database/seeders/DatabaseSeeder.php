@@ -35,6 +35,7 @@ class DatabaseSeeder extends Seeder
             AccountSeeder::class,
             EmployeeSeeder::class,
             AttendanceSeeder::class,
+            VoucherSeeder::class,
         ]);
     }
 }

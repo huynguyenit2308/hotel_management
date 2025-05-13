@@ -13,37 +13,55 @@
                         </div>
 
                         <div class="card-body p-4 bg-white rounded-bottom-4">
-                            @if ($errors->any())
-                                <div class="alert alert-danger">
-                                    <ul class="mb-0">
-                                        @foreach ($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            @endif
-
                             <form action="{{ route('service.price.update', ['id' => $service->id]) }}" method="POST">
                                 @csrf
                                 @method('POST')
                                 <div class="mb-3">
                                     <label for="base_price" class="form-label fw-semibold">Giá gốc (VNĐ)</label>
-                                    <input type="number" class="form-control rounded-3 shadow-sm" id="base_price"
-                                        name="base_price" value="{{ old('base_price', $service->price) }}" required
-                                        min="0">
+                                    <input type="number"
+                                        class="form-control rounded-3 shadow-sm @error('base_price') is-invalid @enderror"
+                                        id="base_price" name="base_price"
+                                        value="{{ old('base_price', $service->price ?? '') }}" min="0">
+
+                                    @error('base_price')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
+
                                 <div class="mb-3">
                                     <label class="form-label fw-semibold">Điều chỉnh giá</label>
                                     <div class="input-group">
-                                        <select name="adjust_type" class="form-select rounded-start">
-                                            <option value="increase">Tăng</option>
-                                            <option value="decrease">Giảm</option>
+                                        <select name="adjust_type"
+                                            class="form-select rounded-start @error('adjust_type') is-invalid @enderror">
+                                            <option value="increase"
+                                                {{ old('adjust_type') == 'increase' ? 'selected' : '' }}>Tăng</option>
+                                            <option value="decrease"
+                                                {{ old('adjust_type') == 'decrease' ? 'selected' : '' }}>Giảm</option>
                                         </select>
-                                        <input type="number" name="adjust_percent" class="form-control" placeholder="%"
-                                            min="0" max="100" step="0.1" required>
+
+                                        <input type="number" name="adjust_percent"
+                                            class="form-control @error('adjust_percent') is-invalid @enderror"
+                                            placeholder="%" min="0" max="100" step="0.1"
+                                            value="{{ old('adjust_percent') }}">
+
                                         <span class="input-group-text rounded-end">%</span>
+
+                                        @error('adjust_type')
+                                            <div class="invalid-feedback d-block">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+
+                                        @error('adjust_percent')
+                                            <div class="invalid-feedback d-block">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
                                     </div>
                                 </div>
+
                                 <div class="text-end mb-4">
                                     <small class="text-muted">Giá mới sẽ được tính và cập nhật tự động.</small>
                                 </div>
