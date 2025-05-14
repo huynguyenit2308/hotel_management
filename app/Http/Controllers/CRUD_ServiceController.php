@@ -37,7 +37,7 @@ class CRUD_ServiceController extends Controller
     {
         $request->validate([
             'service_name' => 'required|max:255|unique:service,service_name',
-            'price' => 'required|numeric|min:0',
+            'price' => 'required|numeric|min:0|max:100000000000',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'description' => 'required|max:1000',
         ], [
@@ -47,6 +47,7 @@ class CRUD_ServiceController extends Controller
             'price.required' => 'Vui lòng nhập giá dịch vụ.',
             'price.numeric' => 'Giá phải là một số.',
             'price.min' => 'Giá phải lớn hơn hoặc bằng 0.',
+            'price.max' => 'Giá không được quá 100 tỷ.',
             'image.image' => 'Tập tin phải là một ảnh.',
             'image.mimes' => 'Ảnh phải có định dạng jpeg, png, jpg, gif, hoặc svg.',
             'image.max' => 'Ảnh phải có kích thước nhỏ hơn 2MB.',
@@ -123,7 +124,7 @@ class CRUD_ServiceController extends Controller
     {
         $request->validate([
             'service_name' => 'required|max:255',
-            'price' => 'required|numeric|min:0',
+            'price' => 'required|numeric|min:0|max:100000000000',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'description' => 'required|max:1000',
         ], [
@@ -132,6 +133,7 @@ class CRUD_ServiceController extends Controller
             'price.required' => 'Vui lòng nhập giá dịch vụ.',
             'price.numeric' => 'Giá phải là một số.',
             'price.min' => 'Giá phải lớn hơn hoặc bằng 0.',
+            'price.max' => 'Giá không được quá 100 tỷ.',
             'image.image' => 'Tập tin phải là một ảnh.',
             'image.mimes' => 'Ảnh phải có định dạng jpeg, png, jpg, gif, hoặc svg.',
             'image.max' => 'Ảnh phải có kích thước nhỏ hơn 2MB.',
@@ -243,21 +245,21 @@ class CRUD_ServiceController extends Controller
         return redirect()->route('service.detail', ['id' => $id])->with('success', 'Cập nhật giá thành công!');
     }
 
-    // Thống kê dịch vụ
-    public function statisticService()
-    {
-        $statistic = InvoiceDetail::join('service', 'invoice_detail.service_id', '=', 'service.id')
-            ->select(
-                'service.service_name as service_name',
-                DB::raw('SUM(invoice_detail.quantity) as total_quantity'),
-                DB::raw('SUM(invoice_detail.amount) as total_amount')
-            )
-            ->groupBy('service.service_name')
-            ->orderByDesc('total_amount')
-            ->get();
+    // // Thống kê dịch vụ
+    // public function statisticService()
+    // {
+    //     $statistic = InvoiceDetail::join('service', 'invoice_detail.service_id', '=', 'service.id')
+    //         ->select(
+    //             'service.service_name as service_name',
+    //             DB::raw('SUM(invoice_detail.quantity) as total_quantity'),
+    //             DB::raw('SUM(invoice_detail.amount) as total_amount')
+    //         )
+    //         ->groupBy('service.service_name')
+    //         ->orderByDesc('total_amount')
+    //         ->get();
 
-        return view('crud_service.statistic', compact('statistic'));
-    }
+    //     return view('crud_service.statistic', compact('statistic'));
+    // }
 
     // Lấy dịch vụ
     public function getAllService()

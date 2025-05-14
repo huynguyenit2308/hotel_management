@@ -37,12 +37,12 @@
                     </button>
                 </form>
                 <div class="d-flex gap-3">
-                    <a href="{{ route('service.statistic') }}"
+                    {{-- <a href="{{ route('service.statistic') }}"
                         class="btn btn-primary rounded-pill px-4 py-2 d-flex align-items-center gap-2 shadow-sm transition-all"
                         style="transition: all 0.3s ease-in-out;"
                         onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 16px rgba(0,0,0,0.2)'"
                         onmouseout="this.style.transform='none'; this.style.boxShadow='0 4px 6px rgba(0,0,0,0.1)'">
-                        <span>Thống kê dịch vụ</span>
+                        <span>Thống kê dịch vụ</span> --}}
                     </a>
                     <a href="{{ route('service.add') }}"
                         class="btn btn-primary rounded-pill px-4 py-2 d-flex align-items-center gap-2 shadow-sm transition-all"

@@ -16,7 +16,6 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\CRUD_VoucherController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\PaymentController;
-use App\Models\BookingService;
 use App\Models\Service;
 
 /*
@@ -40,7 +39,6 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
-
 // Danh sách dịch vụ
 Route::get('list-service', [CRUD_ServiceController::class, 'listService'])->name('service.list');
 // Thêm dịch vụ
@@ -60,7 +58,7 @@ Route::get('auto-complete-service', [CRUD_ServiceController::class, 'autoComplet
 Route::get('price-service', [CRUD_ServiceController::class, 'editPriceService'])->name('service.price');
 Route::post('price-service', [CRUD_ServiceController::class, 'updatePriceService'])->name('service.price.update');
 // Thống kê dịch vụ
-Route::get('statistic-service', [CRUD_ServiceController::class, 'statisticService'])->name('service.statistic');
+// Route::get('statistic-service', [CRUD_ServiceController::class, 'statisticService'])->name('service.statistic');
 // Sử dụng dịch vụ
 Route::get('booking-service', [BookingServiceController::class, 'bookingService'])->name('booking.service');
 Route::post('booking-service', [BookingServiceController::class, 'postBookingService'])->name('post.booking.service');
@@ -174,7 +172,7 @@ Route::get('/profile', [ProfileController::class, 'show'])->name('profile')->mid
 
 //Đánh giá khách hàng
 Route::middleware('auth')->group(function () { // Chỉ có khách hàng đã đăng nhập mới được đánh giá
-    Route::get('/ratings/create', [RatingController::class, 'create'])->name('ratings.create');//Hiển thị form đánh giá
+    Route::get('/ratings/create', [RatingController::class, 'create'])->name('ratings.create'); //Hiển thị form đánh giá
     Route::post('/ratings', [RatingController::class, 'store'])->name('ratings.store'); // Xử lí việc đánh giá
 });
 
