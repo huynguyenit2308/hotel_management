@@ -22,4 +22,9 @@ class Invoice extends Model
     {
         return $this->belongsTo(Customer::class);
     }
+
+    public function services()
+    {
+        return $this->belongsToMany(Service::class, 'invoice_service');
+    }
 }

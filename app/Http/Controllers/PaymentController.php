@@ -123,12 +123,15 @@ class PaymentController extends Controller
                 $totalAmount = $originalTotal - $discount;
             }
 
+            $usedTime = $invoices->first()->booking_date ?? Carbon::now();
+
             $invoice = Invoice::create([
                 'customer_id' => auth()->user()->id,
-                'create_at' => Carbon::now(),
+                'create_at' => $usedTime,
                 'total_amount' => $totalAmount,
                 'status' => 'paid',
             ]);
+            $invoice->services()->attach($invoices->pluck('service_id'));
 
             foreach ($invoices as $invoiceItem) {
                 $invoiceItem->status = 'confirmed';

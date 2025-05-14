@@ -12,7 +12,12 @@
                                 class="service mb-2 text-center rounded-4 p-4 shadow-sm d-flex flex-column justify-content-between h-100">
                                 <div>
                                     <h4 class="display-6 fw-normal my-3">
-                                        {{ $invoice->service->service_name }}
+                                        @if ($invoice->services->count() > 1)
+                                            {{ $invoice->services->first()->service_name }} và
+                                            {{ $invoice->services->count() - 1 }} dịch vụ khác
+                                        @else
+                                            {{ $invoice->services->first()->service_name }}
+                                        @endif
                                     </h4>
                                     <span
                                         class="badge 
