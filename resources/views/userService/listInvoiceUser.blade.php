@@ -51,7 +51,7 @@
                                                 VND</span>
                                         </p>
                                         <p class="mb-1">Ngày đặt:
-                                            {{ \Carbon\Carbon::parse($invoice->booking_date)->format('d/m/Y H:i') }}</p>
+                                            {{ \Carbon\Carbon::parse($invoice->create_at)->format('d/m/Y H:i') }}</p>
                                         <p class="mb-1">Ghi chú: {{ $invoice->note ?? 'Không có ghi chú' }}</p>
                                         <span class="badge bg-warning">{{ ucfirst($invoice->status) }}</span>
                                     </div>

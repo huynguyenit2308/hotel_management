@@ -14,6 +14,7 @@ use App\Http\Controllers\RatingController;
 use App\Http\Controllers\CustomerBookingController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\CRUD_VoucherController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\PaymentController;
 use App\Models\BookingService;
 use App\Models\Service;
@@ -64,7 +65,7 @@ Route::get('statistic-service', [CRUD_ServiceController::class, 'statisticServic
 Route::get('booking-service', [BookingServiceController::class, 'bookingService'])->name('booking.service');
 Route::post('booking-service', [BookingServiceController::class, 'postBookingService'])->name('post.booking.service');
 // Danh sách hóa đơn
-Route::get('invoice-list', [BookingServiceController::class, 'listInvoice'])->name('invoice.list');
+Route::get('invoice-list', [InvoiceController::class, 'listInvoice'])->name('invoice.list');
 // Chi tiết hóa đơn
 Route::get('detail-invoice', [BookingServiceController::class, 'detailInvoice'])->name('invoice.detail');
 // Danh sách hóa đơn của người dùng

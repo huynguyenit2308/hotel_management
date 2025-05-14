@@ -73,16 +73,6 @@ class BookingServiceController extends Controller
         return redirect()->route('invoice.list.user')->with('success', "Đặt dịch vụ $serviceName thành công!");
     }
 
-    public function listInvoice()
-    {
-        try {
-            $invoices = BookingService::where('status', 'confirmed')->paginate(6);
-            return view('userService.listInvoice', compact('invoices'));
-        } catch (\Exception $e) {
-            return redirect()->route('invoice.list')->with('error', 'Đã xảy ra lỗi: ' . $e->getMessage());
-        }
-    }
-
     public function detailInvoice(Request $request)
     {
         try {
