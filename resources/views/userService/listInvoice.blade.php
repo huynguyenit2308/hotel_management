@@ -13,14 +13,18 @@
                                 <div>
                                     <h4 class="display-6 fw-normal my-3">
                                         @php
-                                            $uniqueServices = $invoice->services->unique('service_name');
+                                            $uniqueServices = $invoice->services
+                                                ? $invoice->services->unique('service_name')
+                                                : collect();
                                         @endphp
 
                                         @if ($uniqueServices->count() > 1)
                                             {{ $uniqueServices->first()->service_name }} và
                                             {{ $uniqueServices->count() - 1 }} dịch vụ khác
-                                        @else
+                                        @elseif ($uniqueServices->count() === 1)
                                             {{ $uniqueServices->first()->service_name }}
+                                        @else
+                                            Không có dịch vụ nào
                                         @endif
                                     </h4>
 

@@ -11,7 +11,7 @@ class InvoiceServiceSeeder extends Seeder
     {
         $data = [];
 
-        $invoiceIds = range(1, 5);
+        $invoiceIds = range(1, 20);
         $serviceIds = range(1, 5);
 
         foreach ($invoiceIds as $invoiceId) {

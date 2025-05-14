@@ -146,8 +146,7 @@ class PaymentController extends Controller
             if ($voucher) {
                 $voucher->increment('used_count');
             }
-
-            return redirect()->route('invoice.detail', ['invoice' => $invoice->id])->with('success', 'Thanh toán tiền mặt thành công');
+            return redirect()->route('invoice.list.user')->with('success', 'Thanh toán tiền mặt thành công');
         }
 
         return redirect()->route('invoice.list.user')->with('error', 'Phương thức thanh toán không được hỗ trợ.');
