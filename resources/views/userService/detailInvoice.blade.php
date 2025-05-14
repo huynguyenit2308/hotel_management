@@ -12,16 +12,26 @@
                                 <div class="bg-light p-3 rounded-4 shadow-sm h-100">
                                     <p class="mb-3">
                                         <i class="bi bi-tag-fill me-2 text-primary"></i>
-                                        <strong>Dịch vụ:</strong> {{ $invoice->service->service_name }}
+                                        <strong>Dịch vụ:</strong>
+                                        @php
+                                            $servicesCount = $invoice->services->groupBy('service_name');
+                                        @endphp
+                                        @foreach ($servicesCount as $serviceName => $services)
+                                            {{ count($services) > 1 ? count($services) . ' ' . $serviceName : $serviceName }}
+                                            @if (!$loop->last)
+                                                ,
+                                            @endif
+                                        @endforeach
                                     </p>
                                     <p class="mb-3">
                                         <i class="bi bi-currency-dollar me-2 text-success"></i>
-                                        <strong>Giá:</strong> {{ number_format($invoice->service->price, 0, ',', '.') }} VNĐ
+                                        <strong>Giá:</strong>
+                                        {{ number_format($invoice->services->sum('price'), 0, ',', '.') }} VNĐ
                                     </p>
                                     <p class="mb-3">
                                         <i class="bi bi-calendar-event me-2 text-warning"></i>
                                         <strong>Ngày đặt:</strong>
-                                        {{ \Carbon\Carbon::parse($invoice->booking_date)->format('d/m/Y H:i') }}
+                                        {{ \Carbon\Carbon::parse($invoice->create_at)->format('d/m/Y H:i') }}
                                     </p>
                                     <p class="mb-3">
                                         <i class="bi bi-check-circle-fill me-2 text-info"></i>
@@ -34,17 +44,14 @@
                                             {{ ucfirst($invoice->status) }}
                                         </span>
                                     </p>
-                                    <p>
-                                        <i class="bi bi-card-text me-2 text-info"></i>
-                                        <strong>Mô tả:</strong> {{ $invoice->service->description }}
-                                    </p>
                                 </div>
                             </div>
 
                             <div class="col-md-6 text-center">
-                                @if ($invoice->service->image)
-                                    <img src="{{ asset('storage/' . $invoice->service->image) }}" alt="Ảnh dịch vụ"
-                                        class="img-fluid rounded-3 shadow-sm mb-3" style="max-height: 250px;">
+                                @if ($invoice->services->first()->image)
+                                    <img src="{{ asset('storage/' . $invoice->services->first()->image) }}"
+                                        alt="Ảnh dịch vụ" class="img-fluid rounded-3 shadow-sm mb-3"
+                                        style="max-height: 250px;">
                                 @else
                                     <p><strong>Ảnh:</strong> Không có ảnh</p>
                                 @endif
