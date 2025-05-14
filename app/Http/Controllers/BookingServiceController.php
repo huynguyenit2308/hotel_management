@@ -9,6 +9,7 @@ use Illuminate\Support\MessageBag;
 
 class BookingServiceController extends Controller
 {
+    // Đặt dịch vụ
     public function bookingService(Request $request)
     {
         try {
@@ -73,24 +74,7 @@ class BookingServiceController extends Controller
         return redirect()->route('invoice.list.user')->with('success', "Đặt dịch vụ $serviceName thành công!");
     }
 
-    public function detailInvoice(Request $request)
-    {
-        try {
-            $id = $request->get('id');
-            $invoice = BookingService::where('id', $id)
-                ->where('status', 'confirmed')
-                ->first();
-
-            if (!$invoice) {
-                return redirect()->route('invoice.list')->with('error', 'Hóa đơn không tồn tại hoặc chưa được xác nhận.');
-            }
-
-            return view('userService.detailInvoice', compact('invoice'));
-        } catch (\Exception $e) {
-            return redirect()->route('invoice.list')->with('error', 'Đã xảy ra lỗi: ' . $e->getMessage());
-        }
-    }
-
+    // Danh sách dịch vụ đặt của người dùng
     public function listInvoiceUser()
     {
         try {
@@ -109,6 +93,7 @@ class BookingServiceController extends Controller
         }
     }
 
+    // Hủy dịch vụ đã đặt của người dùng
     public function cancelInvoiceUser(Request $request)
     {
         try {
