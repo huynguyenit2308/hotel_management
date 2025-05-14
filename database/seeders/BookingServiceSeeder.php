@@ -2,46 +2,31 @@
 
 namespace Database\Seeders;
 
-use Carbon\Carbon;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class BookingServiceSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
+    public function run()
     {
-        DB::table('booking_service')->insert([
-            [
-                'customer_id' => 1,
-                'service_id' => 1,
-                'booking_date' => now()->addDays(1),
-                'note' => 'Lần đầu đặt dịch vụ này.',
-                'status' => 'pending',
+        $data = [];
+
+        for ($i = 1; $i <= 20; $i++) {
+            $bookingDate = Carbon::now()->subDays(rand(1, 30));
+            $status = ['pending', 'confirmed', 'cancelled'][rand(0, 2)];
+
+            $data[] = [
+                'customer_id' => rand(1, 5),
+                'service_id' => rand(1, 5),
+                'booking_date' => $bookingDate,
+                'note' => 'Ghi chú dịch vụ ' . $i,
+                'status' => $status,
                 'created_at' => now(),
                 'updated_at' => now(),
-            ],
-            [
-                'customer_id' => 2,
-                'service_id' => 2,
-                'booking_date' => now()->addDays(2),
-                'note' => 'Khách hàng yêu cầu thêm dịch vụ VIP.',
-                'status' => 'confirmed',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'customer_id' => 3,
-                'service_id' => 3,
-                'booking_date' => now()->addDays(3),
-                'note' => 'Dịch vụ này có thể thay đổi giờ.',
-                'status' => 'cancelled',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-        ]);
+            ];
+        }
+
+        DB::table('booking_service')->insert($data);
     }
 }
