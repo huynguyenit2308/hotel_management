@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-use App\Models\Service;
+use App\Models\Attendance;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -22,20 +22,22 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call([
-            UserSeeder::class,
+            RoleSeeder::class,
+            CustomerSeeder::class,
+            AdminSeeder::class,
+            AccountSeeder::class,
             RoomStatusSeeder::class,
             RoomSeeder::class,
-            CustomerSeeder::class,
             BookingSeeder::class,
-            RoleSeeder::class,
             ServiceSeeder::class,
             InvoiceSeeder::class,
-            BookingServiceSeeder::class,
-            AdminRoleSeeder::class,
-            AccountSeeder::class,
             EmployeeSeeder::class,
             AttendanceSeeder::class,
+            WageSeeder::class,
+            BookingServiceSeeder::class,
+            RatingSeeder::class,
             VoucherSeeder::class,
+            InvoiceServiceSeeder::class,
         ]);
     }
 }

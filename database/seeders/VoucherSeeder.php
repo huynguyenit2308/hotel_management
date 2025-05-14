@@ -4,45 +4,35 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class VoucherSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
+    public function run()
     {
-         DB::table('voucher')->insert([
-            [
-                'code' => 'WELCOME10',
-                'type' => 'percent',
-                'value' => 10,
-                'usage_limit' => 100,
-                'used_count' => 0,
-                'start_date' => now()->subDays(1),
-                'end_date' => now()->addDays(30),
-                'active' => true,
-            ],
-            [
-                'code' => 'FREESHIP50K',
-                'type' => 'fixed',
-                'value' => 50000,
-                'usage_limit' => 50,
-                'used_count' => 10,
-                'start_date' => now()->subDays(5),
-                'end_date' => now()->addDays(15),
-                'active' => true,
-            ],
-            [
-                'code' => 'SUMMER20',
-                'type' => 'percent',
-                'value' => 20,
-                'usage_limit' => 200,
-                'used_count' => 150,
-                'start_date' => now(),
-                'end_date' => now()->addDays(60),
-                'active' => true,
-            ],
-        ]);
+        $data = [];
+
+        for ($i = 1; $i <= 20; $i++) {
+            $type = rand(0, 1) ? 'percent' : 'fixed';
+            $value = $type === 'percent' ? rand(10, 50) : rand(100000, 1000000);
+
+            $startDate = Carbon::now()->subDays(rand(1, 30));
+            $endDate = Carbon::now()->addDays(rand(1, 30));
+
+            $data[] = [
+                'code' => 'VOUCHER' . str_pad($i, 4, '0', STR_PAD_LEFT),
+                'type' => $type,
+                'value' => $value,
+                'usage_limit' => rand(1, 100),
+                'used_count' => rand(0, 50),
+                'start_date' => $startDate,
+                'end_date' => $endDate,
+                'active' => rand(0, 1) ? true : false,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
+
+        DB::table('voucher')->insert($data);
     }
 }
