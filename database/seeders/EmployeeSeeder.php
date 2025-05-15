@@ -40,7 +40,7 @@ class EmployeeSeeder extends Seeder
             'Quản lý nhân sự'
         ];
         
-        // Danh sách trạng thái nhân viên - sử dụng integer thay vì string
+        // Danh sách trạng thái nhân viên - 
         $statuses = [1, 0, 2]; // 1 = active, 0 = inactive, 2 = on_leave
         
         // Tạo 20 nhân viên mẫu

@@ -169,6 +169,17 @@ class AccountSeeder extends Seeder
                     'updated_at' => now(),
                 ]);
                 
+
+
+
+
+
+
+
+
+
+
+                
                 // Kiểm tra xem username đã tồn tại chưa
                 $existingUsername = DB::table('account')->where('username', $customer['username'])->first();
                 

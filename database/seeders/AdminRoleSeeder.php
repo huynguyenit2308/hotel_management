@@ -75,6 +75,17 @@ class AdminRoleSeeder extends Seeder
             ],
         ];
 
+
+
+
+
+
+
+
+
+
+
+        
         foreach ($roles as $role) {
             // Kiểm tra xem vai trò đã tồn tại hay chưa
             $exists = DB::table('admin')->where('role_name', $role['role_name'])->exists();

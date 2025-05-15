@@ -206,6 +206,11 @@
                                 <li class="nav-item px-3">
                                     <a class="nav-link  p-0" href="#">Dịch vụ</a>
                                 </li>
+                                 <li class="nav-item px-3">
+                                    <a href="{{ route('bookings.index') }}"
+                                                class="nav-link {{ request()->routeIs('bookings.index', 'bookings.create', 'bookings.createDirect', 'bookings.show', 'bookings.edit') ? 'bg-warning-subtle' : '' }}">Các
+                                                phòng đã đặt</a>
+                                </li>
                                 {{-- <li class="nav-item px-3">
                                     <a class="nav-link p-0 {{ request()->routeIs('ratings.customerRatings') ? 'active text-warning' : '' }}"
                                         href="{{ route('ratings.customerRatings') }}">
@@ -259,9 +264,7 @@
                                         <li><a href="{{ route('salaries.index') }}" class="dropdown-item {{ request()->routeIs('salaries.index', 'salaries.edit') ? 'bg-warning-subtle' : '' }}">Quản lý lương</a>
                                         </li>
                                         @endif
-                                        <li><a href="{{ route('bookings.index') }}"
-                                                class="dropdown-item {{ request()->routeIs('bookings.index', 'bookings.create', 'bookings.createDirect', 'bookings.show', 'bookings.edit') ? 'bg-warning-subtle' : '' }}">Các
-                                                phòng đã đặt</a>
+                                        <li>
                                         </li>
                                         <li><a href="{{ route('ratings.list') }}" class="dropdown-item">Danh sách
                                                 Đánh

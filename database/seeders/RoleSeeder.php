@@ -9,6 +9,7 @@ class RoleSeeder extends Seeder
 {
     public function run(): void
     {
+        //seeder admin roles
         DB::table('admin')->insert([
             [
                 'id' => 1,
