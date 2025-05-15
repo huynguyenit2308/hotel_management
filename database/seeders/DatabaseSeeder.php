@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             CustomerSeeder::class,
             AdminSeeder::class,
+            AdminRoleSeeder::class,
             AccountSeeder::class,
             RoomStatusSeeder::class,
             RoomSeeder::class,
