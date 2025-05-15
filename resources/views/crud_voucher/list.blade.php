@@ -6,9 +6,9 @@
             background-color: #EAE5DD;
         }
     </style>
-    <section id="services" class="py-5">
+    <section id="vouchers" class="py-5">
         <div class="container-fluid padding-side" data-aos="fade-up">
-            <h3 class="display-3 text-center fw-normal col-lg-4 offset-lg-4">Danh sách dịch vụ</h3>
+            <h3 class="display-3 text-center fw-normal col-lg-4 offset-lg-4">Danh sách voucher</h3>
             @if (session('success'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     {{ session('success') }}
@@ -21,50 +21,28 @@
                 </div>
             @endif
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <form action="{{ route('service.search') }}" method="GET" class="position-relative">
-                    <input type="text" name="keyword" id="search-input"
-                        class="form-control bg-secondary border-0 rounded-5 px-4 py-2" placeholder="Tìm kiếm dịch vụ..."
-                        value="{{ request('keyword') }}" autocomplete="off">
-                    <div id="search-suggestions"
-                        class="list-group position-absolute w-100 bg-white border rounded mt-1 d-none shadow"
-                        style="z-index: 1000; max-height: 250px; overflow-y: auto;">
-                    </div>
-                    <button type="submit"
-                        class="position-absolute top-50 end-0 translate-middle-y p-1 me-3 border-0 bg-transparent">
-                        <svg width="20" height="20">
-                            <use xlink:href="#search"></use>
-                        </svg>
-                    </button>
-                </form>
                 <div class="d-flex gap-3">
-                    {{-- <a href="{{ route('service.statistic') }}"
+                    <a href="{{route('voucher.store')}}"
                         class="btn btn-primary rounded-pill px-4 py-2 d-flex align-items-center gap-2 shadow-sm transition-all"
                         style="transition: all 0.3s ease-in-out;"
                         onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 16px rgba(0,0,0,0.2)'"
                         onmouseout="this.style.transform='none'; this.style.boxShadow='0 4px 6px rgba(0,0,0,0.1)'">
-                        <span>Thống kê dịch vụ</span> --}}
-                    </a>
-                    <a href="{{ route('service.add') }}"
-                        class="btn btn-primary rounded-pill px-4 py-2 d-flex align-items-center gap-2 shadow-sm transition-all"
-                        style="transition: all 0.3s ease-in-out;"
-                        onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 16px rgba(0,0,0,0.2)'"
-                        onmouseout="this.style.transform='none'; this.style.boxShadow='0 4px 6px rgba(0,0,0,0.1)'">
-                        <span>Thêm Dịch Vụ</span>
+                        <span>Thêm Voucher</span>
                     </a>
                 </div>
             </div>
 
             <div class="row mt-5 justify-content-center">
-                @if ($service->isEmpty())
+                @if ($voucher->isEmpty())
                     <div class="col-12 text-center">
-                        <p>Không có dịch vụ nào!</p>
+                        <p>Không có Voucher nào!</p>
                     </div>
                 @else
-                    @foreach ($service as $value)
+                    @foreach ($voucher as $value)
                         <div class="col-md-6 col-xl-4">
                             <div class="service mb-4 text-center rounded-4 p-5">
-                                <h4 class="display-6 fw-normal my-3">{{ $value->service_name }}</h4>
-                                <a href="{{ route('service.detail', ['id' => $value->id]) }}" class="btn btn-arrow">
+                                <h4 class="display-6 fw-normal my-3">{{ $value->code }}</h4>
+                                <a href="{{ route('voucher.detail', ['id' => $value->id]) }}" class="btn btn-arrow">
                                     <span class="text-decoration-underline">
                                         Xem chi tiết
                                         <svg width="18" height="18">
@@ -80,7 +58,7 @@
         </div>
         <div class="d-flex justify-content-center mt-4">
             <div class="pagination-wrapper">
-                {{ $service->links('pagination::bootstrap-5') }}
+                {{ $voucher->links('pagination::bootstrap-5') }}
             </div>
         </div>
     </section>

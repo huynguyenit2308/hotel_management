@@ -4,19 +4,24 @@ namespace App\Http\Controllers;
 
 use App\Models\BookingService;
 use App\Models\Service;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\MessageBag;
 
 class BookingServiceController extends Controller
 {
+    // Đặt dịch vụ
     public function bookingService(Request $request)
     {
-        $id = $request->get('id');
-        $service = Service::find($id);
-        if (!$service) {
-            return redirect()->route('home')->with('error', 'Dịch vụ không tồn tại.');
+        try {
+            $id = $request->get('id');
+            $service = Service::find($id);
+            if (!$service) {
+                return redirect()->route('home')->with('error', 'Dịch vụ không tồn tại.');
+            }
+            return view('userService.bookingService', compact('service'));
+        } catch (\Exception $e) {
+            return redirect()->route('home')->with('error', 'Đã xảy ra lỗi: ' . $e->getMessage());
         }
-        return view('userService.bookingService', compact('service'));
     }
 
     public function postBookingService(Request $request)
@@ -35,11 +40,21 @@ class BookingServiceController extends Controller
             'time.required' => 'Vui lòng chọn giờ sử dụng.',
             'note.string' => 'Ghi chú phải là văn bản.',
         ]);
+
         if (!auth()->check()) {
             return redirect()->route('login')->with('error', 'Vui lòng đăng nhập để đặt dịch vụ.');
         }
 
         $bookingDateTime = $request->date . ' ' . $request->time;
+
+        $hasConflict = BookingService::where('service_id', $request->service_id)
+            ->where('booking_date', $bookingDateTime)
+            ->exists();
+
+        if ($hasConflict) {
+            $errors = new MessageBag(['time' => 'Đã trùng thời gian. Vui lòng chọn thời gian khác.']);
+            return redirect()->back()->withErrors($errors)->withInput();
+        }
 
         BookingService::create([
             'service_id' => $request->service_id,
@@ -55,60 +70,59 @@ class BookingServiceController extends Controller
             ->count();
         session(['booking_count' => $bookingCount]);
 
-        return redirect()->route('home')->with('success', 'Đặt dịch vụ thành công!');
+        $serviceName = Service::find($request->service_id)?->service_name ?? 'dịch vụ';
+        return redirect()->route('invoice.list.user')->with('success', "Đặt dịch vụ $serviceName thành công!");
     }
 
-    public function listInvoice()
-    {
-        $invoices = BookingService::where('status', 'confirmed')->paginate(6);
-        return view('userService.listInvoice', compact('invoices'));
-    }
-
-    public function detailInvoice(Request $request)
-    {
-        $id = $request->get('id');
-        $invoice = BookingService::where('id', $id)
-            ->where('status', 'confirmed')
-            ->first();
-
-        if (!$invoice) {
-            return redirect()->route('invoice.list')->with('error', 'Hóa đơn không tồn tại hoặc chưa được xác nhận.');
-        }
-
-        return view('userService.detailInvoice', compact('invoice'));
-    }
-
+    // Danh sách dịch vụ đặt của người dùng
     public function listInvoiceUser()
     {
-        $invoices = BookingService::where('customer_id', auth()->user()->id)
-            ->where('status', 'pending')
-            ->get();
+        try {
+            if (!auth()->check()) {
+                return redirect()->route('login')->with('error', 'Vui lòng đăng nhập để xem hóa đơn.');
+            }
 
-        return view('userService.listInvoiceUser', compact('invoices'));
+            $invoices = BookingService::where('customer_id', auth()->id())
+                ->where('status', 'pending')
+                ->orderBy('booking_date', 'desc')
+                ->get();
+
+            return view('userService.listInvoiceUser', compact('invoices'));
+        } catch (\Exception $e) {
+            return redirect()->route('home')->with('error', 'Đã xảy ra lỗi: ' . $e->getMessage());
+        }
     }
 
+    // Hủy dịch vụ đã đặt của người dùng
     public function cancelInvoiceUser(Request $request)
     {
-        $id = $request->get('id');
-        $invoice = BookingService::find($id);
+        try {
+            $id = $request->get('id');
+            $invoice = BookingService::find($id);
 
-        if (!$invoice) {
-            return redirect()->route('home')->with('error', 'Dịch vụ không tồn tại.');
+            if (!$invoice) {
+                return redirect()->route('home')->with('error', 'Hóa đơn không tồn tại.');
+            }
+
+            if ($invoice->customer_id !== auth()->id()) {
+                return redirect()->route('home')->with('error', 'Bạn không có quyền hủy hóa đơn này.');
+            }
+
+            if ($invoice->status === 'pending') {
+                $invoice->status = 'cancelled';
+                $invoice->save();
+
+                $bookingCount = BookingService::where('customer_id', auth()->id())
+                    ->where('status', 'pending')
+                    ->count();
+                session(['booking_count' => $bookingCount]);
+
+                return back()->with('success', 'Hóa đơn đã được hủy thành công.');
+            }
+
+            return back()->with('error', 'Chỉ có thể hủy hóa đơn ở trạng thái đang chờ xác nhận.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Có lỗi xảy ra: ' . $e->getMessage());
         }
-
-        if ($invoice->status === 'pending') {
-            $invoice->status = 'cancelled';
-            $invoice->save();
-
-            $bookingCount = BookingService::where('customer_id', auth()->user()->id)
-                ->where('status', 'pending')
-                ->count();
-            session(['booking_count' => $bookingCount]);
-
-            return back()->with('success', 'Hóa đơn đã được hủy thành công.');
-        }
-
-
-        return back()->with('error', 'Không thể hủy hóa đơn này.');
     }
 }

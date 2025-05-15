@@ -231,6 +231,5 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   checkboxes.forEach(cb => cb.addEventListener('change', updateSummary));
-
   updateSummary();
 });

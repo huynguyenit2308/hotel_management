@@ -2,43 +2,34 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Customer;
-use Carbon\Carbon;
+use Faker\Factory as Faker;
+use Illuminate\Support\Facades\DB;
 
 class CustomerSeeder extends Seeder
 {
+    /**
+     * Run the database seeds.
+     */
     public function run(): void
     {
-            $customers = [
-                [
-                    'full_name' => 'Nguyễn Văn A',
-                    'email' => 'nguyenvana@gmail.com',
-                    'phone' => '0901234567',
-                    'address' => '123 Đường Láng, Hà Nội',
-                    'birth_day' => '1990-01-01',
-                    'registration_date' => Carbon::now(),
-                ],
-                [
-                    'full_name' => 'Trần Thị B',
-                    'email' => 'tranthib@gmail.com',
-                    'phone' => '0901234568',
-                    'address' => '456 Nguyễn Huệ, TP.HCM',
-                    'birth_day' => '1995-05-10',
-                    'registration_date' => Carbon::now(),
-                ],
-                [
-                    'full_name' => 'Lê Văn C',
-                    'email' => 'levanc@gmail.com',
-                    'phone' => '0901234569',
-                    'address' => '789 Lê Lợi, Đà Nẵng',
-                    'birth_day' => '1988-12-20',
-                    'registration_date' => Carbon::now(),
-                ],
-            ];
+        $faker = Faker::create();
+        $data = [];
 
-            foreach ($customers as $customer) {
-                Customer::create($customer);
-            }
+        for ($i = 0; $i < 5; $i++) {
+            $data[] = [
+                'full_name' => $faker->name,
+                'email' => $faker->unique()->safeEmail,
+                'phone' => $faker->unique()->numerify('09########'),
+                'address' => $faker->address,
+                'birth_day' => $faker->date('Y-m-d', '2005-01-01'),
+                'registration_date' => $faker->dateTimeBetween('-1 years', 'now'),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
+
+        DB::table('customer')->insert($data);
     }
 }

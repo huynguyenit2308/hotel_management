@@ -15,7 +15,7 @@
                     <div class="row align-items-center m-auto pt-5 px-4 px-lg-0">
                         <div class="text-start col-md-6 col-lg-5 col-xl-6 offset-lg-1">
                             <h2 class="display-1 fw-normal">Cánh cổng vào sự yên bình của bạn.</h2>
-                            <a href="#" class="btn btn-arrow btn-primary mt-3">
+                            <a href="#room" class="btn btn-arrow btn-primary mt-3">
                                 <span>Khám phá phòng <svg width="18" height="18">
                                         <use xlink:href="#arrow-right"></use>
                                     </svg></span>
@@ -42,7 +42,7 @@
                                 tác và giải trí. Với các tiện nghi hiện đại và bầu không khí ấm áp, hấp dẫn, chúng tôi nỗ
                                 lực để mang đến
                                 cho bạn kỳ nghỉ tuyệt vời cùng chúng tôi.</p>
-                            <a href="#" class="btn btn-arrow btn-primary mt-3">
+                            <a href="#room" class="btn btn-arrow btn-primary mt-3">
                                 <span>Đặt phòng ngay <svg width="18" height="18">
                                         <use xlink:href="#arrow-right"></use>
                                     </svg></span>
@@ -101,7 +101,7 @@
                                     <use xlink:href="#arrow-right"></use>
                                 </svg></span>
                         </a>
-                        <a href="#" class="btn btn-arrow btn-primary mt-3">
+                        <a href="{{ route('rooms.index') }}" class="btn btn-arrow btn-primary mt-3">
                             <span>Khám phá phòng<svg width="18" height="18">
                                     <use xlink:href="#arrow-right"></use>
                                 </svg></span>

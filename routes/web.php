@@ -13,9 +13,9 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\CustomerBookingController;
 use App\Http\Controllers\AttendanceController;
-
-
-use App\Models\BookingService;
+use App\Http\Controllers\CRUD_VoucherController;
+use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\PaymentController;
 use App\Models\Service;
 
 /*
@@ -39,7 +39,6 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
-
 // Danh sách dịch vụ
 Route::get('list-service', [CRUD_ServiceController::class, 'listService'])->name('service.list');
 // Thêm dịch vụ
@@ -59,18 +58,35 @@ Route::get('auto-complete-service', [CRUD_ServiceController::class, 'autoComplet
 Route::get('price-service', [CRUD_ServiceController::class, 'editPriceService'])->name('service.price');
 Route::post('price-service', [CRUD_ServiceController::class, 'updatePriceService'])->name('service.price.update');
 // Thống kê dịch vụ
-Route::get('statistic-service', [CRUD_ServiceController::class, 'statisticService'])->name('service.statistic');
+// Route::get('statistic-service', [CRUD_ServiceController::class, 'statisticService'])->name('service.statistic');
 // Sử dụng dịch vụ
 Route::get('booking-service', [BookingServiceController::class, 'bookingService'])->name('booking.service');
 Route::post('booking-service', [BookingServiceController::class, 'postBookingService'])->name('post.booking.service');
 // Danh sách hóa đơn
-Route::get('invoice-list', [BookingServiceController::class, 'listInvoice'])->name('invoice.list');
+Route::get('invoice-list', [InvoiceController::class, 'listInvoice'])->name('invoice.list');
 // Chi tiết hóa đơn
-Route::get('detail-invoice', [BookingServiceController::class, 'detailInvoice'])->name('invoice.detail');
+Route::get('detail-invoice', [InvoiceController::class, 'detailInvoice'])->name('invoice.detail');
 // Danh sách hóa đơn của người dùng
 Route::get('invoice-list-user', [BookingServiceController::class, 'listInvoiceUser'])->name('invoice.list.user');
 // Hủy hóa đơn
-Route::get('invoice-cancel-user', [BookingServiceController::class, 'cancelInvoiceUser'])->name('invoice.cancel.user');
+Route::post('invoice-cancel-user', [BookingServiceController::class, 'cancelInvoiceUser'])->name('invoice.cancel.user');
+// Thanh toán
+Route::get('payment', [PaymentController::class, 'payment'])->name('invoice.payment');
+// Thanh toán bằng tiền mặt
+Route::post('payment-cash', [PaymentController::class, 'paymentCash'])->name('payment.cash');
+
+// Danh sách voucher
+Route::get('list-voucher', [CRUD_VoucherController::class, 'listvoucher'])->name('voucher.list');
+// Thêm voucher
+Route::get('add-voucher', [CRUD_VoucherController::class, 'addvoucher'])->name('voucher.add');
+Route::post('add-voucher', [CRUD_VoucherController::class, 'postAddvoucher'])->name('voucher.store');
+// Chi tiết voucher
+Route::get('detail-voucher', [CRUD_VoucherController::class, 'detailvoucher'])->name('voucher.detail');
+// Xóa voucher
+Route::get('delete-voucher', [CRUD_VoucherController::class, 'deletevoucher'])->name('voucher.delete');
+// Sửa voucher
+Route::get('update-voucher', [CRUD_VoucherController::class, 'updatevoucher'])->name('voucher.edit');
+Route::post('update-voucher', [CRUD_VoucherController::class, 'updatePostvoucher'])->name('voucher.update');
 
 //Mở form đăng ký tài khoản
 Route::get('/register', [AccountRegisterController::class, 'showForm'])->name('register.form');
@@ -156,7 +172,7 @@ Route::get('/profile', [ProfileController::class, 'show'])->name('profile')->mid
 
 //Đánh giá khách hàng
 Route::middleware('auth')->group(function () { // Chỉ có khách hàng đã đăng nhập mới được đánh giá
-    Route::get('/ratings/create', [RatingController::class, 'create'])->name('ratings.create');//Hiển thị form đánh giá
+    Route::get('/ratings/create', [RatingController::class, 'create'])->name('ratings.create'); //Hiển thị form đánh giá
     Route::post('/ratings', [RatingController::class, 'store'])->name('ratings.store'); // Xử lí việc đánh giá
 });
 

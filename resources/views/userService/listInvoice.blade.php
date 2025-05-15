@@ -12,8 +12,22 @@
                                 class="service mb-2 text-center rounded-4 p-4 shadow-sm d-flex flex-column justify-content-between h-100">
                                 <div>
                                     <h4 class="display-6 fw-normal my-3">
-                                        {{ $invoice->service->service_name }}
+                                        @php
+                                            $uniqueServices = $invoice->services
+                                                ? $invoice->services->unique('service_name')
+                                                : collect();
+                                        @endphp
+
+                                        @if ($uniqueServices->count() > 1)
+                                            {{ $uniqueServices->first()->service_name }} và
+                                            {{ $uniqueServices->count() - 1 }} dịch vụ khác
+                                        @elseif ($uniqueServices->count() === 1)
+                                            {{ $uniqueServices->first()->service_name }}
+                                        @else
+                                            Không có dịch vụ nào
+                                        @endif
                                     </h4>
+
                                     <span
                                         class="badge 
                                     @if ($invoice->status === 'pending') bg-warning text-dark 

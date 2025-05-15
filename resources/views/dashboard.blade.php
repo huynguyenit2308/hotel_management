@@ -146,7 +146,7 @@
         <div class="loader"></div>
     </div>
 
-    <header id="header">
+    <header id="header" class="sticky-top bg-white shadow-sm">
         <nav class="header-top bg-secondary py-1">
             <div class="container-fluid padding-side">
                 <div class="d-flex flex-wrap justify-content-between align-items-center">
@@ -189,7 +189,8 @@
         <nav id="primary-header" class="navbar navbar-expand-lg py-4">
             <div class="container-fluid padding-side">
                 <div class="d-flex justify-content-between align-items-center w-100">
-                    <a class="navbar-brand" href="#">
+                    <a class="navbar-brand {{ request()->routeIs('home') ? 'active text-warning' : '' }}"
+                        href="{{ route('home') }}">
                         <img src="images/main-logo.png" class="logo img-fluid" width="70">
                     </a>
                     <div class="header-bottom offcanvas offcanvas-end " id="bdNavbar"
@@ -201,68 +202,83 @@
                                         aria-current="page" href="{{ route('home') }}">Trang chủ</a>
                                 </li>
                                 <li class="nav-item px-3">
-                                    <a class="nav-link p-0" href="#">Khám phá phòng</a>
+                                    <a class="nav-link p-0" href="/#room">Khám phá phòng</a>
                                 </li>
                                 <li class="nav-item px-3">
-                                    <a class="nav-link  p-0" href="#">Dịch vụ</a>
+                                    <a class="nav-link  p-0" href="/#services">Dịch vụ</a>
                                 </li>
-                                 <li class="nav-item px-3">
+                                <li class="nav-item px-3">
                                     <a href="{{ route('bookings.index') }}"
                                                 class="nav-link {{ request()->routeIs('bookings.index', 'bookings.create', 'bookings.createDirect', 'bookings.show', 'bookings.edit') ? 'bg-warning-subtle' : '' }}">Các
                                                 phòng đã đặt</a>
                                 </li>
-                                {{-- <li class="nav-item px-3">
-                                    <a class="nav-link p-0 {{ request()->routeIs('ratings.customerRatings') ? 'active text-warning' : '' }}"
-                                        href="{{ route('ratings.customerRatings') }}">
-                                        Đánh giá của khách hàng
-                                    </a>
-                                </li> --}}
-                                <li class="nav-item px-3">
-                                    @if (Auth::check())
-                                <li class="nav-item px-3">
-                                    <form action="{{ route('logout') }}" method="POST" class="d-inline">
-                                        @csrf
-                                        <button type="submit" class="nav-link btn btn-link p-0"
-                                            style="border: none; background: none;">
-                                            Đăng Xuất
-                                        </button>
-                                    </form>
-                                </li>
-                            @else
-                                <li class="nav-item px-3">
-                                    <a href="{{ route('login') }}" class="nav-link p-0">Đăng nhập</a>
-                                </li>
+                                @if (Auth::check())
+                                    <li class="nav-item px-3">
+                                        <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                                            @csrf
+                                            <button type="submit" class="nav-link btn btn-link p-0"
+                                                style="border: none; background: none;">
+                                                Đăng Xuất
+                                            </button>
+                                        </form>
+                                    </li>
+                                @else
+                                    <li class="nav-item px-3">
+                                        <a href="{{ route('login') }}"
+                                            class="nav-link {{ request()->routeIs('login') ? 'active text-warning' : '' }} p-0">Đăng
+                                            nhập</a>
+                                    </li>
                                 @endif
                                 <li class="nav-item px-3 dropdown">
-                                    <a class="nav-link p-0 {{ request()->routeIs('service.list', 'service.add', 'service.detail', 'service.edit', 'service.search') ? 'active text-warning' : '' }} dropdown-toggle text-center "
+                                    <a class="nav-link p-0 {{ request()->routeIs('service.list', 'service.add', 'service.detail', 'service.edit', 'service.search', 'service.price', 'invoice.list', 'invoice.detail', 'voucher.list', 'voucher.add', 'voucher.detail', 'voucher.edit', 'bookings.index', 'bookings.create', 'bookings.createDirect', 'bookings.show', 'bookings.edit', 'employees.index', 'employees.create', 'employees.show', 'employees.edit', 'ratings.list', 'attendances.index', 'attendances.create', 'attendances.edit', 'attendances.salary_report', 'salaries.index', 'salaries.edit', 'customers.list', 'customers.detail', 'customers.edit', 'customers.update', 'rooms.index') ? 'active text-warning' : '' }} dropdown-toggle text-center "
                                         data-bs-toggle="dropdown" href="#" role="button"
                                         aria-expanded="false">Management</a>
                                     <ul class="dropdown-menu dropdown-menu-end animate slide mt-3 border-0 shadow">
-                                        <li><a href="#" class="dropdown-item ">Tài khoản </a>
-                                        </li>
-                                        @if(Auth::check() && Auth::user()->adminRole && (Auth::user()->adminRole->role_name == 'Super Admin' || Auth::user()->adminRole->role_name == 'Admin'))
-                                        <li><a href="{{ route('permissions.index') }}" class="dropdown-item {{ request()->routeIs('permissions.index', 'permissions.edit') ? 'bg-warning-subtle' : '' }}">Phân quyền tài khoản</a>
-                                        </li>
+                                        @if (Auth::check() &&
+                                                Auth::user()->adminRole &&
+                                                (Auth::user()->adminRole->role_name == 'Super Admin' || Auth::user()->adminRole->role_name == 'Admin'))
+                                            <li><a href="{{ route('permissions.index') }}"
+                                                    class="dropdown-item {{ request()->routeIs('permissions.index', 'permissions.edit') ? 'bg-warning-subtle' : '' }}">Phân
+                                                    quyền tài khoản</a>
+                                            </li>
                                         @endif
-                                        <li><a href="{{ route('customers.list') }}" class="dropdown-item ">Khách hàng
+                                        <li><a href="{{ route('customers.list') }}"
+                                                class="dropdown-item {{ request()->routeIs('customers.list', 'customers.detail', 'customers.edit', 'customers.update') ? 'bg-warning-subtle' : '' }}">Khách
+                                                hàng
                                             </a>
                                         </li>
-                                        <li><a href="{{ route('rooms.index') }}" class="dropdown-item ">Phòng </a>
+                                        <li><a href="{{ route('rooms.index') }}"
+                                                class="dropdown-item {{ request()->routeIs('rooms.index') ? 'bg-warning-subtle' : '' }}">Phòng
+                                            </a>
                                         </li>
                                         <li><a href="{{ route('service.list') }}"
-                                                class="dropdown-item {{ request()->routeIs('service.list', ' service.add', 'service.detail', 'service.edit', 'service.search') ? 'bg-warning-subtle' : '' }}">Dịch
+                                                class="dropdown-item {{ request()->routeIs('service.list', ' service.add', 'service.detail', 'service.edit', 'service.search', 'service.price') ? 'bg-warning-subtle' : '' }}">Dịch
                                                 vụ </a>
                                         </li>
-                                        <li><a href="{{ route('invoice.list') }}" class="dropdown-item ">Hóa đơn </a>
+                                        <li><a href="{{ route('invoice.list') }}"
+                                                class="dropdown-item {{ request()->routeIs('invoice.list', 'invoice.detail') ? 'bg-warning-subtle' : '' }}">Hóa
+                                                đơn </a>
                                         </li>
-                                      
-                                        <li><a href="{{ route('employees.index') }}" class="dropdown-item {{ request()->routeIs('employees.index', 'employees.create', 'employees.show', 'employees.edit') ? 'bg-warning-subtle' : '' }}">Quản lý nhân viên (mới)</a>
+                                        <li><a href="{{ route('voucher.list') }}"
+                                                class="dropdown-item {{ request()->routeIs('voucher.list', 'voucher.add', 'voucher.detail', 'voucher.edit') ? 'bg-warning-subtle' : '' }}">Voucher
+                                            </a>
                                         </li>
-                                        @if(Auth::check() && Auth::user()->adminRole && (Auth::user()->adminRole->role_name == 'Super Admin' || Auth::user()->adminRole->role_name == 'Admin'))
-                                        <li><a href="{{ route('attendances.index') }}" class="dropdown-item {{ request()->routeIs('attendances.index', 'attendances.create', 'attendances.edit', 'attendances.salary_report') ? 'bg-warning-subtle' : '' }}">Quản lý chấm công</a>
+
+                                        <li><a href="{{ route('employees.index') }}"
+                                                class="dropdown-item {{ request()->routeIs('employees.index', 'employees.create', 'employees.show', 'employees.edit') ? 'bg-warning-subtle' : '' }}">Quản
+                                                lý nhân viên (mới)</a>
                                         </li>
-                                        <li><a href="{{ route('salaries.index') }}" class="dropdown-item {{ request()->routeIs('salaries.index', 'salaries.edit') ? 'bg-warning-subtle' : '' }}">Quản lý lương</a>
-                                        </li>
+                                        @if (Auth::check() &&
+                                                Auth::user()->adminRole &&
+                                                (Auth::user()->adminRole->role_name == 'Super Admin' || Auth::user()->adminRole->role_name == 'Admin'))
+                                            <li><a href="{{ route('attendances.index') }}"
+                                                    class="dropdown-item {{ request()->routeIs('attendances.index', 'attendances.create', 'attendances.edit', 'attendances.salary_report') ? 'bg-warning-subtle' : '' }}">Quản
+                                                    lý chấm công</a>
+                                            </li>
+                                            <li><a href="{{ route('salaries.index') }}"
+                                                    class="dropdown-item {{ request()->routeIs('salaries.index', 'salaries.edit') ? 'bg-warning-subtle' : '' }}">Quản
+                                                    lý lương</a>
+                                            </li>
                                         @endif
                                         <li>
                                         </li>
@@ -289,7 +305,7 @@
                         @endif
                     </div>
                     <div class="cart-icon position-relative">
-                        <a href="{{route('invoice.list.user')}}">
+                        <a href="{{ route('invoice.list.user') }}">
                             <svg class="social" width="50" height="50">
                                 <use xlink:href="#invoice"></use>
                             </svg>

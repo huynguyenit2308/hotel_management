@@ -13,11 +13,18 @@ class CRUD_ServiceController extends Controller
     // Danh sách dịch vụ
     public function listService()
     {
-        $service = Service::paginate(6);
-        if ($service->isEmpty()) {
-            return view('crud_service.list', compact('service'))->with('error', 'Không có dịch vụ nào!!!');
+        try {
+            $service = Service::paginate(6);
+
+            if ($service->isEmpty()) {
+                return view('crud_service.list', compact('service'))
+                    ->with('error', 'Không có dịch vụ nào!!!');
+            }
+
+            return view('crud_service.list', compact('service'));
+        } catch (\Exception $e) {
+            return back()->with('error', 'Đã xảy ra lỗi khi tải danh sách dịch vụ: ' . $e->getMessage());
         }
-        return view('crud_service.list', compact('service'));
     }
 
     // Thêm dịch vụ
@@ -30,8 +37,8 @@ class CRUD_ServiceController extends Controller
     {
         $request->validate([
             'service_name' => 'required|max:255|unique:service,service_name',
-            'price' => 'required|numeric|min:0',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:4096',
+            'price' => 'required|numeric|min:0|max:100000000000',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'description' => 'required|max:1000',
         ], [
             'service_name.required' => 'Vui lòng nhập tên dịch vụ.',
@@ -40,17 +47,20 @@ class CRUD_ServiceController extends Controller
             'price.required' => 'Vui lòng nhập giá dịch vụ.',
             'price.numeric' => 'Giá phải là một số.',
             'price.min' => 'Giá phải lớn hơn hoặc bằng 0.',
+            'price.max' => 'Giá không được quá 100 tỷ.',
             'image.image' => 'Tập tin phải là một ảnh.',
             'image.mimes' => 'Ảnh phải có định dạng jpeg, png, jpg, gif, hoặc svg.',
-            'image.max' => 'Ảnh phải có kích thước nhỏ hơn 4MB.',
+            'image.max' => 'Ảnh phải có kích thước nhỏ hơn 2MB.',
             'description.required' => 'Vui lòng nhập mô tả dịch vụ.',
             'description.max' => 'Mô tả dịch vụ không được vượt quá 1000 ký tự.',
         ]);
+
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('service_images', 'public');
         } else {
             $imagePath = null;
         }
+
         $service = Service::create([
             'service_name' => $request->service_name,
             'price' => $request->price,
@@ -60,37 +70,46 @@ class CRUD_ServiceController extends Controller
         return redirect()->route('service.list')->with('success', 'Thêm dịch vụ "' . $service->service_name . '" thành công!');
     }
 
+
     // Chi tiết dịch vụ
     public function detailService(Request $request)
     {
-        $id = $request->get('id');
-        $service = Service::find($id);
+        try {
+            $id = $request->get('id');
+            $service = Service::find($id);
 
-        if (!$service) {
-            return redirect()->route('service.list')->with('error', 'Dịch vụ không tồn tại.');
+            if (!$service) {
+                return redirect()->route('service.list')->with('error', 'Dịch vụ không tồn tại.');
+            }
+
+            return view('crud_service.detail', compact('service'));
+        } catch (\Exception $e) {
+            return redirect()->route('service.list')->with('error', 'Đã có lỗi xảy ra: ' . $e->getMessage());
         }
-
-        return view('crud_service.detail', compact('service'));
     }
 
     // Xóa dịch vụ
     public function deleteService(Request $request)
     {
-        $id = $request->get('id');
-        $service = Service::find($id);
+        try {
+            $id = $request->get('id');
+            $service = Service::find($id);
 
-        if (!$service) {
-            return redirect()->route('service.list')->with('error', 'Dịch vụ không tồn tại!');
+            if (!$service) {
+                return redirect()->route('service.list')->with('error', 'Dịch vụ không tồn tại!');
+            }
+
+            if ($service->image && Storage::exists('public/' . $service->image)) {
+                Storage::delete('public/' . $service->image);
+            }
+
+            $serviceName = $service->service_name;
+            $service->delete();
+
+            return redirect()->route('service.list')->with('success', 'Xóa dịch vụ "' . $serviceName . '" thành công!');
+        } catch (\Exception $e) {
+            return redirect()->route('service.list')->with('error', 'Đã có lỗi xảy ra: ' . $e->getMessage());
         }
-
-        if ($service->image && Storage::exists('public/' . $service->image)) {
-            Storage::delete('public/' . $service->image);
-        }
-
-        $serviceName = $service->service_name;
-        $service->delete();
-
-        return redirect()->route('service.list')->with('success', 'Xóa dịch vụ "' . $serviceName . '" thành công!');
     }
 
     // Sửa dịch vụ
@@ -105,8 +124,8 @@ class CRUD_ServiceController extends Controller
     {
         $request->validate([
             'service_name' => 'required|max:255',
-            'price' => 'required|numeric|min:0',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:4096',
+            'price' => 'required|numeric|min:0|max:100000000000',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'description' => 'required|max:1000',
         ], [
             'service_name.required' => 'Vui lòng nhập tên dịch vụ.',
@@ -114,9 +133,10 @@ class CRUD_ServiceController extends Controller
             'price.required' => 'Vui lòng nhập giá dịch vụ.',
             'price.numeric' => 'Giá phải là một số.',
             'price.min' => 'Giá phải lớn hơn hoặc bằng 0.',
+            'price.max' => 'Giá không được quá 100 tỷ.',
             'image.image' => 'Tập tin phải là một ảnh.',
             'image.mimes' => 'Ảnh phải có định dạng jpeg, png, jpg, gif, hoặc svg.',
-            'image.max' => 'Ảnh phải có kích thước nhỏ hơn 4MB.',
+            'image.max' => 'Ảnh phải có kích thước nhỏ hơn 2MB.',
             'description.required' => 'Vui lòng nhập mô tả dịch vụ.',
             'description.max' => 'Mô tả dịch vụ không được vượt quá 1000 ký tự.',
         ]);
@@ -148,29 +168,46 @@ class CRUD_ServiceController extends Controller
     // Tìm kiếm dịch vụ
     public function searchService(Request $request)
     {
-        $keyword = $request->get('keyword');
+        try {
+            $keyword = $request->get('keyword');
 
-        $service = Service::where('service_name', 'like', "%{$keyword}%")
-            ->orWhere('price', 'like', "%{$keyword}%")
-            ->orWhere('description', 'like', "%{$keyword}%")
-            ->paginate(10);
+            $service = Service::where('service_name', 'like', "%{$keyword}%")
+                ->orWhere('price', 'like', "%{$keyword}%")
+                ->orWhere('description', 'like', "%{$keyword}%")
+                ->paginate(10);
 
-        return view('crud_service.list', compact('service'));
+            return view('crud_service.list', compact('service'));
+        } catch (\Exception $e) {
+            return redirect()->route('service.list')->with('error', 'Lỗi khi tìm kiếm: ' . $e->getMessage());
+        }
     }
 
     public function autoCompleteService(Request $request)
     {
-        $keyword = $request->get('keyword');
-        $services = Service::where('service_name', 'like', '%' . $keyword . '%')->pluck('service_name');
-        return response()->json($services);
+        try {
+            $keyword = $request->get('keyword');
+            $services = Service::where('service_name', 'like', '%' . $keyword . '%')->pluck('service_name');
+            return response()->json($services);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Lỗi khi gợi ý dịch vụ: ' . $e->getMessage()], 500);
+        }
     }
 
     // Quản lý giá dịch vụ
     public function editPriceService(Request $request)
     {
-        $id = $request->get('id');
-        $service = Service::find($id);
-        return view('crud_service.price', compact('service'));
+        try {
+            $id = $request->get('id');
+            $service = Service::find($id);
+
+            if (!$service) {
+                return redirect()->route('service.list')->with('error', 'Dịch vụ không tồn tại.');
+            }
+
+            return view('crud_service.price', compact('service'));
+        } catch (\Exception $e) {
+            return redirect()->route('service.list')->with('error', 'Lỗi khi truy cập chỉnh sửa giá: ' . $e->getMessage());
+        }
     }
 
     public function updatePriceService(Request $request)
@@ -179,8 +216,19 @@ class CRUD_ServiceController extends Controller
             'base_price' => 'required|numeric|min:0',
             'adjust_type' => 'required|in:increase,decrease',
             'adjust_percent' => 'required|numeric|min:0|max:100',
-        ]);
+        ], [
+            'base_price.required' => 'Vui lòng nhập giá gốc.',
+            'base_price.numeric' => 'Giá gốc phải là số.',
+            'base_price.min' => 'Giá gốc phải lớn hơn hoặc bằng 0.',
 
+            'adjust_type.required' => 'Vui lòng chọn loại điều chỉnh.',
+            'adjust_type.in' => 'Loại điều chỉnh không hợp lệ.',
+
+            'adjust_percent.required' => 'Vui lòng nhập phần trăm điều chỉnh.',
+            'adjust_percent.numeric' => 'Phần trăm điều chỉnh phải là số.',
+            'adjust_percent.min' => 'Phần trăm điều chỉnh không được âm.',
+            'adjust_percent.max' => 'Phần trăm điều chỉnh tối đa là 100.',
+        ]);
         $basePrice = $request->base_price;
         $percent = $request->adjust_percent;
         $adjustType = $request->adjust_type;
@@ -197,21 +245,21 @@ class CRUD_ServiceController extends Controller
         return redirect()->route('service.detail', ['id' => $id])->with('success', 'Cập nhật giá thành công!');
     }
 
-    // Thống kê dịch vụ
-    public function statisticService()
-    {
-        $statistic = InvoiceDetail::join('service', 'invoice_detail.service_id', '=', 'service.id')
-            ->select(
-                'service.service_name as service_name',
-                DB::raw('SUM(invoice_detail.quantity) as total_quantity'),
-                DB::raw('SUM(invoice_detail.amount) as total_amount')
-            )
-            ->groupBy('service.service_name')
-            ->orderByDesc('total_amount')
-            ->get();
+    // // Thống kê dịch vụ
+    // public function statisticService()
+    // {
+    //     $statistic = InvoiceDetail::join('service', 'invoice_detail.service_id', '=', 'service.id')
+    //         ->select(
+    //             'service.service_name as service_name',
+    //             DB::raw('SUM(invoice_detail.quantity) as total_quantity'),
+    //             DB::raw('SUM(invoice_detail.amount) as total_amount')
+    //         )
+    //         ->groupBy('service.service_name')
+    //         ->orderByDesc('total_amount')
+    //         ->get();
 
-        return view('crud_service.statistic', compact('statistic'));
-    }
+    //     return view('crud_service.statistic', compact('statistic'));
+    // }
 
     // Lấy dịch vụ
     public function getAllService()

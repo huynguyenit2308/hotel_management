@@ -3,78 +3,28 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\Room;
-use App\Models\RoomStatus;
+use Illuminate\Support\Facades\DB;
 
 class RoomSeeder extends Seeder
 {
-    public function run(): void
+    public function run()
     {
-        $rooms = [
-            [
-                'room_number' => '101',
-                'room_type' => 'Standard',
-                'price' => 500000,
-                'status_id' => 1
-            ],
-            [
-                'room_number' => '102',
-                'room_type' => 'Deluxe',
-                'price' => 800000,
-                'status_id' => 1
-            ],
-            [
-                'room_number' => '201',
-                'room_type' => 'Suite',
-                'price' => 1200000,
-                'status_id' => 1
-            ],
-            [
-                'room_number' => '202',
-                'room_type' => 'Standard',
-                'price' => 500000,
-                'status_id' => 2
-            ],
-            [
-                'room_number' => '301',
-                'room_type' => 'Deluxe',
-                'price' => 800000,
-                'status_id' => 1
-            ],
-            [
-                'room_number' => '302',
-                'room_type' => 'Suite',
-                'price' => 1200000,
-                'status_id' => 3
-            ],
-            [
-                'room_number' => '401',
-                'room_type' => 'Standard',
-                'price' => 500000,
-                'status_id' => 1
-            ],
-            [
-                'room_number' => '402',
-                'room_type' => 'Deluxe',
-                'price' => 800000,
-                'status_id' => 4
-            ],
-            [
-                'room_number' => '501',
-                'room_type' => 'Suite',
-                'price' => 1200000,
-                'status_id' => 1
-            ],
-            [
-                'room_number' => '502',
-                'room_type' => 'Standard',
-                'price' => 500000,
-                'status_id' => 1
-            ],
-        ];
+        $data = [];
+        $roomTypes = ['Standard', 'Deluxe', 'Suite', 'Family'];
+        $statuses = ['Available', 'Booked', 'Maintenance'];
 
-        foreach ($rooms as $room) {
-            Room::create($room);
+        for ($i = 1; $i <= 10; $i++) {
+            $data[] = [
+                'room_number' => str_pad($i, 3, '0', STR_PAD_LEFT),
+                'room_type' => $roomTypes[array_rand($roomTypes)],
+                'price' => rand(500000, 2000000),
+                'image' => 'path_to_image',
+                'status_id' => rand(1, 3),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
         }
+
+        DB::table('room')->insert($data);
     }
-} 
+}

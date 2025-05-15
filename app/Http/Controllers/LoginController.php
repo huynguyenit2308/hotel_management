@@ -33,7 +33,9 @@ class LoginController extends Controller
             Auth::login($account); // Đăng nhập
 
             // Lấy số lượng booking
-            $bookingCount = BookingService::where('customer_id', $account->id)->count();
+            $bookingCount = BookingService::where('customer_id', auth()->user()->id)
+                ->where('status', 'pending')
+                ->count();
             session(['booking_count' => $bookingCount]);
             
             // Lưu thông tin về vai trò của người dùng vào session
