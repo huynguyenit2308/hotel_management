@@ -12,7 +12,7 @@ class AccountSeeder extends Seeder
     /**
      * Run the database seeds.
      */
-    public function run(): void
+     public function run(): void
     {
         // Thêm tài khoản Super Admin
         $superAdminRole = DB::table('admin')->where('role_name', 'Super Admin')->first();
@@ -45,60 +45,30 @@ class AccountSeeder extends Seeder
             ]);
         }
         
-        // Thêm tài khoản Admin
-        $adminRole = DB::table('admin')->where('role_name', 'Admin')->first();
+        // Thêm tài khoản Receptionist 
+        $receptionistRole = DB::table('admin')->where('role_name', 'Receptionist')->first();
         
-        // Kiểm tra xem đã có tài khoản Admin chưa
-        $existingAdmin = DB::table('customer')->where('email', 'admin@hotel.com')->first();
+        // Kiểm tra xem đã có tài khoản Receptionist chưa
+        $existingReceptionist = DB::table('employee')->where('email', 'receptionist@hotel.com')->first();
         
-        if (!$existingAdmin) {
-            // Tạo customer cho Admin
-            $adminCustomerId = DB::table('customer')->insertGetId([
-                'full_name' => 'Admin User',
-                'email' => 'admin@hotel.com',
-                'phone' => '0888777666',
-                'address' => 'Hotel Management',
-                'birth_day' => '1992-05-15',
-                'registration_date' => now(),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-            
-            // Tạo account cho Admin
-            DB::table('account')->insert([
-                'customer_id' => $adminCustomerId,
-                'username' => 'admin',
-                'password' => Hash::make('admin123'),
-                'admin_id' => $adminRole->id,
-                'status' => 1,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-        }
-        
-        // Thêm tài khoản Employee
-        $employeeRole = DB::table('admin')->where('role_name', 'Employee')->first();
-        
-        // Kiểm tra xem đã có tài khoản Employee chưa
-        $existingEmployee = DB::table('employee')->where('email', 'employee@hotel.com')->first();
-        
-        if (!$existingEmployee) {
+        if (!$existingReceptionist) {
             // Tạo employee đầu tiên
             $employeeId = DB::table('employee')->insertGetId([
-                'full_name' => 'Employee User',
-                'email' => 'employee@hotel.com',
+                'full_name' => 'Receptionist User',
+                'email' => 'receptionist@hotel.com',
                 'phone' => '0777666555',
                 'address' => 'Hotel Staff Office',
                 'birth_day' => '1995-08-20',
                 'hire_date' => now(),
                 'position' => 'Receptionist',
                 'salary' => 10000000,
-                'admin_id' => $employeeRole->id,
+                'admin_id' => $receptionistRole->id,
                 'status' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
         }
+
         
         // Lấy quyền Customer
         $customerRole = DB::table('admin')->where('role_name', 'Customer')->first();
