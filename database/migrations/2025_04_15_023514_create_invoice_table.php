@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('customer_id')->constrained('customer')->onDelete('cascade');
             $table->dateTime('create_at');
             $table->integer('total_amount');
+            $table->enum('payment_method', ['cash', 'online', 'none'])->default('cash');
             $table->string('status', 255);
             $table->timestamps();
         });

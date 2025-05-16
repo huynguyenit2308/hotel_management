@@ -73,7 +73,9 @@ Route::post('invoice-cancel-user', [BookingServiceController::class, 'cancelInvo
 // Thanh toán
 Route::get('payment', [PaymentController::class, 'payment'])->name('invoice.payment');
 // Thanh toán bằng tiền mặt
-Route::post('payment-cash', [PaymentController::class, 'paymentCash'])->name('payment.cash');
+Route::post('payment-cash', [PaymentController::class, 'paymentCashAndOnline'])->name('payment.cash.online');
+// Thanh toán online
+Route::get('momo-callback', [PaymentController::class, 'handleMomoCallback'])->name('momo.callback');
 
 // Danh sách voucher
 Route::get('list-voucher', [CRUD_VoucherController::class, 'listvoucher'])->name('voucher.list');
