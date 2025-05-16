@@ -207,11 +207,6 @@
                                 <li class="nav-item px-3">
                                     <a class="nav-link  p-0" href="/#services">Dịch vụ</a>
                                 </li>
-                                <li class="nav-item px-3">
-                                    <a href="{{ route('bookings.index') }}"
-                                                class="nav-link {{ request()->routeIs('bookings.index', 'bookings.create', 'bookings.createDirect', 'bookings.show', 'bookings.edit') ? 'bg-warning-subtle' : '' }}">Các
-                                                phòng đã đặt</a>
-                                </li>
                                 @if (Auth::check())
                                     <li class="nav-item px-3">
                                         <form action="{{ route('logout') }}" method="POST" class="d-inline">
@@ -263,7 +258,11 @@
                                                 class="dropdown-item {{ request()->routeIs('voucher.list', 'voucher.add', 'voucher.detail', 'voucher.edit') ? 'bg-warning-subtle' : '' }}">Voucher
                                             </a>
                                         </li>
-
+                                        <li>
+                                            <a href="{{ route('bookings.index') }}"
+                                                class="dropdown-item {{ request()->routeIs('bookings.index', 'bookings.create', 'bookings.createDirect', 'bookings.show', 'bookings.edit') ? 'bg-warning-subtle' : '' }}">Các
+                                                phòng đã đặt</a>
+                                        </li>
                                         <li><a href="{{ route('employees.index') }}"
                                                 class="dropdown-item {{ request()->routeIs('employees.index', 'employees.create', 'employees.show', 'employees.edit') ? 'bg-warning-subtle' : '' }}">Quản
                                                 lý nhân viên (mới)</a>
