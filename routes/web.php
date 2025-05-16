@@ -13,9 +13,12 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\CustomerBookingController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\CountController;
 use App\Http\Controllers\CRUD_VoucherController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\PaymentController;
+use App\Models\Employee;
+use App\Models\Room;
 use App\Models\Service;
 
 /*
@@ -32,7 +35,11 @@ use App\Models\Service;
 Route::get('/', function () {
     $rooms = App\Models\Room::with('status')->get();
     $services = Service::all();
-    return view('home', compact('rooms', 'services'));
+    // Đếm
+    $roomCount = Room::count();
+    $serviceCount = Service::count();
+    $employeeCount = Employee::where('status', 1)->count();
+    return view('home', compact('rooms', 'services', 'roomCount', 'serviceCount', 'employeeCount'));
 })->name('home');
 
 // Dashboard route

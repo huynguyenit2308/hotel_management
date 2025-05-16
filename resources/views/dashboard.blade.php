@@ -328,17 +328,17 @@
                 <div class="col-md-6 col-lg-3 mb-4 mb-lg-0">
                     <h4 class="display-6 fw-normal">Liên kết nhanh</h4>
                     <ul class="nav flex-column">
-                        <li class="nav-item"><a href="#" class="p-0 "> Trang chủ </a></li>
-                        <li class="nav-item"><a href="#" class="p-0 "> Khám phá phòng </a></li>
-                        <li class="nav-item"><a href="#" class="p-0 "> Dịch vụ </a></li>
+                        <li class="nav-item"><a href="{{route('home')}}" class="p-0 "> Trang chủ </a></li>
+                        <li class="nav-item"><a href="#room" class="p-0 "> Khám phá phòng </a></li>
+                        <li class="nav-item"><a href="#services" class="p-0 "> Dịch vụ </a></li>
                     </ul>
                 </div>
                 <div class="col-md-6 col-lg-3 offset-lg-1 mb-4 mb-lg-0">
                     <h4 class="display-6 fw-normal">Dịch vụ</h4>
                     <ul class="nav flex-column">
-                        <li class="nav-item"><a href="#" class="p-0 "> Yoga </a></li>
-                        <li class="nav-item"><a href="#" class="p-0 "> Gym </a></li>
-                        <li class="nav-item"><a href="#" class="p-0 "> Ăn uống, ...</a></li>
+                        <li class="nav-item"><a href="#" class="p-0 "> Massage </a></li>
+                        <li class="nav-item"><a href="#" class="p-0 "> Spa </a></li>
+                        <li class="nav-item"><a href="#" class="p-0 "> Bữa sáng, ...</a></li>
                     </ul>
                 </div>
                 <div class="col-md-6 col-lg-3 offset-lg-1 mb-4 mb-lg-0">
