@@ -39,6 +39,17 @@
                                         {{ \Carbon\Carbon::parse($invoice->created_at)->format('H:i d/m/Y') }}
                                     </p>
                                     <p class="mb-3">
+                                        <i class="bi bi-calendar-event me-2 text-warning"></i>
+                                        <strong>Phương thức:</strong>
+                                        @if ($invoice->payment_method === 'cash')
+                                            Thanh toán tiền mặt
+                                        @elseif ($invoice->payment_method === 'online')
+                                            Thanh toán online
+                                        @else
+                                            Không xác định
+                                        @endif
+                                    </p>
+                                    <p class="mb-3">
                                         <i class="bi bi-check-circle-fill me-2 text-info"></i>
                                         <strong>Trạng thái:</strong>
                                         <span

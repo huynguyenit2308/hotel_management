@@ -60,7 +60,7 @@
             <p><strong>Thành tiền:</strong> {{ number_format($totalAmount, 0, ',', '.') }} VND</p>
         </div>
 
-        <form action="{{ route('payment.cash') }}" method="POST">
+        <form action="{{ route('payment.cash.online') }}" method="POST">
             @csrf
             <input type="hidden" name="voucher_code" value="{{ $voucherCode }}">
             @foreach ($invoices as $invoice)
