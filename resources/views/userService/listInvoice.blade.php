@@ -28,23 +28,29 @@
                                         @endif
                                     </h4>
 
-                                    <span
-                                        class="badge 
-                                    @if ($invoice->status === 'pending') bg-warning text-dark 
-                                    @elseif($invoice->status === 'confirmed') bg-success 
-                                    @else bg-danger @endif mt-2">
-                                        {{ ucfirst($invoice->status) }}
-                                    </span>
                                 </div>
-                                <div class="text-center">
-                                    <a href="{{ route('invoice.detail', ['id' => $invoice->id]) }}" class="btn btn-arrow">
-                                        <span class="text-decoration-underline">
-                                            Xem chi tiết
-                                            <svg width="18" height="18">
-                                                <use xlink:href="#arrow-right"></use>
-                                            </svg>
-                                        </span>
-                                    </a>
+                                <div>
+
+
+                                    <div
+                                        class="badge 
+                                        @if ($invoice->status === 'Pending') bg-warning text-dark
+                                        @elseif ($invoice->status === 'Paid') bg-success
+                                        @elseif ($invoice->status === 'Cancelled') bg-danger
+                                        @else bg-secondary @endif">
+                                        {{ ucfirst($invoice->status) }}
+                                    </div>
+                                    <div class="text-center">
+                                        <a href="{{ route('invoice.detail', ['id' => $invoice->id]) }}"
+                                            class="btn btn-arrow">
+                                            <span class="text-decoration-underline">
+                                                Xem chi tiết
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#arrow-right"></use>
+                                                </svg>
+                                            </span>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
