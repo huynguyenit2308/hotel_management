@@ -71,18 +71,18 @@ class CRUD_CustomerController extends Controller
             'full_name.required' => 'Họ tên không được để trống.',
             'full_name.regex' => 'Họ tên chỉ được chứa chữ cái và khoảng trắng.',
             'full_name.max' => 'Họ tên không được vượt quá 255 ký tự.',
-        
+
             'email.required' => 'Email không được để trống.',
             'email.email' => 'Email phải đúng định dạng.',
             'email.max' => 'Email không được vượt quá 255 ký tự.',
-        
+
             'phone.required' => 'Số điện thoại không được để trống.',
             'phone.max' => 'Số điện thoại không được vượt quá 15 ký tự.',
             'phone.regex' => 'Số điện thoại phải bắt đầu bằng 0 hoặc +84 và có 9 số theo sau.',
-        
+
             'address.required' => 'Địa chỉ không được để trống.',
             'address.max' => 'Địa chỉ không được vượt quá 255 ký tự.',
-        
+
             'birth_day.required' => 'Ngày sinh không được để trống.',
             'birth_day.date' => 'Ngày sinh phải là ngày hợp lệ.',
         ]);
@@ -99,7 +99,12 @@ class CRUD_CustomerController extends Controller
     {
         $customer = Customer::findOrFail($id);
 
-        // Xóa account nếu tồn tại
+        // Xóa bookings nếu có
+        if ($customer->bookings()->exists()) {
+            $customer->bookings()->delete();
+        }
+
+        // Xóa account nếu có
         if ($customer->account) {
             $customer->account->delete();
         }

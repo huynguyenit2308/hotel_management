@@ -55,6 +55,73 @@
         </table>
 
         {{-- Phân trang --}}
-        {{ $customers->withQueryString()->links() }}
+       @if ($customers->hasPages())
+    <ul class="pagination-custom">
+        {{-- Nút Previous --}}
+        @if ($customers->onFirstPage())
+            <li class="disabled"><span>&lsaquo;</span></li>
+        @else
+            <li><a href="{{ $customers->previousPageUrl() }}" rel="prev">&lsaquo;</a></li>
+        @endif
+
+        {{-- Các số trang --}}
+        @foreach ($customers->links()->elements[0] as $page => $url)
+            @if ($page == $customers->currentPage())
+                <li class="active"><span>{{ $page }}</span></li>
+            @else
+                <li><a href="{{ $url }}">{{ $page }}</a></li>
+            @endif
+        @endforeach
+
+        {{-- Nút Next --}}
+        @if ($customers->hasMorePages())
+            <li><a href="{{ $customers->nextPageUrl() }}" rel="next">&rsaquo;</a></li>
+        @else
+            <li class="disabled"><span>&rsaquo;</span></li>
+        @endif
+    </ul>
+@endif
     </div>
 @endsection
+ {{-- CSS phân trang--}}
+<style>
+    .pagination-custom {
+        display: flex;
+        justify-content: center;
+        list-style: none;
+        padding: 0;
+        margin-top: 20px;
+    }
+
+    .pagination-custom li {
+        margin: 0 4px;
+    }
+
+    .pagination-custom li a,
+    .pagination-custom li span {
+        display: inline-block;
+        padding: 8px 14px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        text-decoration: none;
+        color: #333;
+        background-color: #fff;
+    }
+
+    .pagination-custom li a:hover {
+        background-color: #eee;
+    }
+
+    .pagination-custom .active span {
+        background-color: #d35400;
+        color: #fff;
+        font-weight: bold;
+        border-color: #d35400;
+    }
+
+    .pagination-custom .disabled span {
+        color: #999;
+        background-color: #f0f0f0;
+        pointer-events: none;
+    }
+</style>
