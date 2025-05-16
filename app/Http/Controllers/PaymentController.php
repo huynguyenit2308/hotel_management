@@ -170,7 +170,7 @@ class PaymentController extends Controller
                 'original_amount' => $originalTotal,
                 'discount_amount' => $discount,
                 'final_amount' => $totalAmount,
-                'voucher_id' => $voucher?->voucher_code,
+                'voucher_id' => $voucher?->id,
                 'paid_at' => now(),
             ]);
 
