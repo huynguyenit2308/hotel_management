@@ -26,7 +26,7 @@
                                     <p class="mb-3">
                                         <i class="bi bi-currency-dollar me-2 text-success"></i>
                                         <strong>Giá:</strong>
-                                        {{ number_format($invoice->services->sum('price'), 0, ',', '.') }} VNĐ
+                                        {{ number_format($invoice->total_amount, 0, ',', '.') }} VNĐ
                                     </p>
                                     <p class="mb-3">
                                         <i class="bi bi-calendar-event me-2 text-warning"></i>
@@ -34,14 +34,20 @@
                                         {{ \Carbon\Carbon::parse($invoice->create_at)->format('d/m/Y H:i') }}
                                     </p>
                                     <p class="mb-3">
+                                        <i class="bi bi-calendar-event me-2 text-warning"></i>
+                                        <strong>Thanh toán vào:</strong>
+                                        {{ \Carbon\Carbon::parse($invoice->created_at)->format('H:i d/m/Y') }}
+                                    </p>
+                                    <p class="mb-3">
                                         <i class="bi bi-check-circle-fill me-2 text-info"></i>
                                         <strong>Trạng thái:</strong>
                                         <span
-                                            class="badge 
-                                            @if ($invoice->status === 'pending') bg-warning text-dark 
-                                            @elseif($invoice->status === 'confirmed') bg-success 
-                                            @else bg-danger @endif">
-                                            {{ ucfirst($invoice->status) }}
+                                            class="badge
+                                            @if ($invoice->status === 'Pending') bg-warning text-dark
+                                            @elseif ($invoice->status === 'Paid') bg-success
+                                            @elseif ($invoice->status === 'Cancel') bg-danger
+                                            @else bg-secondary @endif">
+                                            {{ $invoice->status }}
                                         </span>
                                     </p>
                                 </div>

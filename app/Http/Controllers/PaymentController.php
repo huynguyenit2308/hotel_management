@@ -129,7 +129,7 @@ class PaymentController extends Controller
                 'customer_id' => auth()->user()->id,
                 'create_at' => $usedTime,
                 'total_amount' => $totalAmount,
-                'status' => 'paid',
+                'status' => 'Paid',
             ]);
             $invoice->services()->attach($invoices->pluck('service_id'));
 
