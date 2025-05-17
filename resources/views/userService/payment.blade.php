@@ -3,6 +3,12 @@
 @section('content')
     <div class="container py-5">
         <h2 class="text-center display-4 fw-normal mb-5">Danh sách hóa đơn thanh toán</h2>
+        @if (session('error'))
+            <div id="alert-error" class="alert alert-danger text-center d-flex justify-content-between align-items-center">
+                <span>{{ session('error') }}</span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
         <div class="mb-4">
             <ul class="list-group">
                 @foreach ($invoices as $invoice)
@@ -47,7 +53,8 @@
                     <option value="{{ $voucher->code }}" {{ $voucher->code == $voucherCode ? 'selected' : '' }}>
                         {{ $voucher->code }} -
                         {{ $voucher->type === 'percent' ? $voucher->value . '%' : number_format($voucher->value, 0, ',', '.') . ' VND' }}
-                        - <span class="badge bg-info">Còn {{ $voucher->usage_limit - $voucher->used_count }} lần sử dụng</span>
+                        - <span class="badge bg-info">Còn {{ $voucher->usage_limit - $voucher->used_count }} lần sử
+                            dụng</span>
                     </option>
                 @endforeach
             </select>
