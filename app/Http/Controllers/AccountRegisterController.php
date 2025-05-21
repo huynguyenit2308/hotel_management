@@ -20,7 +20,7 @@ class AccountRegisterController extends Controller
     public function register(Request $request)
     {
         //Dữ liệu đầu vào
-       
+
         $request->validate([
             'full_name' => [
                 'required',
@@ -44,7 +44,12 @@ class AccountRegisterController extends Controller
                 // Định dạng: 0123456789 hoặc +84123456789 (10 số)
             ],
             'address' => 'required|string',
-            'birth_day' => 'required|date',
+            'birth_day' => [
+                'required',
+                'date',
+                'before:today',
+                'before_or_equal:' . now()->subYears(18)->format('Y-m-d'),
+            ],
             'username' => [
                 'required',
                 'string',
@@ -63,22 +68,26 @@ class AccountRegisterController extends Controller
         ], [
             'full_name.required' => '"Vui lòng nhập họ và tên!"',
             'full_name.regex' => 'Họ tên chỉ được chứa chữ cái và dấu cách. Không được chứa ký tự đặc biệt và số !',
-            
+
             'email.required' => 'Email không được để trống.',
             'email.email' => 'Email phải đúng định dạng abc@gmail.com.',
             'email.unique' => 'Email đã tồn tại.',
-        
+
             'phone.required' => 'Số điện thoại không được để trống.',
             'phone.regex' => 'Số điện thoại phải đúng định dạng 0123456789 hoặc +84123456789.',
             'phone.unique' => 'Số điện thoại đã tồn tại.',
-        
-            'address.required' => 'Địa chỉ không được để trống.',
-            'birth_day.required' => 'Ngày tháng năm sinh không được để trống.',
 
+            'address.required' => 'Địa chỉ không được để trống.',
+
+            'birth_day.required' => 'Ngày tháng năm sinh không được để trống.',
+            'birth_day.date' => 'Ngày sinh phải là một ngày hợp lệ.',
+            'birth_day.before' => 'Ngày sinh không được là ngày trong tương lai.',
+            'birth_day.before_or_equal' => 'Bạn phải đủ 18 tuổi trở lên.',
+            
             'username.required' => 'Tên đăng nhập không được để trống.',
             'username.regex' => 'Tên đăng nhập chỉ được chứa chữ, số và dấu gạch dưới.',
             'username.unique' => 'Tên đăng nhập đã tồn tại.',
-        
+
             'password.required' => 'Mật khẩu không được để trống.',
             'password.regex' => 'Mật khẩu phải chứa ít nhất 1 chữ hoa, 1 chữ thường, 1 số và 1 ký tự đặc biệt.',
             'password.confirmed' => 'Xác nhận mật khẩu không khớp.',
