@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\BookingService;
 use App\Models\Service;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
 
@@ -30,7 +31,7 @@ class BookingServiceController extends Controller
             'service_id' => 'required|exists:service,id',
             'date' => 'required|date|after_or_equal:today',
             'time' => 'required',
-            'note' => 'nullable|string',
+            'note' => 'nullable|string|max:255',
         ], [
             'service_id.required' => 'Vui lòng chọn dịch vụ.',
             'service_id.exists' => 'Dịch vụ không hợp lệ.',
@@ -39,8 +40,13 @@ class BookingServiceController extends Controller
             'date.after_or_equal' => 'Ngày sử dụng phải là hôm nay hoặc trong tương lai.',
             'time.required' => 'Vui lòng chọn giờ sử dụng.',
             'note.string' => 'Ghi chú phải là văn bản.',
+            'note.max' => 'Ghi chú không được vượt quá 255 ký tự.',
         ]);
-
+        $date = Carbon::parse($request->date);
+        $time = Carbon::parse($request->time);
+        if ($date->isToday() && $time->lt(Carbon::now())) {
+            return back()->withErrors(['time' => 'Không thể chọn giờ đã qua trong hôm nay.'])->withInput();
+        }
         if (!auth()->check()) {
             return redirect()->route('login')->with('error', 'Vui lòng đăng nhập để đặt dịch vụ.');
         }
