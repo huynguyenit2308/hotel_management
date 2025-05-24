@@ -1,6 +1,10 @@
 @extends('dashboard')
 
 @section('content')
+    @php
+        use App\Helpers\IdEncoder;
+        $encodedId = IdEncoder::encodeId($voucher->id);
+    @endphp
     <section class="py-5">
         <div class="container">
             <div class="row justify-content-center">
@@ -59,7 +63,7 @@
 
                         <div class="row mt-3">
                             <div class="col-12 d-flex flex-wrap gap-2">
-                                <a href="{{ route('voucher.update', ['id' => $voucher->id]) }}"
+                                <a href="{{ route('voucher.update', ['id' => $encodedId]) }}"
                                     class="btn btn-primary rounded-4 flex-fill d-flex align-items-center justify-content-center gap-2 shadow-sm py-2 px-3"
                                     style="transition: all 0.3s ease-in-out;"
                                     onmouseover="this.style.transform='scale(1.05)'"
@@ -67,10 +71,10 @@
                                     <i class="bi bi-pencil-square"></i> Sửa voucher
                                 </a>
 
-                                <form action="{{ route('voucher.delete', ['id' => $voucher->id]) }}" method="POST"
+                                <form action="{{ route('voucher.delete', ['id' => $encodedId]) }}" method="POST"
                                     class="flex-fill">
                                     @csrf
-                                    @method('DELETE')
+                                    @method('GET')
                                     <button type="button"
                                         class="btn btn-primary rounded-4 w-100 d-flex align-items-center justify-content-center gap-2 shadow-sm py-2 px-3"
                                         style="transition: all 0.3s ease-in-out;"
@@ -107,7 +111,7 @@
                     Bạn có chắc chắn muốn xóa voucher <strong>{{ $voucher->code }}</strong>?
                 </div>
                 <div class="modal-footer d-flex gap-2 justify-content-end">
-                    <form action="{{ route('voucher.delete', ['id' => $voucher->id]) }}" method="POST">
+                    <form action="{{ route('voucher.delete', ['id' => $encodedId]) }}" method="POST">
                         @csrf
                         @method('GET')
                         <button type="submit"

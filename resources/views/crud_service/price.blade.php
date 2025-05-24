@@ -1,6 +1,10 @@
 @extends('dashboard')
 
 @section('content')
+    @php
+        use App\Helpers\IdEncoder;
+        $encodedId = IdEncoder::encodeId($service->id);
+    @endphp
     <section class="py-5">
         <div class="container padding-side">
             <div class="row justify-content-center">
@@ -13,7 +17,7 @@
                         </div>
 
                         <div class="card-body p-4 bg-white rounded-bottom-4">
-                            <form action="{{ route('service.price.update', ['id' => $service->id]) }}" method="POST">
+                            <form action="{{ route('service.price.update', ['id' => $encodedId]) }}" method="POST">
                                 @csrf
                                 @method('POST')
                                 <div class="mb-3">
@@ -66,7 +70,7 @@
                                     <small class="text-muted">Giá mới sẽ được tính và cập nhật tự động.</small>
                                 </div>
                                 <div class="d-flex gap-3">
-                                    <a href="{{ route('service.detail', ['id' => $service->id]) }}"
+                                    <a href="{{ route('service.detail', ['id' => $encodedId]) }}"
                                         class="btn btn-primary rounded-pill flex-fill d-flex align-items-center justify-content-center gap-2 shadow-sm"
                                         style="transition: all 0.3s ease-in-out;"
                                         onmouseover="this.style.transform='scale(1.05)'"
