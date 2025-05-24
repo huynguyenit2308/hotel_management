@@ -38,7 +38,7 @@ Route::get('/', function () {
     // Đếm
     $roomCount = Room::count();
     $serviceCount = Service::count();
-    $employeeCount = Employee::where('status', 1)->count();
+    $employeeCount = Employee::count();
     return view('home', compact('rooms', 'services', 'roomCount', 'serviceCount', 'employeeCount'));
 })->name('home');
 
