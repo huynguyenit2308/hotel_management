@@ -1,6 +1,10 @@
 @extends('dashboard')
 
 @section('content')
+    @php
+        use App\Helpers\IdEncoder;
+        $encodedId = IdEncoder::encodeId($voucher->id);
+    @endphp
     <section class="py-5">
         <div class="container">
             <div class="row justify-content-center">
@@ -22,7 +26,7 @@
                         <h1 class="text-center mb-4">Sửa Voucher</h1>
                         <form action="{{ route('voucher.update') }}" method="POST">
                             @csrf
-                            <input type="hidden" name="id" value="{{ $voucher->id }}">
+                            <input type="hidden" name="id" value="{{ $encodedId }}">
 
                             <div class="mb-3">
                                 <label for="code" class="form-label fw-semibold">Mã Voucher</label>
@@ -98,7 +102,7 @@
                             </div>
 
                             <div class="d-flex gap-3">
-                                <a href="{{ route('voucher.detail', ['id' => $voucher->id]) }}"
+                                <a href="{{ route('voucher.detail', ['id' => $encodedId]) }}"
                                     class="btn btn-primary rounded-pill flex-fill d-flex align-items-center justify-content-center gap-2 shadow-sm"
                                     style="transition: all 0.3s ease-in-out;"
                                     onmouseover="this.style.transform='scale(1.05)'"

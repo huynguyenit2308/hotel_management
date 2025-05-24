@@ -1,6 +1,10 @@
 @extends('dashboard')
 
 @section('content')
+    @php
+        use App\Helpers\IdEncoder;
+        $encodedId = IdEncoder::encodeId($service->id);
+    @endphp
     <section class="py-5">
         <div class="container">
             <div class="row justify-content-center">
@@ -48,7 +52,7 @@
                         </div>
                         <div class="row mt-4">
                             <div class="col-12 d-flex flex-wrap gap-2">
-                                <a href="{{ route('service.edit', ['id' => $service->id]) }}"
+                                <a href="{{ route('service.edit', ['id' => $encodedId]) }}"
                                     class="btn btn-primary rounded-4 flex-fill d-flex align-items-center justify-content-center gap-2 shadow-sm py-2 px-3"
                                     style="transition: all 0.3s ease-in-out;"
                                     onmouseover="this.style.transform='scale(1.05)'"
@@ -56,7 +60,7 @@
                                     <i class="bi bi-pencil-square"></i> Sửa dịch vụ
                                 </a>
 
-                                <form action="{{ route('service.delete', ['id' => $service->id]) }}" method="POST"
+                                <form action="{{ route('service.delete', ['id' => $encodedId]) }}" method="POST"
                                     class="flex-fill">
                                     @csrf
                                     @method('DELETE')
@@ -70,7 +74,7 @@
                                     </button>
                                 </form>
 
-                                <a href="{{ route('service.price.update', ['id' => $service->id]) }}"
+                                <a href="{{ route('service.price.update', ['id' => $encodedId]) }}"
                                     class="btn btn-primary rounded-4 flex-fill d-flex align-items-center justify-content-center gap-2 shadow-sm py-2 px-3"
                                     style="transition: all 0.3s ease-in-out;"
                                     onmouseover="this.style.transform='scale(1.05)'"
@@ -104,7 +108,7 @@
                     Bạn có chắc chắn muốn xóa dịch vụ <strong>{{ $service->service_name }}</strong>?
                 </div>
                 <div class="modal-footer d-flex gap-2 justify-content-end">
-                    <form action="{{ route('service.delete', ['id' => $service->id]) }}" method="POST">
+                    <form action="{{ route('service.delete', ['id' => $encodedId]) }}" method="POST">
                         @csrf
                         @method('GET')
                         <button type="submit"

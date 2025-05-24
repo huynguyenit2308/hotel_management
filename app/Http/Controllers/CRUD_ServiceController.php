@@ -2,29 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\InvoiceDetail;
 use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\DB;
+use App\Helpers\IdEncoder;
 
 class CRUD_ServiceController extends Controller
 {
     // Danh sách dịch vụ
     public function listService()
     {
-        try {
-            $service = Service::paginate(6);
+        $service = Service::paginate(6);
 
-            if ($service->isEmpty()) {
-                return view('crud_service.list', compact('service'))
-                    ->with('error', 'Không có dịch vụ nào!!!');
-            }
-
-            return view('crud_service.list', compact('service'));
-        } catch (\Exception $e) {
-            return back()->with('error', 'Đã xảy ra lỗi khi tải danh sách dịch vụ: ' . $e->getMessage());
+        if ($service->isEmpty()) {
+            return view('crud_service.list', compact('service'))->with('error', 'Không có dịch vụ nào!!!');
         }
+        foreach ($service as $value) {
+            $value->encoded_id = IdEncoder::encodeId($value->id);
+        }
+        return view('crud_service.list', compact('service'));
     }
 
     // Thêm dịch vụ
@@ -74,49 +70,46 @@ class CRUD_ServiceController extends Controller
     // Chi tiết dịch vụ
     public function detailService(Request $request)
     {
-        try {
-            $id = $request->get('id');
-            $service = Service::find($id);
+        $encodedId = $request->get('id');
+        $id = IdEncoder::decodeId($encodedId);
 
-            if (!$service) {
-                return redirect()->route('service.list')->with('error', 'Dịch vụ không tồn tại.');
-            }
-
-            return view('crud_service.detail', compact('service'));
-        } catch (\Exception $e) {
-            return redirect()->route('service.list')->with('error', 'Đã có lỗi xảy ra: ' . $e->getMessage());
+        if (!$id || !($service = Service::find($id))) {
+            return redirect()->route('service.list')->with('error', 'ID không hợp lệ!');
         }
+
+        return view('crud_service.detail', compact('service'));
     }
 
     // Xóa dịch vụ
     public function deleteService(Request $request)
     {
-        try {
-            $id = $request->get('id');
-            $service = Service::find($id);
+        $encodedId = $request->get('id');
+        $id = IdEncoder::decodeId($encodedId);
 
-            if (!$service) {
-                return redirect()->route('service.list')->with('error', 'Dịch vụ không tồn tại!');
-            }
-
-            if ($service->image && Storage::exists('public/' . $service->image)) {
-                Storage::delete('public/' . $service->image);
-            }
-
-            $serviceName = $service->service_name;
-            $service->delete();
-
-            return redirect()->route('service.list')->with('success', 'Xóa dịch vụ "' . $serviceName . '" thành công!');
-        } catch (\Exception $e) {
-            return redirect()->route('service.list')->with('error', 'Đã có lỗi xảy ra: ' . $e->getMessage());
+        if (!$id || !($service = Service::find($id))) {
+            return redirect()->route('service.list')->with('error', 'ID không hợp lệ!');
         }
+
+        if ($service->image && Storage::exists('public/' . $service->image)) {
+            Storage::delete('public/' . $service->image);
+        }
+
+        $serviceName = $service->service_name;
+        $service->delete();
+
+        return redirect()->route('service.list')->with('success', 'Xóa dịch vụ "' . $serviceName . '" thành công!');
     }
 
     // Sửa dịch vụ
     public function updateService(Request $request)
     {
-        $id = $request->get('id');
-        $service = Service::find($id);
+        $encodedId = $request->get('id');
+        $id = IdEncoder::decodeId($encodedId);
+
+        if (!$id || !($service = Service::find($id))) {
+            return redirect()->route('service.list')->with('error', 'ID không hợp lệ!');
+        }
+
         return view('crud_service.update', compact('service'));
     }
 
@@ -141,7 +134,12 @@ class CRUD_ServiceController extends Controller
             'description.max' => 'Mô tả dịch vụ không được vượt quá 1000 ký tự.',
         ]);
 
-        $id = $request->get('id');
+        $encodedId = $request->get('id');
+        $id = IdEncoder::decodeId($encodedId);
+
+        if (!$id) {
+            return redirect()->back()->with('error', 'ID không hợp lệ!');
+        }
         $service = Service::find($id);
         if (!$service) {
             return redirect()->back()->with('error', 'Dịch vụ không tồn tại!');
@@ -162,24 +160,20 @@ class CRUD_ServiceController extends Controller
             'description' => $request->description,
         ]);
 
-        return redirect()->route('service.detail', ['id' => $service->id])->with('success', 'Sửa dịch vụ "' . $service->service_name . '" thành công!');
+        return redirect()->route('service.detail', ['id' => IdEncoder::encodeId($service->id)])->with('success', 'Sửa dịch vụ "' . $service->service_name . '" thành công!');
     }
 
     // Tìm kiếm dịch vụ
     public function searchService(Request $request)
     {
-        try {
-            $keyword = $request->get('keyword');
+        $keyword = $request->get('keyword');
 
-            $service = Service::where('service_name', 'like', "%{$keyword}%")
-                ->orWhere('price', 'like', "%{$keyword}%")
-                ->orWhere('description', 'like', "%{$keyword}%")
-                ->paginate(10);
+        $service = Service::where('service_name', 'like', "%{$keyword}%")
+            ->orWhere('price', 'like', "%{$keyword}%")
+            ->orWhere('description', 'like', "%{$keyword}%")
+            ->paginate(10);
 
-            return view('crud_service.list', compact('service'));
-        } catch (\Exception $e) {
-            return redirect()->route('service.list')->with('error', 'Lỗi khi tìm kiếm: ' . $e->getMessage());
-        }
+        return view('crud_service.list', compact('service'));
     }
 
     public function autoCompleteService(Request $request)
@@ -196,18 +190,14 @@ class CRUD_ServiceController extends Controller
     // Quản lý giá dịch vụ
     public function editPriceService(Request $request)
     {
-        try {
-            $id = $request->get('id');
-            $service = Service::find($id);
+        $encodedId = $request->get('id');
+        $id = IdEncoder::decodeId($encodedId);
 
-            if (!$service) {
-                return redirect()->route('service.list')->with('error', 'Dịch vụ không tồn tại.');
-            }
-
-            return view('crud_service.price', compact('service'));
-        } catch (\Exception $e) {
-            return redirect()->route('service.list')->with('error', 'Lỗi khi truy cập chỉnh sửa giá: ' . $e->getMessage());
+        if (!$id || !($service = Service::find($id))) {
+            return redirect()->route('service.list')->with('error', 'ID không hợp lệ!');
         }
+
+        return view('crud_service.price', compact('service'));
     }
 
     public function updatePriceService(Request $request)
@@ -237,12 +227,13 @@ class CRUD_ServiceController extends Controller
             ? $basePrice * (1 + $percent / 100)
             : $basePrice * (1 - $percent / 100);
 
-        $id = $request->get('id');
+        $encodedId = $request->get('id');
+        $id = IdEncoder::decodeId($encodedId);
         $service = Service::find($id);
         $service->price = round($adjustedPrice, 0);
         $service->save();
 
-        return redirect()->route('service.detail', ['id' => $id])->with('success', 'Cập nhật giá thành công!');
+        return redirect()->route('service.detail', ['id' => $encodedId])->with('success', 'Cập nhật giá thành công!');
     }
 
     // // Thống kê dịch vụ

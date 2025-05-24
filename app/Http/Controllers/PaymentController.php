@@ -22,7 +22,7 @@ class PaymentController extends Controller
             ->get();
 
         if ($invoices->isEmpty()) {
-            return redirect()->back()->with('error', 'Bạn chưa chọn hóa đơn thanh toán.');
+           return redirect()->route('invoice.list.user')->with('error', 'Bạn chưa chọn hóa đơn thanh toán.');
         }
 
         $originalTotal = $invoices->sum(fn($invoice) => $invoice->service->price);
@@ -193,7 +193,7 @@ class PaymentController extends Controller
         } else if ($paymentMethod === 'online') {
             $invoices = BookingService::whereIn('id', $invoiceIds)->with('service')->get();
             if ($invoices->isEmpty()) {
-                return redirect()->back()->with('error', 'Không tìm thấy hóa đơn.');
+                return redirect()->route('invoice.list.user')->with('error', 'Không tìm thấy hóa đơn.');
             }
 
             $originalTotal = $invoices->sum(fn($item) => $item->service->price);

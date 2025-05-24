@@ -4,6 +4,17 @@
     <main class="py-5">
         <div class="container" data-aos="fade-up">
             <h2 class="text-center display-4 fw-normal mb-5">Danh sách hóa đơn</h2>
+            @if (session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
+                </div>
+            @endif
+            @if (session('error'))
+                <div class="alert alert-danger shadow-sm" id="error-alert">
+                    {{ session('error') }}
+                </div>
+            @endif
             @if ($invoices->count())
                 <div class="row g-4 justify-content-center">
                     @foreach ($invoices as $invoice)
@@ -41,7 +52,7 @@
                                         {{ ucfirst($invoice->status) }}
                                     </div>
                                     <div class="text-center">
-                                        <a href="{{ route('invoice.detail', ['id' => $invoice->id]) }}"
+                                        <a href="{{ route('invoice.detail', ['id' => $invoice->encoded_id]) }}"
                                             class="btn btn-arrow">
                                             <span class="text-decoration-underline">
                                                 Xem chi tiết
