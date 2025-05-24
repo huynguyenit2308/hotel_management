@@ -12,7 +12,7 @@ class InvoiceServiceSeeder extends Seeder
         $data = [];
 
         $invoiceIds = range(1, 5);
-        $serviceIds = range(1, 5);
+        $serviceIds = range(1, 10);
 
         foreach ($invoiceIds as $invoiceId) {
             $servicesForInvoice = array_rand($serviceIds, rand(1, 3));

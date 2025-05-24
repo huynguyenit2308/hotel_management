@@ -18,7 +18,7 @@ class BookingServiceSeeder extends Seeder
 
             $data[] = [
                 'customer_id' => rand(1, 5),
-                'service_id' => rand(1, 5),
+                'service_id' => rand(1, 10),
                 'booking_date' => $bookingDate,
                 'note' => 'Ghi chú dịch vụ ' . $i,
                 'status' => $status,
