@@ -50,6 +50,46 @@ class ServiceSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'service_name' => 'Dịch vụ 1',
+                'price' => 200000,
+                'image' => 'service_images/tapgym.jpg',
+                'description' => 'Sử dụng dịch vụ 1 của khách sạn.',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'service_name' => 'Dịch vụ 2',
+                'price' => 200000,
+                'image' => 'service_images/tapgym.jpg',
+                'description' => 'Sử dụng dịch vụ 2 của khách sạn.',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'service_name' => 'Dịch vụ 3',
+                'price' => 200000,
+                'image' => 'service_images/tapgym.jpg',
+                'description' => 'Sử dụng dịch vụ 3 của khách sạn.',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'service_name' => 'Dịch vụ 4',
+                'price' => 200000,
+                'image' => 'service_images/tapgym.jpg',
+                'description' => 'Sử dụng dịch vụ 4 của khách sạn.',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'service_name' => 'Dịch vụ 5',
+                'price' => 200000,
+                'image' => 'service_images/tapgym.jpg',
+                'description' => 'Sử dụng dịch vụ 5 của khách sạn.',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
     }
 }
