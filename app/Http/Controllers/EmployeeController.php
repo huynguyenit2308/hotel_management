@@ -135,51 +135,56 @@ class EmployeeController extends Controller
     /**
      * Cập nhật thông tin nhân viên
      */
-    public function update(Request $request, Employee $employee)
-    {
-        try {
-            $validated = $request->validate([
-                'full_name' => 'required|string|max:255',
-                'email' => 'required|email|max:255|unique:employee,email,' . $employee->id,
-                'phone' => 'required|string|max:15|unique:employee,phone,' . $employee->id,
-                'address' => 'nullable|string|max:255',
-                'birth_day' => 'nullable|date',
-                'hire_date' => 'required|date',
-                'position' => 'required|string|max:100',
-                'salary' => 'required|numeric|min:0',
-                'admin_id' => 'required|exists:admin,id',
-                'status' => 'required|in:0,1',
-            ], [
-                'full_name.required' => 'Vui lòng nhập tên nhân viên',
-                'email.required' => 'Vui lòng nhập email',
-                'email.email' => 'Email không đúng định dạng',
-                'email.unique' => 'Email đã được sử dụng',
-                'phone.required' => 'Vui lòng nhập số điện thoại',
-                'phone.unique' => 'Số điện thoại đã được sử dụng',
-                'hire_date.required' => 'Vui lòng nhập ngày tuyển dụng',
-                'position.required' => 'Vui lòng nhập vị trí công việc',
-                'salary.required' => 'Vui lòng nhập lương',
-                'salary.numeric' => 'Lương phải là số',
-                'admin_id.required' => 'Vui lòng chọn quyền',
-                'admin_id.exists' => 'Quyền không tồn tại',
-                'status.required' => 'Vui lòng chọn trạng thái',
-            ]);
-
-            $employee->update($validated);
-
-            return redirect()->route('employees.index')
-                ->with('success', 'Cập nhật thông tin nhân viên thành công!');
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            return redirect()->back()
-                ->withErrors($e->validator)
-                ->withInput();
-        } catch (\Exception $e) {
-            Log::error('Error updating employee: ' . $e->getMessage());
-            return redirect()->back()
-                ->withInput()
-                ->with('error', 'Có lỗi xảy ra khi cập nhật thông tin. Vui lòng thử lại!');
+   public function update(Request $request, $id)
+{
+    try {
+        $employee = Employee::find($id);
+        if (!$employee) {
+            return redirect()->route('employees.index')->with('error', 'Cập nhật không hợp lệ. Nhân viên không tồn tại.');
         }
+
+        $validated = $request->validate([
+            'full_name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:employee,email,' . $id,
+            'phone' => 'required|string|max:15|unique:employee,phone,' . $id,
+            'address' => 'nullable|string|max:255',
+            'birth_day' => 'nullable|date',
+            'hire_date' => 'required|date',
+            'position' => 'required|string|max:100',
+            'salary' => 'required|numeric|min:0',
+            'admin_id' => 'required|exists:admin,id',
+            'status' => 'required|in:0,1',
+        ], [
+            'full_name.required' => 'Vui lòng nhập tên nhân viên',
+            'email.required' => 'Vui lòng nhập email',
+            'email.email' => 'Email không đúng định dạng',
+            'email.unique' => 'Email đã được sử dụng',
+            'phone.required' => 'Vui lòng nhập số điện thoại',
+            'phone.unique' => 'Số điện thoại đã được sử dụng',
+            'hire_date.required' => 'Vui lòng nhập ngày tuyển dụng',
+            'position.required' => 'Vui lòng nhập vị trí công việc',
+            'salary.required' => 'Vui lòng nhập lương',
+            'salary.numeric' => 'Lương phải là số',
+            'admin_id.required' => 'Vui lòng chọn quyền',
+            'admin_id.exists' => 'Quyền không tồn tại',
+            'status.required' => 'Vui lòng chọn trạng thái',
+        ]);
+
+        $employee->update($validated);
+
+        return redirect()->route('employees.index')
+            ->with('success', 'Cập nhật thông tin nhân viên thành công!');
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        return redirect()->back()
+            ->withErrors($e->validator)
+            ->withInput();
+    } catch (\Exception $e) {
+        Log::error('Error updating employee: ' . $e->getMessage());
+        return redirect()->back()
+            ->withInput()
+            ->with('error', 'Có lỗi xảy ra khi cập nhật thông tin. Vui lòng thử lại!');
     }
+}
 
     /**
      * Xóa nhân viên
