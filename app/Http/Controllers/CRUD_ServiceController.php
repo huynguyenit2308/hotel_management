@@ -86,8 +86,13 @@ class CRUD_ServiceController extends Controller
         $encodedId = $request->get('id');
         $id = IdEncoder::decodeId($encodedId);
 
-        if (!$id || !($service = Service::find($id))) {
+        if (!$id) {
             return redirect()->route('service.list')->with('error', 'ID không hợp lệ!');
+        }
+
+        $service = Service::find($id);
+        if (!$service) {
+            return redirect()->route('service.list')->with('error', 'Dịch vụ đã bị xóa hoặc không tồn tại!');
         }
 
         if ($service->image && Storage::exists('public/' . $service->image)) {
