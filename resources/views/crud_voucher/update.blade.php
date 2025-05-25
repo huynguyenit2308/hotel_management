@@ -27,7 +27,6 @@
                         <form action="{{ route('voucher.update') }}" method="POST">
                             @csrf
                             <input type="hidden" name="id" value="{{ $encodedId }}">
-
                             <div class="mb-3">
                                 <label for="code" class="form-label fw-semibold">Mã Voucher</label>
                                 <input type="text" name="code" id="code"
