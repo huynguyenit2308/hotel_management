@@ -34,6 +34,18 @@ class RoomController extends Controller
             $roomTypes = Room::distinct()->pluck('room_type');
             $statuses = RoomStatus::all();
 
+            $page = $request->query('page');
+        if ($page !== null) {
+            // Nếu page không phải số nguyên dương
+            if (!ctype_digit(strval($page)) || intval($page) < 1) {
+                return redirect()->route('rooms.index')->with('error', 'Số trang không hợp lệ.');
+            }
+            // Nếu page vượt quá tổng số trang
+            if ($rooms->lastPage() > 0 && intval($page) > $rooms->lastPage()) {
+                return redirect()->route('rooms.index')->with('error', 'Số trang không tồn tại.');
+            }
+        }
+
             return view('rooms.index', compact('rooms', 'roomTypes', 'statuses'));
         } catch (\Exception $e) {
             return redirect()->route('rooms.index')->with('error', 'Đã xảy ra lỗi khi tải danh sách phòng. Vui lòng thử lại sau.');
@@ -111,6 +123,8 @@ class RoomController extends Controller
                 'room_type' => 'required|string|max:50',
                 'price' => 'required|integer|min:0',
                 'status_id' => 'required|exists:room_status,id'
+            ], [
+                'status_id.exists' => 'Danh mục không tồn tại.',
             ]);
             $room->update($validated);
             return redirect()->route('rooms.index')->with('success', 'Cập nhật phòng thành công.');
