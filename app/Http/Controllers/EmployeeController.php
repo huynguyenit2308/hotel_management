@@ -184,14 +184,18 @@ class EmployeeController extends Controller
     /**
      * Xóa nhân viên
      */
-    public function destroy(Employee $employee)
-    {
-        try {
-            $employee->delete();
-            return redirect()->route('employees.index')->with('success', 'Xóa nhân viên thành công.');
-        } catch (\Exception $e) {
-            Log::error('Error in EmployeeController@destroy: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Đã xảy ra lỗi khi xóa nhân viên. Vui lòng thử lại.');
+    public function destroy($id)
+{
+    try {
+        $employee = Employee::find($id);
+        if (!$employee) {
+            return redirect()->route('employees.index')->with('error', 'Xóa không hợp lệ. Nhân viên không tồn tại.');
         }
+        $employee->delete();
+        return redirect()->route('employees.index')->with('success', 'Xóa nhân viên thành công.');
+    } catch (\Exception $e) {
+        Log::error('Error in EmployeeController@destroy: ' . $e->getMessage());
+        return redirect()->back()->with('error', 'Đã xảy ra lỗi khi xóa nhân viên. Vui lòng thử lại.');
     }
+}
 } 
