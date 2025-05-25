@@ -143,6 +143,12 @@ class EmployeeController extends Controller
             return redirect()->route('employees.index')->with('error', 'Cập nhật không hợp lệ. Nhân viên không tồn tại.');
         }
 
+        // Kiểm tra xung đột dữ liệu
+        if ($request->has('updated_at') && $employee->updated_at != $request->input('updated_at')) {
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Dữ liệu đã bị thay đổi. Vui lòng tải lại trang trước khi cập nhật!');
+        }
         $validated = $request->validate([
             'full_name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:employee,email,' . $id,
