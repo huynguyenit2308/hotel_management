@@ -87,7 +87,8 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-
+                        <!--**-->
+                        <input type="hidden" name="updated_at" value="{{ $room->updated_at }}">
                         <div class="d-flex justify-content-between">
                             <a href="{{ route('rooms.index') }}" class="btn btn-secondary">Quay lại</a>
                             <button type="submit" class="btn btn-primary">Cập nhật</button>

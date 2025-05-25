@@ -157,6 +157,8 @@ Route::post('/customers/{id}/update', [CRUD_CustomerController::class, 'update']
 Route::get('/customers/{id}/delete', [CRUD_CustomerController::class, 'delete'])->name('customers.delete');
 //phongf
 Route::resource('rooms', RoomController::class);
+///Xoa phong
+Route::delete('/rooms/{id}', [RoomController::class, 'destroy'])->name('rooms.destroy');
 
 // Đặt phòng
 Route::get('/bookings/create', [BookingController::class, 'create'])->name('bookings.create');
