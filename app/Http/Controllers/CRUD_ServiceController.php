@@ -6,6 +6,10 @@ use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Helpers\IdEncoder;
+use App\Rules\HasAtLeastOneChar;
+use App\Rules\NoFullWidthSpace;
+use App\Rules\NotEmptyOrSpace;
+use Illuminate\Validation\Rule;
 
 class CRUD_ServiceController extends Controller
 {
@@ -32,23 +36,44 @@ class CRUD_ServiceController extends Controller
     public function postAddService(Request $request)
     {
         $request->validate([
-            'service_name' => 'required|max:255|unique:service,service_name',
-            'price' => 'required|numeric|min:0|max:1000000000',
+            'service_name' => [
+                // 'required',
+                'max:255',
+                'unique:service,service_name',
+                new NoFullWidthSpace(),
+                new NotEmptyOrSpace(),
+                new HasAtLeastOneChar()
+            ],
+            'price' => 'required|numeric|min:1000|max:1000000000',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'description' => 'required|max:1000',
+            'description' => [
+                // 'required',
+                'max:1000',
+                new NoFullWidthSpace(),
+                new NotEmptyOrSpace(),
+                new HasAtLeastOneChar()
+            ],
         ], [
-            'service_name.required' => 'Vui lòng nhập tên dịch vụ.',
+            // 'service_name.required' => 'Vui lòng nhập tên dịch vụ.',
             'service_name.max' => 'Tên dịch vụ không được vượt quá 255 ký tự.',
             'service_name.unique' => 'Tên dịch vụ đã tồn tại.',
+            'service_name.regex' => 'Tên dịch vụ không được để trống hoặc chỉ chứa khoảng trắng hoặc có khoảng trắng đặc biệt.',
+
             'price.required' => 'Vui lòng nhập giá dịch vụ.',
             'price.numeric' => 'Giá phải là một số.',
-            'price.min' => 'Giá phải lớn hơn hoặc bằng 0.',
+            'price.min' => 'Giá phải lớn hơn hoặc bằng 1000.',
             'price.max' => 'Giá không được quá 1 tỷ.',
+
             'image.image' => 'Tập tin phải là một ảnh.',
             'image.mimes' => 'Ảnh phải có định dạng jpeg, png, jpg, gif, hoặc svg.',
             'image.max' => 'Ảnh phải có kích thước nhỏ hơn 2MB.',
-            'description.required' => 'Vui lòng nhập mô tả dịch vụ.',
+
+            // 'description.required' => 'Vui lòng nhập mô tả dịch vụ.',
             'description.max' => 'Mô tả dịch vụ không được vượt quá 1000 ký tự.',
+            'description.regex' => 'Mô tả dịch vụ không được để trống, chỉ chứa khoảng trắng hoặc có khoảng trắng đặc biệt.',
+        ], [
+            'service_name' => 'Tên dịch vụ',
+            'description' => 'Mô tả dịch vụ',
         ]);
 
         if ($request->hasFile('image')) {
