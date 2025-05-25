@@ -9,13 +9,26 @@
         <div class="container padding-side">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
+                    @if (session('success'))
+                                <div class="alert alert-success alert-dismissible fade show" role="alert" id="successAlert">
+                                    {{ session('success') }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
+                                </div>
+                            @endif
+                            @if (session('error'))
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert" id="errorAlert">
+                                    {{ session('error') }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
+                                </div>
+                            @endif
                     <div class="card shadow border-0 rounded-4">
                         <div class="card-header bg-light rounded-top-4 text-center py-4">
                             <h1 class="mb-0">
                                 <i class="bi bi-pencil-square me-2"></i>Cập Nhật Dịch Vụ
                             </h1>
                         </div>
-
                         <div class="card-body p-4 bg-white rounded-bottom-4">
                             <form action="{{ route('service.update', ['id' => $encodedId]) }}" method="POST"
                                 enctype="multipart/form-data">
@@ -87,6 +100,7 @@
                                         onmouseout="this.style.transform='scale(1)'">
                                         <i class="bi bi-arrow-left-circle"></i> Trở lại chi tiết
                                     </a>
+                                    <input type="hidden" name="updated_at" value="{{ $service->updated_at }}">
                                     <button type="submit"
                                         class="btn btn-primary rounded-pill flex-fill d-flex align-items-center justify-content-center gap-2 shadow-sm"
                                         style="transition: all 0.3s ease-in-out; border: none;"

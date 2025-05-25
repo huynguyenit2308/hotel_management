@@ -158,6 +158,11 @@ class CRUD_ServiceController extends Controller
             $imagePath = $request->file('image')->store('service_images', 'public');
         }
 
+        $formUpdatedAt = $request->input('updated_at');
+        if ($service->updated_at->toDateTimeString() !== $formUpdatedAt) {
+            return back()->withInput()->with('error', 'Dữ liệu đã bị thay đổi bởi người khác. Vui lòng tải lại trang và thử lại.');
+        }
+
         $service->update([
             'service_name' => $request->service_name,
             'price' => $request->price,
