@@ -11,7 +11,23 @@ class InvoiceController extends Controller
     // Danh sách hóa đơn
     public function listInvoice()
     {
-        $invoices = Invoice::paginate(6);
+        $page = request()->query('page');
+
+        if (!$page) {
+            return redirect()->route('invoice.list', ['page' => 1]);
+        }
+
+        if (!is_numeric($page) || (int)$page < 1) {
+            return redirect()->route('invoice.list', ['page' => 1])->with('error', 'Trang không tồn tại.');
+        }
+
+        $page = (int) $page;
+
+        $invoices = Invoice::paginate(6, ['*'], 'page', $page);
+
+        if ($page > $invoices->lastPage()) {
+            return redirect()->route('invoice.list', ['page' => 1])->with('error', 'Trang không tồn tại.');
+        }
         if ($invoices->isEmpty()) {
             return view('userService.listInvoice', compact('invoices'))->with('error', 'Không có hóa đơn nào!!!');
         }

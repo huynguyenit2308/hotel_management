@@ -67,10 +67,12 @@
                             <div class="col-md-6 text-center">
                                 @if ($invoice->services->first()->image)
                                     <img src="{{ asset('storage/' . $invoice->services->first()->image) }}"
-                                        alt="Ảnh dịch vụ" class="img-fluid rounded-3 shadow-sm mb-3"
-                                        style="max-height: 250px;">
+                                        alt="Ảnh dịch vụ"
+                                        onerror="this.onerror=null;this.src='{{ asset('images/default.jpg') }}';"
+                                        class="img-fluid rounded-3 shadow-sm mb-3" style="max-height: 250px;">
                                 @else
-                                    <p><strong>Ảnh:</strong> Không có ảnh</p>
+                                    <img src="{{ asset('images/default.jpg') }}" alt="Ảnh mặc định"
+                                        class="img-fluid rounded-3 shadow-sm mb-3" style="max-height: 250px;">
                                 @endif
                             </div>
                         </div>

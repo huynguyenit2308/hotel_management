@@ -62,19 +62,19 @@
             <div class="container" data-aos="fade-up">
                 <div class="row">
                     <div class="col-md-4 text-center mb-4 mb-lg-0">
-                        <h3 class="display-1 fw-normal text-primary position-relative">{{$roomCount}} <span
+                        <h3 class="display-1 fw-normal text-primary position-relative">{{ $roomCount }} <span
                                 class="position-absolute top-50 translate-middle z-n1"><img src="images/pattern1.png"
                                     alt="pattern" class="img-fluid"></span></h3>
                         <p class="text-capitalize">Phòng</p>
                     </div>
                     <div class="col-md-4 text-center mb-4 mb-lg-0">
-                        <h3 class="display-1 fw-normal text-primary position-relative">{{$serviceCount}} <span
+                        <h3 class="display-1 fw-normal text-primary position-relative">{{ $serviceCount }} <span
                                 class="position-absolute top-100 pb-5 translate-middle z-n1"><img src="images/pattern1.png"
                                     alt="pattern" class="img-fluid"></span></h3>
                         <p class="text-capitalize">Dịch vụ</p>
                     </div>
                     <div class="col-md-4 text-center mb-4 mb-lg-0">
-                        <h3 class="display-1 fw-normal text-primary position-relative">{{$employeeCount}} <span
+                        <h3 class="display-1 fw-normal text-primary position-relative">{{ $employeeCount }} <span
                                 class="position-absolute top-50 end-50 pb-lg-4 pe-lg-2 translate-middle z-n1"><img
                                     src="images/pattern1.png" alt="pattern" class="img-fluid"></span></h3>
                         <p class="text-capitalize">Nhân viên</p>
@@ -150,8 +150,9 @@
                         @foreach ($services as $service)
                             <div class="swiper-slide">
                                 <div class="room-item position-relative bg-black rounded-4 overflow-hidden">
-                                    <img src="{{ $service->image ? asset('storage/' . $service->image) : asset('images/default-room.jpg') }}"
+                                    <img src="{{ asset('storage/' . $service->image) }}"
                                         alt="{{ $service->service_name }}" ... height="300px" width="100%"
+                                        onerror="this.onerror=null;this.src='{{ asset('images/default.jpg') }}';"
                                         class="post-image rounded-4">
                                     <div class="product-description position-absolute px-5 text-start">
                                         <h4 class="display-6 fw-normal text-white">{{ $service->service_name }}</h4>

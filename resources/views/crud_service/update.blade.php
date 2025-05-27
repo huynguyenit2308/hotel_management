@@ -10,19 +10,17 @@
             <div class="row justify-content-center">
                 <div class="col-lg-8">
                     @if (session('success'))
-                                <div class="alert alert-success alert-dismissible fade show" role="alert" id="successAlert">
-                                    {{ session('success') }}
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                        aria-label="Close"></button>
-                                </div>
-                            @endif
-                            @if (session('error'))
-                                <div class="alert alert-danger alert-dismissible fade show" role="alert" id="errorAlert">
-                                    {{ session('error') }}
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                        aria-label="Close"></button>
-                                </div>
-                            @endif
+                        <div class="alert alert-success alert-dismissible fade show" role="alert" id="successAlert">
+                            {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
+                    @if (session('error'))
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert" id="errorAlert">
+                            {{ session('error') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
                     <div class="card shadow border-0 rounded-4">
                         <div class="card-header bg-light rounded-top-4 text-center py-4">
                             <h1 class="mb-0">
@@ -74,10 +72,14 @@
                                 <div class="mb-3 text-center">
                                     @if ($service->image)
                                         <img id="update" src="{{ asset('storage/' . $service->image) }}"
-                                            alt="Ảnh dịch vụ" class="img-fluid rounded-3 shadow-sm mb-2 d-inline-block"
+                                            onerror="this.onerror=null;this.src='{{ asset('images/default.jpg') }}';"
+                                            alt="{{ $service->service_name }}"
+                                            class="img-fluid rounded-3 shadow-sm mb-2 d-inline-block"
                                             style="max-height: 250px;">
                                     @else
-                                        <p>Không có ảnh</p>
+                                        <img id="update" src="{{ asset('images/default.jpg') }}" alt="Ảnh mặc địch"
+                                            class="img-fluid rounded-3 shadow-sm mb-2 d-inline-block"
+                                            style="max-height: 250px;">
                                     @endif
                                 </div>
 

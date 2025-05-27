@@ -4,7 +4,7 @@
     <main class="py-5">
         <div class="container" data-aos="fade-up">
             <h2 class="text-center display-4 mb-4">Đặt Dịch Vụ</h2>
-            
+
             <div class="row align-items-stretch">
                 <div class="col-md-6 d-flex">
                     <div class="card shadow rounded-4 p-4 w-100">
@@ -69,7 +69,8 @@
                     </div>
                 </div>
                 <div class="col-md-6 d-flex">
-                    <img src="{{ asset('storage/' . $service->image) }}" alt="Image"
+                    <img src="{{ asset('storage/' . $service->image) }}" alt="{{ $service->service_name }}"
+                        onerror="this.onerror=null;this.src='{{ asset('images/default.jpg') }}';"
                         class="img-fluid rounded-4 object-fit-cover w-100 h-100">
                 </div>
             </div>

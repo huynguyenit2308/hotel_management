@@ -16,7 +16,9 @@
                         <div class="d-flex align-items-start gap-5">
                             <div style="flex-shrink: 0;">
                                 @if ($invoice->service->image)
-                                    <img src="{{ asset('storage/' . $invoice->service->image) }}" alt="Ảnh dịch vụ"
+                                    <img src="{{ asset('storage/' . $invoice->service->image) }}"
+                                        alt="{{ $invoice->service->service_name }}"
+                                        onerror="this.onerror=null;this.src='{{ asset('images/default.jpg') }}';"
                                         class="img-fluid rounded-3 shadow-sm"
                                         style="width: 220px; height: 220px; object-fit: cover;">
                                 @else
