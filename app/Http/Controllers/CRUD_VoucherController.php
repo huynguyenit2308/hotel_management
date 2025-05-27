@@ -6,6 +6,7 @@ use App\Helpers\IdEncoder;
 use App\Models\Voucher;
 use App\Rules\HasAtLeastOneChar;
 use App\Rules\NoFullWidthSpace;
+use App\Rules\NoHTML;
 use App\Rules\NotEmptyOrSpace;
 use Illuminate\Http\Request;
 
@@ -56,7 +57,8 @@ class CRUD_VoucherController extends Controller
                 'unique:voucher,code',
                 new NoFullWidthSpace(),
                 new NotEmptyOrSpace(),
-                new HasAtLeastOneChar()
+                new HasAtLeastOneChar(),
+                new NoHTML(),
             ],
             'type' => 'required|in:percent,fixed',
             'value' => 'required|numeric|min:0',
@@ -152,7 +154,8 @@ class CRUD_VoucherController extends Controller
                 'max:50',
                 new NoFullWidthSpace(),
                 new NotEmptyOrSpace(),
-                new HasAtLeastOneChar()
+                new HasAtLeastOneChar(),
+                new NoHTML(),
             ],
             'type' => 'required|in:percent,fixed',
             'value' => 'required|numeric|min:0',
