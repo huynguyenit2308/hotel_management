@@ -74,7 +74,6 @@ class CRUD_ServiceController extends Controller
             // 'service_name.required' => 'Vui lòng nhập tên dịch vụ.',
             'service_name.max' => 'Tên dịch vụ không được vượt quá 255 ký tự.',
             'service_name.unique' => 'Tên dịch vụ đã tồn tại.',
-            'service_name.regex' => 'Tên dịch vụ không được để trống hoặc chỉ chứa khoảng trắng hoặc có khoảng trắng đặc biệt.',
 
             'price.required' => 'Vui lòng nhập giá dịch vụ.',
             'price.numeric' => 'Giá phải là một số.',
@@ -87,7 +86,6 @@ class CRUD_ServiceController extends Controller
 
             // 'description.required' => 'Vui lòng nhập mô tả dịch vụ.',
             'description.max' => 'Mô tả dịch vụ không được vượt quá 1000 ký tự.',
-            'description.regex' => 'Mô tả dịch vụ không được để trống, chỉ chứa khoảng trắng hoặc có khoảng trắng đặc biệt.',
         ], [
             'service_name' => 'Tên dịch vụ',
             'description' => 'Mô tả dịch vụ',
@@ -163,12 +161,24 @@ class CRUD_ServiceController extends Controller
     public function updatePostService(Request $request)
     {
         $request->validate([
-            'service_name' => 'required|max:255',
+            'service_name' => [
+                // 'required',
+                'max:255',
+                new NoFullWidthSpace(),
+                new NotEmptyOrSpace(),
+                new HasAtLeastOneChar(),
+            ],
             'price' => 'required|numeric|min:0|max:100000000000',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'description' => 'required|max:1000',
+            'description' => [
+                // 'required',
+                'max:1000',
+                new NoFullWidthSpace(),
+                new NotEmptyOrSpace(),
+                new HasAtLeastOneChar()
+            ],
         ], [
-            'service_name.required' => 'Vui lòng nhập tên dịch vụ.',
+            // 'service_name.required' => 'Vui lòng nhập tên dịch vụ.',
             'service_name.max' => 'Tên dịch vụ không được vượt quá 255 ký tự.',
             'price.required' => 'Vui lòng nhập giá dịch vụ.',
             'price.numeric' => 'Giá phải là một số.',
@@ -179,6 +189,9 @@ class CRUD_ServiceController extends Controller
             'image.max' => 'Ảnh phải có kích thước nhỏ hơn 2MB.',
             'description.required' => 'Vui lòng nhập mô tả dịch vụ.',
             'description.max' => 'Mô tả dịch vụ không được vượt quá 1000 ký tự.',
+        ], [
+            'service_name' => 'Tên dịch vụ',
+            'description' => 'Mô tả dịch vụ',
         ]);
 
         $encodedId = $request->get('id');
