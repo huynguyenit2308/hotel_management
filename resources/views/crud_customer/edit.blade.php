@@ -23,36 +23,48 @@
                                 </div>
                             @endif
 
+                            @if(session('error'))
+                                <div class="alert alert-danger">
+                                    {{ session('error') }}
+                                </div>
+                            @endif
                             <form action="{{ route('customers.update', ['id' => $customer->id]) }}" method="POST">
                                 @csrf
                                 @method('POST')
-
+                                @if (session('error'))
+                                    <div class="alert alert-danger">
+                                        {{ session('error') }}
+                                    </div>
+                                @endif
+                                @if (session('success'))
+                                    <div class="alert alert-success">{{ session('success') }}</div>
+                                @endif
+                                <input type="hidden" name="updated_at"
+                                    value="{{ $customer->updated_at->format('Y-m-d H:i:s.u') }}">
                                 <div class="mb-3">
                                     <label for="full_name" class="form-label fw-semibold">Họ và tên</label>
                                     <input type="text" class="form-control rounded-3 shadow-sm" id="full_name"
                                         name="full_name" placeholder="Nhập họ và tên..."
                                         value="{{ old('full_name', $customer->full_name) }}" required>
                                 </div>
-
                                 <div class="mb-3">
                                     <label for="email" class="form-label fw-semibold">Email</label>
-                                    <input type="email" class="form-control rounded-3 shadow-sm" id="email"
-                                        name="email" placeholder="Nhập email..."
-                                        value="{{ old('email', $customer->email) }}" required>
+                                    <input type="email" class="form-control rounded-3 shadow-sm" id="email" name="email"
+                                        placeholder="Nhập email..." value="{{ old('email', $customer->email) }}" required>
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="phone" class="form-label fw-semibold">Số điện thoại</label>
-                                    <input type="text" class="form-control rounded-3 shadow-sm" id="phone"
-                                        name="phone" placeholder="Nhập số điện thoại..."
-                                        value="{{ old('phone', $customer->phone) }}" required>
+                                    <input type="text" class="form-control rounded-3 shadow-sm" id="phone" name="phone"
+                                        placeholder="Nhập số điện thoại..." value="{{ old('phone', $customer->phone) }}"
+                                        required>
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="address" class="form-label fw-semibold">Địa chỉ</label>
-                                    <input type="text" class="form-control rounded-3 shadow-sm" id="address"
-                                        name="address" placeholder="Nhập địa chỉ..."
-                                        value="{{ old('address', $customer->address) }}" required>
+                                    <input type="text" class="form-control rounded-3 shadow-sm" id="address" name="address"
+                                        placeholder="Nhập địa chỉ..." value="{{ old('address', $customer->address) }}"
+                                        required>
                                 </div>
 
                                 <div class="mb-3">
@@ -60,13 +72,6 @@
                                     <input type="date" class="form-control rounded-3 shadow-sm" id="birth_day"
                                         name="birth_day" value="{{ old('birth_day', $customer->birth_day) }}" required>
                                 </div>
-
-                                <div class="mb-4">
-                                    <label for="registration_date" class="form-label fw-semibold">Ngày đăng ký</label>
-                                    <input type="date" class="form-control rounded-3 shadow-sm" id="registration_date"
-                                        name="registration_date" value="{{ old('registration_date', $customer->registration_date) }}" required>
-                                </div>
-
                                 <div class="d-flex gap-3">
                                     <a href="{{ route('customers.detail', ['id' => $customer->id]) }}"
                                         class="btn btn-primary rounded-pill flex-fill d-flex align-items-center justify-content-center gap-2 shadow-sm"

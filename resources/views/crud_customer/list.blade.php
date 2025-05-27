@@ -5,11 +5,12 @@
         <h1 class="mb-4 text-center">Danh sách khách hàng</h1>
 
         {{-- Thông báo thành công nếu có --}}
-        @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
+        @if(session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
+
+        @if(session('error'))
+            <div class="alert alert-danger">{{ session('error') }}</div>
         @endif
 
         {{-- Form tìm kiếm --}}
@@ -17,7 +18,7 @@
             <div class="input-group" style="max-width: 600px;">
                 <input type="text" name="keyword" class="form-control" placeholder="Tìm theo tên..."
                     value="{{ request('keyword') }}">
-                    <button class="btn btn-outline-secondary" type="submit">Tìm Kiếm</button>
+                <button class="btn btn-outline-secondary" type="submit">Tìm Kiếm</button>
             </div>
         </form>
 
@@ -55,35 +56,35 @@
         </table>
 
         {{-- Phân trang --}}
-       @if ($customers->hasPages())
-    <ul class="pagination-custom">
-        {{-- Nút Previous --}}
-        @if ($customers->onFirstPage())
-            <li class="disabled"><span>&lsaquo;</span></li>
-        @else
-            <li><a href="{{ $customers->previousPageUrl() }}" rel="prev">&lsaquo;</a></li>
-        @endif
+        @if ($customers->hasPages())
+            <ul class="pagination-custom">
+                {{-- Nút Previous --}}
+                @if ($customers->onFirstPage())
+                    <li class="disabled"><span>&lsaquo;</span></li>
+                @else
+                    <li><a href="{{ $customers->previousPageUrl() }}" rel="prev">&lsaquo;</a></li>
+                @endif
 
-        {{-- Các số trang --}}
-        @foreach ($customers->links()->elements[0] as $page => $url)
-            @if ($page == $customers->currentPage())
-                <li class="active"><span>{{ $page }}</span></li>
-            @else
-                <li><a href="{{ $url }}">{{ $page }}</a></li>
-            @endif
-        @endforeach
+                {{-- Các số trang --}}
+                @foreach ($customers->links()->elements[0] as $page => $url)
+                    @if ($page == $customers->currentPage())
+                        <li class="active"><span>{{ $page }}</span></li>
+                    @else
+                        <li><a href="{{ $url }}">{{ $page }}</a></li>
+                    @endif
+                @endforeach
 
-        {{-- Nút Next --}}
-        @if ($customers->hasMorePages())
-            <li><a href="{{ $customers->nextPageUrl() }}" rel="next">&rsaquo;</a></li>
-        @else
-            <li class="disabled"><span>&rsaquo;</span></li>
+                {{-- Nút Next --}}
+                @if ($customers->hasMorePages())
+                    <li><a href="{{ $customers->nextPageUrl() }}" rel="next">&rsaquo;</a></li>
+                @else
+                    <li class="disabled"><span>&rsaquo;</span></li>
+                @endif
+            </ul>
         @endif
-    </ul>
-@endif
     </div>
 @endsection
- {{-- CSS phân trang--}}
+{{-- CSS phân trang--}}
 <style>
     .pagination-custom {
         display: flex;
