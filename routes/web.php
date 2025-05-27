@@ -1,5 +1,6 @@
 <?php
 
+use App\Helpers\IdEncoder;
 use App\Http\Controllers\CRUD_ServiceController;
 use App\Http\Controllers\AccountRegisterController;
 use App\Http\Controllers\LoginController;
@@ -34,7 +35,10 @@ use App\Models\Service;
 
 Route::get('/', function () {
     $rooms = App\Models\Room::with('status')->get();
-    $services = Service::all();
+    $services = Service::all()->transform(function ($service) {
+        $service->encoded_id = IdEncoder::encodeId($service->id);
+        return $service;
+    });
     // Đếm
     $roomCount = Room::count();
     $serviceCount = Service::count();

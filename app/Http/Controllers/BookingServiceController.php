@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\IdEncoder;
 use App\Models\BookingService;
 use App\Models\Service;
+use App\Rules\NoHTML;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
@@ -13,25 +15,26 @@ class BookingServiceController extends Controller
     // Đặt dịch vụ
     public function bookingService(Request $request)
     {
-        try {
-            $id = $request->get('id');
-            $service = Service::find($id);
-            if (!$service) {
-                return redirect()->route('home')->with('error', 'Dịch vụ không tồn tại.');
-            }
-            return view('userService.bookingService', compact('service'));
-        } catch (\Exception $e) {
-            return redirect()->route('home')->with('error', 'Đã xảy ra lỗi: ' . $e->getMessage());
+        $encodedId = $request->get('id');
+        $id = IdEncoder::decodeId($encodedId);
+
+        $service = Service::find($id);
+        if (!$service) {
+            return redirect()->route('home')->with('error', 'Dịch vụ không tồn tại.');
         }
+
+        return view('userService.bookingService', compact('service'));
     }
 
     public function postBookingService(Request $request)
     {
+        $decodedServiceId = IdEncoder::decodeId($request->input('service_id'));
+        $request->merge(['service_id' => $decodedServiceId]);
         $request->validate([
             'service_id' => 'required|exists:service,id',
             'date' => 'required|date|after_or_equal:today',
             'time' => 'required',
-            'note' => 'nullable|string|max:255',
+            'note' => ['nullable', 'string', 'max:255', new NoHTML()],
         ], [
             'service_id.required' => 'Vui lòng chọn dịch vụ.',
             'service_id.exists' => 'Dịch vụ không hợp lệ.',
@@ -41,6 +44,8 @@ class BookingServiceController extends Controller
             'time.required' => 'Vui lòng chọn giờ sử dụng.',
             'note.string' => 'Ghi chú phải là văn bản.',
             'note.max' => 'Ghi chú không được vượt quá 255 ký tự.',
+        ], [
+            'note' => 'Ghi chú',
         ]);
         $date = Carbon::parse($request->date);
         $time = Carbon::parse($request->time);
