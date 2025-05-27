@@ -86,7 +86,6 @@ Route::get('payment', [PaymentController::class, 'payment'])->name('invoice.paym
 Route::post('payment-cash', [PaymentController::class, 'paymentCashAndOnline'])->name('payment.cash.online');
 // Thanh toán online
 Route::get('momo-callback', [PaymentController::class, 'handleMomoCallback'])->name('momo.callback');
-
 // Danh sách voucher
 Route::get('list-voucher', [CRUD_VoucherController::class, 'listvoucher'])->name('voucher.list');
 // Thêm voucher
@@ -95,7 +94,10 @@ Route::post('add-voucher', [CRUD_VoucherController::class, 'postAddvoucher'])->n
 // Chi tiết voucher
 Route::get('detail-voucher', [CRUD_VoucherController::class, 'detailvoucher'])->name('voucher.detail');
 // Xóa voucher
-Route::get('delete-voucher', [CRUD_VoucherController::class, 'deletevoucher'])->name('voucher.delete');
+Route::get('delete-voucher', function () {
+    return response()->view('errors.invalid', [], 405);
+})->name('voucher.invalid');
+Route::delete('delete-voucher', [CRUD_VoucherController::class, 'deletevoucher'])->name('voucher.delete');
 // Sửa voucher
 Route::get('update-voucher', [CRUD_VoucherController::class, 'updatevoucher'])->name('voucher.edit');
 Route::post('update-voucher', [CRUD_VoucherController::class, 'updatePostvoucher'])->name('voucher.update');
