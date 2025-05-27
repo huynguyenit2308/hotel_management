@@ -22,7 +22,8 @@
                                         class="img-fluid rounded-3 shadow-sm"
                                         style="width: 220px; height: 220px; object-fit: cover;">
                                 @else
-                                    <img src="{{ asset('images/no-image.png') }}" alt="Không có ảnh"
+                                    <img src="{{ asset('images/default.jpg') }}" alt="{{ $invoice->service->service_name }}"
+                                        onerror="this.onerror=null;this.src='{{ asset('images/default.jpg') }}';"
                                         class="img-fluid rounded-3 shadow-sm"
                                         style="width: 220px; height: 220px; object-fit: cover;">
                                 @endif

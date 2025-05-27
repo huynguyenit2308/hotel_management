@@ -1,6 +1,10 @@
 @extends('dashboard')
 
 @section('content')
+    @php
+        use App\Helpers\IdEncoder;
+        $encodedId = IdEncoder::encodeId($service->id);
+    @endphp
     <main class="py-5">
         <div class="container" data-aos="fade-up">
             <h2 class="text-center display-4 mb-4">Đặt Dịch Vụ</h2>
@@ -10,7 +14,7 @@
                     <div class="card shadow rounded-4 p-4 w-100">
                         <form action="{{ route('post.booking.service') }}" method="POST">
                             @csrf
-                            <input type="hidden" name="service_id" value="{{ $service->id }}">
+                            <input type="hidden" name="service_id" value="{{ $encodedId }}">
 
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Dịch vụ</label>

@@ -1,6 +1,9 @@
 @extends('dashboard')
 
 @section('content')
+    @php
+        use App\Helpers\IdEncoder;
+    @endphp
     <section class="py-5">
         <div class="container">
             <h2 class="text-center display-4 fw-normal mb-5">Danh sách hóa đơn đang chờ xác nhận</h2>
@@ -40,7 +43,9 @@
                                                 class="img-fluid rounded-3 shadow-sm"
                                                 style="width: 170px; height: 170px; object-fit: cover;">
                                         @else
-                                            <img src="{{ asset('images/no-image.png') }}" alt="Không có ảnh"
+                                            <img src="{{ asset('images/default.jpg') }}"
+                                                alt="{{ $invoice->service->service_name }}"
+                                                onerror="this.onerror=null;this.src='{{ asset('images/default.jpg') }}';"
                                                 class="img-fluid rounded-3 shadow-sm"
                                                 style="width: 170px; height: 170px; object-fit: cover;">
                                         @endif
@@ -49,7 +54,8 @@
                                     <div class="flex-grow-1">
                                         <h3 class="mb-2 fw-bold">{{ $invoice->service->service_name }}</h3>
                                         <p class="mb-1">Giá:
-                                            <span class="fw-bold">{{ number_format($invoice->service->price, 0, ',', '.') }}
+                                            <span
+                                                class="fw-bold">{{ number_format($invoice->service->price, 0, ',', '.') }}
                                                 VND</span>
                                         </p>
                                         <p class="mb-1">Ngày đặt:

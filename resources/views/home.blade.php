@@ -178,7 +178,7 @@
                                                 </tr>
                                             </tbody>
                                         </table>
-                                        <a href="{{ route('booking.service', ['id' => $service->id]) }}">
+                                        <a href="{{ route('booking.service', ['id' => $service->encoded_id]) }}">
                                             <p class="text-decoration-underline text-white m-0 mt-2">Đặt ngay</p>
                                         </a>
                                     </div>
