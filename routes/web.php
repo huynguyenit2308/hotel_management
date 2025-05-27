@@ -54,7 +54,10 @@ Route::post('add-service', [CRUD_ServiceController::class, 'postAddService'])->n
 // Chi tiết dịch vụ
 Route::get('detail-service', [CRUD_ServiceController::class, 'detailService'])->name('service.detail');
 // Xóa dịch vụ
-Route::get('delete-service', [CRUD_ServiceController::class, 'deleteService'])->name('service.delete');
+Route::get('delete-service', function () {
+    return response()->view('errors.invalid', [], 405);
+})->name('service.invalid');
+Route::delete('delete-service', [CRUD_ServiceController::class, 'deleteService'])->name('service.delete');
 // Sửa dịch vụ
 Route::get('update-service', [CRUD_ServiceController::class, 'updateService'])->name('service.edit');
 Route::post('update-service', [CRUD_ServiceController::class, 'updatePostService'])->name('service.update');
