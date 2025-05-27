@@ -26,15 +26,38 @@ class CRUD_CustomerController extends Controller
             $query->where('full_name', 'like', '%' . $keyword . '%');
         }
 
-        // Sắp xếp ID mới nhất và phân trang 10 dòng mỗi trang
+        // Lấy số trang hiện tại
+        $page = $request->query('page', 1);
+
+        // Kiểm tra nếu page không phải số nguyên dương
+        if (!ctype_digit((string) $page) || (int) $page < 1) {
+            return redirect()->route('customers.list')->with('error', 'Số trang không hợp lệ.');
+        }
+
+        // Phân trang
         $customers = $query->orderBy('id', 'desc')->paginate(10);
+
+        // Nếu người dùng nhập page vượt quá số trang có sẵn
+        if ($page > $customers->lastPage()) {
+            return redirect()->route('customers.list')->with('error', 'Trang không tồn tại.');
+        }
 
         return view('crud_customer.list', compact('customers'));
     }
     // Hiển thị thông tin chi tiết khách hàng
     public function detail($id)
     {
-        $customer = Customer::findOrFail($id);
+        // Kiểm tra ID có phải là số không
+        if (!is_numeric($id)) {
+            return redirect()->route('customers.list')->with('error', 'ID không hợp lệ hoặc trang không tồn tại.');
+        }
+
+        $customer = Customer::find($id);
+
+        if (!$customer) {
+            return redirect()->route('customers.list')->with('error', 'Khách hàng không tồn tại hoặc đã bị xóa.');
+        }
+
         return view('crud_customer.detail', compact('customer'));
     }
 
