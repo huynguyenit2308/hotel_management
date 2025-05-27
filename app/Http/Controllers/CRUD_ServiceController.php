@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Helpers\IdEncoder;
 use App\Rules\HasAtLeastOneChar;
 use App\Rules\NoFullWidthSpace;
+use App\Rules\NoHTML;
 use App\Rules\NotEmptyOrSpace;
 
 class CRUD_ServiceController extends Controller
@@ -59,7 +60,8 @@ class CRUD_ServiceController extends Controller
                 'unique:service,service_name',
                 new NoFullWidthSpace(),
                 new NotEmptyOrSpace(),
-                new HasAtLeastOneChar()
+                new HasAtLeastOneChar(),
+                new NoHTML(),
             ],
             'price' => 'required|numeric|min:1000|max:1000000000',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -68,7 +70,8 @@ class CRUD_ServiceController extends Controller
                 'max:1000',
                 new NoFullWidthSpace(),
                 new NotEmptyOrSpace(),
-                new HasAtLeastOneChar()
+                new HasAtLeastOneChar(),
+                new NoHTML(),
             ],
         ], [
             // 'service_name.required' => 'Vui lòng nhập tên dịch vụ.',
@@ -167,6 +170,7 @@ class CRUD_ServiceController extends Controller
                 new NoFullWidthSpace(),
                 new NotEmptyOrSpace(),
                 new HasAtLeastOneChar(),
+                new NoHTML(),
             ],
             'price' => 'required|numeric|min:0|max:100000000000',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -175,7 +179,8 @@ class CRUD_ServiceController extends Controller
                 'max:1000',
                 new NoFullWidthSpace(),
                 new NotEmptyOrSpace(),
-                new HasAtLeastOneChar()
+                new HasAtLeastOneChar(),
+                new NoHTML(),
             ],
         ], [
             // 'service_name.required' => 'Vui lòng nhập tên dịch vụ.',
