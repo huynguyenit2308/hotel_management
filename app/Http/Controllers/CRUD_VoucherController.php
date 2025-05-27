@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Helpers\IdEncoder;
 use App\Models\Voucher;
+use App\Rules\HasAtLeastOneChar;
+use App\Rules\NoFullWidthSpace;
+use App\Rules\NotEmptyOrSpace;
 use Illuminate\Http\Request;
 
 class CRUD_VoucherController extends Controller
@@ -48,7 +51,13 @@ class CRUD_VoucherController extends Controller
     public function postAddVoucher(Request $request)
     {
         $request->validate([
-            'code' => 'required|max:50|unique:voucher,code',
+            'code' => [
+                'max:50',
+                'unique:voucher,code',
+                new NoFullWidthSpace(),
+                new NotEmptyOrSpace(),
+                new HasAtLeastOneChar()
+            ],
             'type' => 'required|in:percent,fixed',
             'value' => 'required|numeric|min:0',
             'usage_limit' => 'required|integer|min:1',
@@ -56,9 +65,10 @@ class CRUD_VoucherController extends Controller
             'end_date' => 'required|date|after_or_equal:start_date',
             'active' => 'required|boolean',
         ], [
-            'code.required' => 'Vui lòng nhập mã voucher.',
+            // 'code.required' => 'Vui lòng nhập mã voucher.',
             'code.max' => 'Mã voucher không được vượt quá 50 ký tự.',
             'code.unique' => 'Mã voucher đã tồn tại.',
+
             'type.required' => 'Vui lòng chọn loại voucher.',
             'type.in' => 'Loại voucher không hợp lệ.',
             'value.required' => 'Vui lòng nhập giá trị giảm.',
@@ -70,6 +80,8 @@ class CRUD_VoucherController extends Controller
             'end_date.after_or_equal' => 'Ngày kết thúc phải sau hoặc bằng ngày bắt đầu.',
             'active.required' => 'Vui lòng chọn trạng thái kích hoạt.',
             'active.boolean' => 'Trạng thái kích hoạt không hợp lệ.'
+        ], [
+            'code' => 'Mã voucher',
         ]);
 
         $voucher = Voucher::create([
@@ -105,8 +117,13 @@ class CRUD_VoucherController extends Controller
         $encodedId = $request->get('id');
         $id = IdEncoder::decodeId($encodedId);
 
-        if (!$id || !($voucher = Voucher::find($id))) {
+        if (!$id) {
             return redirect()->route('voucher.list')->with('error', 'ID không hợp lệ!');
+        }
+
+        $voucher = Voucher::find($id);
+        if (!$voucher) {
+            return redirect()->route('voucher.list')->with('error', 'Voucher đã bị xóa hoặc không tồn tại!');
         }
 
         $voucherName = $voucher->code;
@@ -115,7 +132,7 @@ class CRUD_VoucherController extends Controller
         return redirect()->route('voucher.list')->with('success', 'Xóa voucher "' . $voucherName . '" thành công!');
     }
 
-    // Sửa dịch vụ
+    // Sửa voucher
     public function updateVoucher(Request $request)
     {
         $encodedId = $request->get('id');
@@ -130,13 +147,13 @@ class CRUD_VoucherController extends Controller
 
     public function updatePostVoucher(Request $request)
     {
-        $encodedId = $request->get('id');
-        $id = IdEncoder::decodeId($encodedId);
-
-        $request->merge(['id' => $id]);
         $request->validate([
-            'id' => 'required|exists:voucher,id',
-            'code' => 'required|max:50' . $id,
+            'code' => [
+                'max:50',
+                new NoFullWidthSpace(),
+                new NotEmptyOrSpace(),
+                new HasAtLeastOneChar()
+            ],
             'type' => 'required|in:percent,fixed',
             'value' => 'required|numeric|min:0',
             'usage_limit' => 'required|integer|min:1',
@@ -144,8 +161,6 @@ class CRUD_VoucherController extends Controller
             'end_date' => 'required|date|after_or_equal:start_date',
             'active' => 'required|boolean',
         ], [
-            'id.required' => 'Thiếu ID voucher.',
-            'id.exists' => 'Voucher không tồn tại.',
             'code.required' => 'Vui lòng nhập mã voucher.',
             'code.max' => 'Mã voucher không được vượt quá 50 ký tự.',
             'type.required' => 'Vui lòng chọn loại voucher.',
@@ -159,9 +174,17 @@ class CRUD_VoucherController extends Controller
             'end_date.after_or_equal' => 'Ngày kết thúc phải sau hoặc bằng ngày bắt đầu.',
             'active.required' => 'Vui lòng chọn trạng thái kích hoạt.',
             'active.boolean' => 'Trạng thái kích hoạt không hợp lệ.'
+        ], [
+            'code' => 'Mã voucher',
         ]);
-
+        $encodedId = $request->get('id');
+        $id = IdEncoder::decodeId($encodedId);
         $voucher = Voucher::find($id);
+
+        $formUpdatedAt = $request->input('updated_at');
+        if ($voucher->updated_at->toDateTimeString() !== $formUpdatedAt) {
+            return back()->withInput()->with('error', 'Dữ liệu đã bị thay đổi bởi người khác. Vui lòng tải lại trang và thử lại.');
+        }
 
         $voucher->update([
             'code' => $request->code,

@@ -100,6 +100,8 @@
                                 @enderror
                             </div>
 
+                            <input type="hidden" name="updated_at" value="{{ $voucher->updated_at }}">
+
                             <div class="d-flex gap-3">
                                 <a href="{{ route('voucher.detail', ['id' => $encodedId]) }}"
                                     class="btn btn-primary rounded-pill flex-fill d-flex align-items-center justify-content-center gap-2 shadow-sm"
