@@ -116,7 +116,7 @@ class CRUD_VoucherController extends Controller
     // Xóa voucher
     public function deleteVoucher(Request $request)
     {
-        $encodedId = $request->get('id');
+        $encodedId = $request->input('id');
         $id = IdEncoder::decodeId($encodedId);
 
         if (!$id) {
