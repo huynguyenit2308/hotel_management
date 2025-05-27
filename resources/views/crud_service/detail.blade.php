@@ -112,7 +112,7 @@
                 <div class="modal-footer d-flex gap-2 justify-content-end">
                     <form action="{{ route('service.delete', ['id' => $encodedId]) }}" method="POST">
                         @csrf
-                        @method('GET')
+                        @method('DELETE')
                         <button type="submit"
                             class="btn bg-danger text-light rounded-pill d-flex align-items-center shadow-sm px-4 py-2"
                             style="transition: all 0.3s ease-in-out;" onmouseover="this.style.transform='scale(1.05)'"

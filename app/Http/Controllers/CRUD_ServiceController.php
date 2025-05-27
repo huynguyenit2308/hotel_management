@@ -126,7 +126,7 @@ class CRUD_ServiceController extends Controller
     // Xóa dịch vụ
     public function deleteService(Request $request)
     {
-        $encodedId = $request->get('id');
+        $encodedId = $request->input('id');
         $id = IdEncoder::decodeId($encodedId);
 
         if (!$id) {
