@@ -15,11 +15,21 @@ class AccountRegisterController extends Controller
         return view('auth.register');
     }
 
+       //Chuyển đổi dạng full-width sang half width
+    private function convertFullWidthToHalfWidth($string)
+    {
+        return mb_convert_kana($string, 'n', 'UTF-8'); // 'n' là chuyển số full-width → half-width
+    }
+    
+
     // Chức năng đăng ký tài khoản
     //Xử lý dữ liệu người dùng khi gửi form
     public function register(Request $request)
     {
         //Dữ liệu đầu vào
+         $request->merge([
+            'phone' => $this->convertFullWidthToHalfWidth($request->input('phone')),
+        ]);
 
         $request->validate([
             'full_name' => [

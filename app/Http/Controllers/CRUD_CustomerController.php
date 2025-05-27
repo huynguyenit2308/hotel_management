@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Customer;
+use Carbon\Carbon;
 
 class CRUD_CustomerController extends Controller
 {
@@ -40,19 +41,41 @@ class CRUD_CustomerController extends Controller
     // Hiển thị form chỉnh sửa
     public function edit($id)
     {
-        $customer = Customer::findOrFail($id);
+        // Kiểm tra nếu ID không phải là số nguyên dương
+        if (!ctype_digit($id)) {
+            return redirect()->route('customers.list')
+                ->with('error', 'ID không hợp lệ hoặc trang bạn yêu cầu không tồn tại.');
+        }
+
+        // Tìm customer theo ID
+        $customer = Customer::find($id);
+
+        // Nếu không tìm thấy
+        if (!$customer) {
+            return redirect()->route('customers.list')
+                ->with('error', 'ID không tồn tại hoặc trang bạn yêu cầu không tồn tại.');
+        }
+
         return view('crud_customer.edit', compact('customer'));
     }
 
+    //Chuyển đổi dạng full-width sang half width
+    private function convertFullWidthToHalfWidth($string)
+    {
+        return mb_convert_kana($string, 'n', 'UTF-8'); // 'n' là chuyển số full-width → half-width
+    }
     // Cập nhật thông tin khách hàng
     public function update(Request $request, $id)
     {
+        $request->merge([
+            'phone' => $this->convertFullWidthToHalfWidth($request->input('phone')),
+        ]);
         $request->validate([
             'full_name' => [
                 'required',
                 'string',
                 'max:255',
-                'regex:/^[a-zA-ZÀ-ỹ\s]+$/u' // Cho phép chữ cái có dấu và khoảng trắng
+                'regex:/^[a-zA-ZÀ-ỹ\s]+$/u'
             ],
             'email' => [
                 'required',
@@ -66,7 +89,13 @@ class CRUD_CustomerController extends Controller
                 'regex:/^(0|\+84)[0-9]{8,14}$/'
             ],
             'address' => 'required|string|max:255',
-            'birth_day' => 'required|date',
+            'birth_day' => [
+                'required',
+                'date',
+                'before_or_equal:today',
+                'before:' . now()->subYears(18)->format('Y-m-d'),
+            ],
+            'updated_at' => 'required|date' // thêm để bắt buộc có trường này
         ], [
             'full_name.required' => 'Họ tên không được để trống.',
             'full_name.regex' => 'Họ tên chỉ được chứa chữ cái và khoảng trắng.',
@@ -85,10 +114,21 @@ class CRUD_CustomerController extends Controller
 
             'birth_day.required' => 'Ngày sinh không được để trống.',
             'birth_day.date' => 'Ngày sinh phải là ngày hợp lệ.',
+            'birth_day.before_or_equal' => 'Ngày sinh không được nằm trong tương lai.',
+            'birth_day.before' => 'Khách hàng phải từ 18 tuổi trở lên.',
         ]);
 
         $customer = Customer::findOrFail($id);
-        $customer->update($request->all());
+
+        $clientUpdatedAt = Carbon::createFromFormat('Y-m-d H:i:s.u', $request->input('updated_at'));
+
+        if (!$customer->updated_at->equalTo($clientUpdatedAt)) {
+            return back()
+                ->withInput()
+                ->with('error', 'Dữ liệu đã bị thay đổi bởi người khác. Vui lòng tải lại trang để tiếp tục cập nhật.');
+        }
+        //  Cập nhật dữ liệu
+        $customer->update($request->except('updated_at'));
 
         return redirect()->route('customers.list')->with('success', 'Cập nhật thông tin khách hàng thành công!');
     }
@@ -97,7 +137,11 @@ class CRUD_CustomerController extends Controller
     // Xóa khách hàng
     public function delete($id)
     {
-        $customer = Customer::findOrFail($id);
+        $customer = Customer::find($id);
+
+        if (!$customer) {
+            return redirect()->route('customers.list')->with('error', 'Dữ liệu đã bị xóa hoặc không tồn tại.');
+        }
 
         // Xóa bookings nếu có
         if ($customer->bookings()->exists()) {
@@ -109,7 +153,7 @@ class CRUD_CustomerController extends Controller
             $customer->account->delete();
         }
 
-        // Sau đó xóa customer
+        // Xóa customer
         $customer->delete();
 
         return redirect()->route('customers.list')->with('success', 'Xóa khách hàng thành công.');
