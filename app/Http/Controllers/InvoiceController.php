@@ -14,11 +14,11 @@ class InvoiceController extends Controller
         $page = request()->query('page');
 
         if (!$page) {
-            return redirect()->route('invoice.list', ['page' => 1]);
+            $page = 1;
         }
 
         if (!is_numeric($page) || (int)$page < 1) {
-            return redirect()->route('invoice.list', ['page' => 1])->with('error', 'Trang không tồn tại.');
+            return redirect()->route('invoice.list')->with('error', 'Trang không tồn tại.');
         }
 
         $page = (int) $page;
@@ -26,7 +26,7 @@ class InvoiceController extends Controller
         $invoices = Invoice::paginate(6, ['*'], 'page', $page);
 
         if ($page > $invoices->lastPage()) {
-            return redirect()->route('invoice.list', ['page' => 1])->with('error', 'Trang không tồn tại.');
+            return redirect()->route('invoice.list')->with('error', 'Trang không tồn tại.');
         }
         if ($invoices->isEmpty()) {
             return view('userService.listInvoice', compact('invoices'))->with('error', 'Không có hóa đơn nào!!!');
@@ -44,7 +44,7 @@ class InvoiceController extends Controller
         $id = IdEncoder::decodeId($encodedId);
         $invoice = Invoice::with('services')->where('id', $id)->first();
 
-         if (!$id) {
+        if (!$id) {
             return redirect()->route('invoice.list')->with('error', 'ID không hợp lệ!');
         }
 

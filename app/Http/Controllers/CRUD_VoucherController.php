@@ -14,11 +14,11 @@ class CRUD_VoucherController extends Controller
         $page = request()->query('page');
 
         if (!$page) {
-            return redirect()->route('voucher.list', ['page' => 1]);
+            $page = 1;
         }
 
         if (!is_numeric($page) || (int)$page < 1) {
-            return redirect()->route('voucher.list', ['page' => 1])->with('error', 'Trang không tồn tại.');
+            return redirect()->route('voucher.list')->with('error', 'Trang không tồn tại.');
         }
 
         $page = (int) $page;
@@ -26,7 +26,7 @@ class CRUD_VoucherController extends Controller
         $voucher = Voucher::paginate(6, ['*'], 'page', $page);
 
         if ($page > $voucher->lastPage()) {
-            return redirect()->route('voucher.list', ['page' => 1])->with('error', 'Trang không tồn tại.');
+            return redirect()->route('voucher.list')->with('error', 'Trang không tồn tại.');
         }
 
         if ($voucher->isEmpty()) {

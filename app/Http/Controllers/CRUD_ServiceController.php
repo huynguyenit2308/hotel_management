@@ -18,11 +18,11 @@ class CRUD_ServiceController extends Controller
         $page = request()->query('page');
 
         if (!$page) {
-            return redirect()->route('service.list', ['page' => 1]);
+            $page = 1;
         }
 
         if (!is_numeric($page) || (int)$page < 1) {
-            return redirect()->route('service.list', ['page' => 1])->with('error', 'Trang không tồn tại.');
+            return redirect()->route('service.list')->with('error', 'Trang không tồn tại.');
         }
 
         $page = (int) $page;
@@ -30,7 +30,7 @@ class CRUD_ServiceController extends Controller
         $service = Service::paginate(6, ['*'], 'page', $page);
 
         if ($page > $service->lastPage()) {
-            return redirect()->route('service.list', ['page' => 1])->with('error', 'Trang không tồn tại.');
+            return redirect()->route('service.list')->with('error', 'Trang không tồn tại.');
         }
 
         if ($service->isEmpty()) {
