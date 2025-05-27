@@ -9,21 +9,38 @@ use App\Helpers\IdEncoder;
 use App\Rules\HasAtLeastOneChar;
 use App\Rules\NoFullWidthSpace;
 use App\Rules\NotEmptyOrSpace;
-use Illuminate\Validation\Rule;
 
 class CRUD_ServiceController extends Controller
 {
     // Danh sách dịch vụ
     public function listService()
     {
-        $service = Service::paginate(6);
+        $page = request()->query('page');
+
+        if (!$page) {
+            return redirect()->route('service.list', ['page' => 1]);
+        }
+
+        if (!is_numeric($page) || (int)$page < 1) {
+            return redirect()->route('service.list', ['page' => 1])->with('error', 'Trang không tồn tại.');
+        }
+
+        $page = (int) $page;
+
+        $service = Service::paginate(6, ['*'], 'page', $page);
+
+        if ($page > $service->lastPage()) {
+            return redirect()->route('service.list', ['page' => 1])->with('error', 'Trang không tồn tại.');
+        }
 
         if ($service->isEmpty()) {
             return view('crud_service.list', compact('service'))->with('error', 'Không có dịch vụ nào!!!');
         }
+
         foreach ($service as $value) {
             $value->encoded_id = IdEncoder::encodeId($value->id);
         }
+
         return view('crud_service.list', compact('service'));
     }
 

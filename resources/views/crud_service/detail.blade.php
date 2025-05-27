@@ -43,10 +43,12 @@
 
                             <div class="col-md-6 text-center">
                                 @if ($service->image)
-                                    <img src="{{ asset('storage/' . $service->image) }}" alt="Ảnh dịch vụ"
+                                    <img src="{{ asset('storage/' . $service->image) }}" alt="{{ $service->service_name }}"
+                                    onerror="this.onerror=null;this.src='{{ asset('images/default.jpg') }}';"
                                         class="img-fluid rounded-3 shadow-sm mb-3" style="max-height: 250px;">
                                 @else
-                                    <p><strong>Ảnh:</strong> Không có ảnh</p>
+                                    <img src="{{ asset('images/default.jpg') }}" alt="Ảnh mặc định"
+                                        class="img-fluid rounded-3 shadow-sm mb-3" style="max-height: 250px;">
                                 @endif
                             </div>
                         </div>
