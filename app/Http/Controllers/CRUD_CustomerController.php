@@ -90,6 +90,15 @@ class CRUD_CustomerController extends Controller
     // Cập nhật thông tin khách hàng
     public function update(Request $request, $id)
     {
+        //bắt lỗi space full-width
+        $input = $request->all();
+        foreach ($input as $key => $value) {
+            if (is_string($value)) {
+                // Thay ký tự full-width space U+3000 bằng space thường
+                $input[$key] = str_replace("\xE3\x80\x80", ' ', $value);
+            }
+        }
+        $request->merge($input);
         $request->merge([
             'phone' => $this->convertFullWidthToHalfWidth($request->input('phone')),
         ]);

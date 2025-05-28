@@ -15,19 +15,28 @@ class AccountRegisterController extends Controller
         return view('auth.register');
     }
 
-       //Chuyển đổi dạng full-width sang half width
+    //Chuyển đổi dạng full-width sang half width
     private function convertFullWidthToHalfWidth($string)
     {
         return mb_convert_kana($string, 'n', 'UTF-8'); // 'n' là chuyển số full-width → half-width
     }
-    
+
 
     // Chức năng đăng ký tài khoản
     //Xử lý dữ liệu người dùng khi gửi form
     public function register(Request $request)
     {
+         //bắt lỗi space full-width
+        $input = $request->all();
+        foreach ($input as $key => $value) {
+            if (is_string($value)) {
+                // Thay ký tự full-width space U+3000 bằng space thường
+                $input[$key] = str_replace("\xE3\x80\x80", ' ', $value);
+            }
+        }
+        $request->merge($input);
         //Dữ liệu đầu vào
-         $request->merge([
+        $request->merge([
             'phone' => $this->convertFullWidthToHalfWidth($request->input('phone')),
         ]);
 
@@ -93,7 +102,7 @@ class AccountRegisterController extends Controller
             'birth_day.date' => 'Ngày sinh phải là một ngày hợp lệ.',
             'birth_day.before' => 'Ngày sinh không được là ngày trong tương lai.',
             'birth_day.before_or_equal' => 'Bạn phải đủ 18 tuổi trở lên.',
-            
+
             'username.required' => 'Tên đăng nhập không được để trống.',
             'username.regex' => 'Tên đăng nhập chỉ được chứa chữ, số và dấu gạch dưới.',
             'username.unique' => 'Tên đăng nhập đã tồn tại.',

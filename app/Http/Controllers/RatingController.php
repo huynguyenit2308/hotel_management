@@ -11,12 +11,34 @@ class RatingController extends Controller
 {
 
     // hiển thị danh sách khách hàng đã đánh giá
-    public function List()
+    public function list(Request $request)
     {
-        // Lấy tất cả các đánh giá, bao gồm thông tin khách hàng
-        $ratings = Rating::with('customer')->get();
+        $query = Rating::with('customer');
 
-        // Trả về view và truyền các đánh giá vào
+        // Tìm kiếm theo tên khách hàng
+        if ($request->has('keyword') && $request->keyword != '') {
+            $keyword = $request->keyword;
+            $query->whereHas('customer', function ($q) use ($keyword) {
+                $q->where('full_name', 'like', '%' . $keyword . '%');
+            });
+        }
+
+        // Lấy số trang hiện tại từ request
+        $currentPage = $request->input('page', 1);
+
+        // Kiểm tra nếu không phải số nguyên dương
+        if (!is_numeric($currentPage) || (int) $currentPage < 1) {
+            return redirect()->route('ratings.list')->with('error', 'Số trang không hợp lệ.');
+        }
+
+        // Phân trang
+        $ratings = $query->orderBy('id', 'desc')->paginate(10);
+
+        // Nếu người dùng nhập số trang vượt quá tổng số trang
+        if ($ratings->lastPage() < (int) $currentPage) {
+            return redirect()->route('ratings.list')->with('error', 'Trang bạn yêu cầu không tồn tại.');
+        }
+
         return view('ratings.list', compact('ratings'));
     }
     // // Hiển thị form đánh giá (customer)
@@ -51,11 +73,12 @@ class RatingController extends Controller
 
         return redirect()->route('ratings.create')->with('success', 'Cảm ơn bạn đã đánh giá!');
     }
+    //Hiển thị thông tin của  các khách hàng từng đánh giá
     public function showRatings()
     {
         // Lấy tất cả các đánh giá cùng với thông tin khách hàng
         $ratings = Rating::with('customer')->get();
-    
+
         // Trả về view với dữ liệu đánh giá
         return view('ratings.customerRatings', compact('ratings'));
     }
