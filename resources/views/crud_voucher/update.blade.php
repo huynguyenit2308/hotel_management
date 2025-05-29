@@ -114,7 +114,7 @@
                                     onmouseout="this.style.transform='scale(1)'">
                                     <i class="bi bi-arrow-left-circle"></i> Trở lại
                                 </a>
-                                <button type="submit"
+                                <button type="submit" id="saveButton"
                                     class="btn btn-primary rounded-pill flex-fill d-flex align-items-center justify-content-center gap-2 shadow-sm"
                                     style="transition: all 0.3s ease-in-out; border: none;"
                                     onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 16px rgba(0, 123, 255, 0.3)'"
@@ -128,4 +128,16 @@
             </div>
         </div>
     </section>
+    @if (session('error') === 'Dữ liệu đã bị thay đổi bởi người khác. Vui lòng tải lại trang và thử lại.')
+        <script>
+            window.addEventListener('DOMContentLoaded', () => {
+                const saveButton = document.querySelector('#saveButton');
+                if (saveButton) {
+                    saveButton.disabled = true;
+                    saveButton.classList.add('opacity-50', 'cursor-not-allowed');
+                    saveButton.title = "Dữ liệu đã bị thay đổi, vui lòng tải lại trang.";
+                }
+            });
+        </script>
+    @endif
 @endsection
