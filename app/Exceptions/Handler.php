@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Throwable;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -28,13 +29,15 @@ class Handler extends ExceptionHandler
             //
         });
     }
-     public function render($request, Throwable $exception)
+    public function render($request, Throwable $exception)
     {
         if ($exception instanceof ModelNotFoundException) {
-            // Có thể trả về view riêng hoặc redirect với thông báo
-            return response()->view('errors.notfound', [], 404);
-            // Hoặc:
-            // return redirect()->route('employees.index')->with('error', 'Không tìm thấy nhân viên!');
+            // Lỗi không tìm thấy model (ví dụ: nhân viên không tồn tại)
+            return redirect()->route('employees.index')->with('error', 'Dữ liệu không tồn tại!');
+        }
+        if ($exception instanceof NotFoundHttpException) {
+            // Lỗi không tìm thấy route (ví dụ: /abc)
+            return redirect()->route('employees.index')->with('error', 'Đường dẫn không tồn tại!');
         }
         return parent::render($request, $exception);
     }
