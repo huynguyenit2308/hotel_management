@@ -42,12 +42,15 @@
 
                                 <div class="mb-3">
                                     <label for="value" class="form-label fw-semibold">Giá trị</label>
-                                    <input type="number"
-                                        class="form-control rounded-3 shadow-sm @error('value') is-invalid @enderror"
-                                        id="value" name="value" placeholder="Nhập giá trị..."
-                                        value="{{ old('value') }}">
+                                    <div class="input-group">
+                                        <input type="text"
+                                            class="form-control rounded-start shadow-sm @error('value') is-invalid @enderror"
+                                            id="value" name="value" placeholder="Nhập giá trị..."
+                                            value="{{ old('value') }}">
+                                        <span class="input-group-text rounded-end" id="value-unit">VNĐ</span>
+                                    </div>
                                     @error('value')
-                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback d-block">{{ $message }}</div>
                                     @enderror
                                 </div>
 
