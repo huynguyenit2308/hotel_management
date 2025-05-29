@@ -38,13 +38,13 @@
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label fw-semibold">Loại Voucher</label>
-                                <select name="type" class="form-select shadow-sm @error('type') is-invalid @enderror">
-                                    <option value="percent"
-                                        {{ old('type', $voucher->type) === 'percent' ? 'selected' : '' }}>Phần trăm (%)
-                                    </option>
-                                    <option value="fixed" {{ old('type', $voucher->type) === 'fixed' ? 'selected' : '' }}>
-                                        Giảm cố định (VNĐ)</option>
+                                <label for="type" class="form-label fw-semibold">Loại</label>
+                                <select class="form-select rounded-3 shadow-sm @error('type') is-invalid @enderror"
+                                    name="type" id="type">
+                                    <option value="percent" {{ old('type') == 'percent' ? 'selected' : '' }}>Phần trăm
+                                        (%)</option>
+                                    <option value="fixed" {{ old('type') == 'fixed' ? 'selected' : '' }}>Giá cố định
+                                        (VNĐ)</option>
                                 </select>
                                 @error('type')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -52,12 +52,16 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="value" class="form-label fw-semibold">Giá trị giảm</label>
-                                <input type="number" name="value" id="value"
-                                    class="form-control shadow-sm @error('value') is-invalid @enderror"
-                                    value="{{ old('value', $voucher->value) }}" min="0">
+                                <label for="value" class="form-label fw-semibold">Giá trị</label>
+                                <div class="input-group">
+                                    <input type="text"
+                                        class="form-control rounded-start shadow-sm @error('value') is-invalid @enderror"
+                                        id="value" name="value" placeholder="Nhập giá trị..."
+                                        value="{{ old('value', $voucher->value) }}">
+                                    <span class="input-group-text rounded-end" id="value-unit">VNĐ</span>
+                                </div>
                                 @error('value')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
                                 @enderror
                             </div>
 

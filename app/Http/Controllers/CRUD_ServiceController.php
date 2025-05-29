@@ -55,32 +55,43 @@ class CRUD_ServiceController extends Controller
     {
         $request->validate([
             'service_name' => [
+                new NoFullWidthSpace(),
+                new NotEmptyOrSpace(),
+                new HasAtLeastOneChar(),
+                new NoHTML(),
                 // 'required',
                 'max:255',
                 'unique:service,service_name',
+                'regex:/^[\pL\pN\s\-]+$/u',
+            ],
+            'price' => [
+                // 'required',
                 new NoFullWidthSpace(),
                 new NotEmptyOrSpace(),
                 new HasAtLeastOneChar(),
                 new NoHTML(),
+                'numeric',
+                'min:0',
+                'max:1000000000'
             ],
-            'price' => 'required|numeric|min:1000|max:1000000000',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'description' => [
                 // 'required',
-                'max:1000',
                 new NoFullWidthSpace(),
                 new NotEmptyOrSpace(),
                 new HasAtLeastOneChar(),
                 new NoHTML(),
+                'max:1000',
             ],
         ], [
             // 'service_name.required' => 'Vui lòng nhập tên dịch vụ.',
             'service_name.max' => 'Tên dịch vụ không được vượt quá 255 ký tự.',
             'service_name.unique' => 'Tên dịch vụ đã tồn tại.',
+            'service_name.regex' => 'Tên dịch vụ chỉ được chứa chữ cái, số, khoảng trắng và dấu gạch ngang.',
 
-            'price.required' => 'Vui lòng nhập giá dịch vụ.',
-            'price.numeric' => 'Giá phải là một số.',
-            'price.min' => 'Giá phải lớn hơn hoặc bằng 1000.',
+            // 'price.required' => 'Vui lòng nhập giá dịch vụ.',
+            'price.numeric' => 'Giá chỉ được nhập số.',
+            'price.min' => 'Giá phải lớn hơn 0.',
             'price.max' => 'Giá không được quá 1 tỷ.',
 
             'image.image' => 'Tập tin phải là một ảnh.',
@@ -91,6 +102,7 @@ class CRUD_ServiceController extends Controller
             'description.max' => 'Mô tả dịch vụ không được vượt quá 1000 ký tự.',
         ], [
             'service_name' => 'Tên dịch vụ',
+            'price' => 'Giá dịch vụ',
             'description' => 'Mô tả dịch vụ',
         ]);
 
@@ -166,13 +178,23 @@ class CRUD_ServiceController extends Controller
         $request->validate([
             'service_name' => [
                 // 'required',
-                'max:255',
                 new NoFullWidthSpace(),
                 new NotEmptyOrSpace(),
                 new HasAtLeastOneChar(),
                 new NoHTML(),
+                'max:255',
+                'regex:/^[\pL\pN\s\-]+$/u',
             ],
-            'price' => 'required|numeric|min:0|max:100000000000',
+            'price' => [
+                // 'required',
+                new NoFullWidthSpace(),
+                new NotEmptyOrSpace(),
+                new HasAtLeastOneChar(),
+                new NoHTML(),
+                'numeric',
+                'min:0',
+                'max:1000000000'
+            ],
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'description' => [
                 // 'required',
@@ -185,8 +207,9 @@ class CRUD_ServiceController extends Controller
         ], [
             // 'service_name.required' => 'Vui lòng nhập tên dịch vụ.',
             'service_name.max' => 'Tên dịch vụ không được vượt quá 255 ký tự.',
+            'service_name.regex' => 'Tên dịch vụ chỉ được chứa chữ cái, số, khoảng trắng và dấu gạch ngang.',
             'price.required' => 'Vui lòng nhập giá dịch vụ.',
-            'price.numeric' => 'Giá phải là một số.',
+            'price.numeric' => 'Giá chỉ được nhập số.',
             'price.min' => 'Giá phải lớn hơn hoặc bằng 0.',
             'price.max' => 'Giá không được quá 100 tỷ.',
             'image.image' => 'Tập tin phải là một ảnh.',
@@ -196,6 +219,7 @@ class CRUD_ServiceController extends Controller
             'description.max' => 'Mô tả dịch vụ không được vượt quá 1000 ký tự.',
         ], [
             'service_name' => 'Tên dịch vụ',
+            'price' => 'Giá dịch vụ',
             'description' => 'Mô tả dịch vụ',
         ]);
 
@@ -273,11 +297,28 @@ class CRUD_ServiceController extends Controller
     public function updatePriceService(Request $request)
     {
         $request->validate([
-            'base_price' => 'required|numeric|min:0',
+            'base_price' => [
+                new NoFullWidthSpace(),
+                new NotEmptyOrSpace(),
+                new HasAtLeastOneChar(),
+                new NoHTML(),
+                // 'required',
+                'numeric',
+                'min:0',
+            ],
             'adjust_type' => 'required|in:increase,decrease',
-            'adjust_percent' => 'required|numeric|min:0|max:100',
+            'adjust_percent' => [
+                new NoFullWidthSpace(),
+                new NotEmptyOrSpace(),
+                new HasAtLeastOneChar(),
+                new NoHTML(),
+                'required',
+                'numeric',
+                'min:0',
+                'max:1000',
+            ],
         ], [
-            'base_price.required' => 'Vui lòng nhập giá gốc.',
+            // 'base_price.required' => 'Vui lòng nhập giá gốc.',
             'base_price.numeric' => 'Giá gốc phải là số.',
             'base_price.min' => 'Giá gốc phải lớn hơn hoặc bằng 0.',
 
@@ -288,6 +329,9 @@ class CRUD_ServiceController extends Controller
             'adjust_percent.numeric' => 'Phần trăm điều chỉnh phải là số.',
             'adjust_percent.min' => 'Phần trăm điều chỉnh không được âm.',
             'adjust_percent.max' => 'Phần trăm điều chỉnh tối đa là 100.',
+        ], [
+            'base_price' => 'Giá gốc',
+            'adjust_percent' => 'Phần trăm điều chỉnh',
         ]);
         $basePrice = $request->base_price;
         $percent = $request->adjust_percent;

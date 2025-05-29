@@ -35,7 +35,7 @@
                                     <p class="mb-3">
                                         <i class="bi bi-currency-dollar me-2 text-success"></i>
                                         <strong>Giảm giá:</strong>
-                                        {{ $voucher->type == 'percent' ? $voucher->value . '%' : number_format($voucher->value, 0, ',', '.') }}
+                                        {{ $voucher->type == 'percent' ? $voucher->value . '%' : number_format($voucher->value, 0, ',', '.') . ' VNĐ' }}
                                     </p>
                                     <p class="mb-3">
                                         <i class="bi bi-calendar-fill me-2 text-info"></i>

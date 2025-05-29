@@ -22,7 +22,7 @@
                                 @method('POST')
                                 <div class="mb-3">
                                     <label for="base_price" class="form-label fw-semibold">Giá gốc (VNĐ)</label>
-                                    <input type="number"
+                                    <input type="text"
                                         class="form-control rounded-3 shadow-sm @error('base_price') is-invalid @enderror"
                                         id="base_price" name="base_price"
                                         value="{{ old('base_price', $service->price ?? '') }}" min="0">
@@ -45,7 +45,7 @@
                                                 {{ old('adjust_type') == 'decrease' ? 'selected' : '' }}>Giảm</option>
                                         </select>
 
-                                        <input type="number" name="adjust_percent"
+                                        <input type="text" name="adjust_percent"
                                             class="form-control @error('adjust_percent') is-invalid @enderror"
                                             placeholder="%" min="0" max="100" step="0.1"
                                             value="{{ old('adjust_percent') }}">

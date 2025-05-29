@@ -53,12 +53,13 @@ class CRUD_VoucherController extends Controller
     {
         $request->validate([
             'code' => [
-                'max:50',
-                'unique:voucher,code',
                 new NoFullWidthSpace(),
                 new NotEmptyOrSpace(),
                 new HasAtLeastOneChar(),
                 new NoHTML(),
+                'max:50',
+                'unique:voucher,code',
+                'regex:/^[\pL\pN\s\-]+$/u',
             ],
             'type' => 'required|in:percent,fixed',
             'value' => 'required|numeric|min:0',
@@ -70,11 +71,12 @@ class CRUD_VoucherController extends Controller
             // 'code.required' => 'Vui lòng nhập mã voucher.',
             'code.max' => 'Mã voucher không được vượt quá 50 ký tự.',
             'code.unique' => 'Mã voucher đã tồn tại.',
+            'code.regex' => 'Mã voucher chỉ được chứa chữ cái, số, khoảng trắng và dấu gạch ngang.',
 
             'type.required' => 'Vui lòng chọn loại voucher.',
             'type.in' => 'Loại voucher không hợp lệ.',
-            'value.required' => 'Vui lòng nhập giá trị giảm.',
-            'value.numeric' => 'Giá trị giảm phải là số.',
+            'value.required' => 'Vui lòng nhập giá trị.',
+            'value.numeric' => 'Giá trị phải là số.',
             'usage_limit.required' => 'Vui lòng nhập số lượt sử dụng tối đa.',
             'usage_limit.integer' => 'Số lượt sử dụng phải là số nguyên.',
             'start_date.required' => 'Vui lòng chọn ngày bắt đầu.',
@@ -151,11 +153,12 @@ class CRUD_VoucherController extends Controller
     {
         $request->validate([
             'code' => [
-                'max:50',
                 new NoFullWidthSpace(),
                 new NotEmptyOrSpace(),
                 new HasAtLeastOneChar(),
                 new NoHTML(),
+                'max:50',
+                'regex:/^[\pL\pN\s\-]+$/u',
             ],
             'type' => 'required|in:percent,fixed',
             'value' => 'required|numeric|min:0',
@@ -166,10 +169,11 @@ class CRUD_VoucherController extends Controller
         ], [
             'code.required' => 'Vui lòng nhập mã voucher.',
             'code.max' => 'Mã voucher không được vượt quá 50 ký tự.',
+            'code.regex' => 'Mã voucher chỉ được chứa chữ cái, số, khoảng trắng và dấu gạch ngang.',
             'type.required' => 'Vui lòng chọn loại voucher.',
             'type.in' => 'Loại voucher không hợp lệ.',
-            'value.required' => 'Vui lòng nhập giá trị giảm.',
-            'value.numeric' => 'Giá trị giảm phải là số.',
+            'value.required' => 'Vui lòng nhập giá trị.',
+            'value.numeric' => 'Giá trị phải là số.',
             'usage_limit.required' => 'Vui lòng nhập số lượt sử dụng tối đa.',
             'usage_limit.integer' => 'Số lượt sử dụng phải là số nguyên.',
             'start_date.required' => 'Vui lòng chọn ngày bắt đầu.',

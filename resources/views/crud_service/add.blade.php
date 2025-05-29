@@ -31,7 +31,7 @@
 
                                 <div class="mb-3">
                                     <label for="price" class="form-label fw-semibold">Giá (VNĐ)</label>
-                                    <input type="number"
+                                    <input type="text"
                                         class="form-control rounded-3 shadow-sm @error('price') is-invalid @enderror"
                                         id="price" name="price" placeholder="Nhập giá tiền..."
                                         value="{{ old('price') }}">

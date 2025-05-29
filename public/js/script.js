@@ -233,3 +233,73 @@ document.addEventListener('DOMContentLoaded', function () {
   checkboxes.forEach(cb => cb.addEventListener('change', updateSummary));
   updateSummary();
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+  const priceInput = document.getElementById('price');
+
+  // Hàm định dạng số: 100000 => 100.000
+  function formatPrice(value) {
+    let num = value.replace(/\D/g, ''); // loại bỏ mọi ký tự không phải số
+    if (!num) return '';
+    return num.replace(/\B(?=(\d{3})+(?!\d))/g, ".") + ' VNĐ';
+  }
+
+  // Hàm bỏ định dạng: 100.000 VNĐ => 100000
+  function unformatPrice(value) {
+    return value.replace(/[^\d]/g, '');
+  }
+
+  // Gán lại giá trị đã định dạng khi load lại form (old input)
+  if (priceInput.value) {
+    priceInput.value = formatPrice(priceInput.value);
+  }
+
+  // Khi người dùng nhập
+  priceInput.addEventListener('input', function (e) {
+    const cursorPos = priceInput.selectionStart;
+    const raw = unformatPrice(priceInput.value);
+    priceInput.value = formatPrice(raw);
+    priceInput.setSelectionRange(priceInput.value.length - 4, priceInput.value.length - 4); // giữ con trỏ
+  });
+
+  // Trước khi submit, loại bỏ định dạng
+  priceInput.form.addEventListener('submit', function () {
+    priceInput.value = unformatPrice(priceInput.value);
+  });
+});
+document.addEventListener('DOMContentLoaded', function () {
+  const typeSelect = document.getElementById('type');
+  const valueInput = document.getElementById('value');
+  const valueUnit = document.getElementById('value-unit');
+
+  function updateUnit() {
+    const selectedType = typeSelect.value;
+    valueUnit.textContent = selectedType === 'percent' ? '%' : 'VNĐ';
+
+    // Nếu đổi sang percent thì bỏ định dạng
+    if (selectedType === 'percent') {
+      valueInput.value = valueInput.value.replace(/\./g, '');
+    } else {
+      formatCurrency();
+    }
+  }
+
+  function formatCurrency() {
+    let val = valueInput.value.replace(/\./g, '').replace(/\D/g, '');
+    if (val) {
+      valueInput.value = Number(val).toLocaleString('vi-VN');
+    }
+  }
+
+  // Cập nhật ngay khi tải trang
+  updateUnit();
+
+  // Gắn sự kiện
+  typeSelect.addEventListener('change', updateUnit);
+
+  valueInput.addEventListener('input', function () {
+    if (typeSelect.value === 'fixed') {
+      formatCurrency();
+    }
+  });
+});
