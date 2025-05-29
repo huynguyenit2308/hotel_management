@@ -29,10 +29,6 @@
                 <td>{{ $customer->birth_day}}</td>
             </tr>
             <tr>
-                <th>Ngày sinh</th>
-                <td>{{ $customer->birth_day}}</td>
-            </tr>
-            <tr>
                 <th>Ngày đăng ký tài khoản</th>
                 <td>{{ $customer->registration_date}}</td>
             </tr>

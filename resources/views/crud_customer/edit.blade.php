@@ -23,11 +23,11 @@
                                 </div>
                             @endif
 
-                            @if(session('error'))
+                            <!-- @if(session('error'))
                                 <div class="alert alert-danger">
                                     {{ session('error') }}
                                 </div>
-                            @endif
+                            @endif -->
                             <form action="{{ route('customers.update', ['id' => $customer->id]) }}" method="POST">
                                 @csrf
                                 @method('POST')
