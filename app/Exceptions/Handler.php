@@ -29,16 +29,4 @@ class Handler extends ExceptionHandler
             //
         });
     }
-    public function render($request, Throwable $exception)
-    {
-        if ($exception instanceof ModelNotFoundException) {
-            // Lỗi không tìm thấy model (ví dụ: nhân viên không tồn tại)
-            return redirect()->route('employees.index')->with('error', 'Dữ liệu không tồn tại!');
-        }
-        if ($exception instanceof NotFoundHttpException) {
-            // Lỗi không tìm thấy route (ví dụ: /abc)
-            return redirect()->route('employees.index')->with('error', 'Đường dẫn không tồn tại!');
-        }
-        return parent::render($request, $exception);
-    }
 }
